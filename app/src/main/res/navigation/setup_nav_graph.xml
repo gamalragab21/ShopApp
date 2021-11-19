@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/setup_nav_graph.xml"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        tools:layout="@layout/fragment_splash"
+        android:name="com.developers.shopapp.ui.fragments.setup.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        tools:layout="@layout/fragment_login"
+        android:name="com.developers.shopapp.ui.fragments.setup.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createAccountFragment"
+        tools:layout="@layout/fragment_register"
+        android:name="com.developers.shopapp.ui.fragments.setup.CreateAccountFragment"
+        android:label="CreateAccountFragment" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_to_loginFragment"
+        app:destination="@id/loginFragment"
+        app:launchSingleTop="true"
+        />
+    <fragment
+        android:id="@+id/forgetPasswordFragment"
+        tools:layout="@layout/fragment_forget_password"
+        android:name="com.developers.shopapp.ui.fragments.setup.ForgetPasswordFragment"
+        android:label="ForgetPasswordFragment" >
+        <action
+            android:id="@+id/action_forgetPasswordFragment_to_verifyCodeEmailFragment"
+            app:destination="@id/verifyCodeEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyCodeEmailFragment"
+        tools:layout="@layout/fragment_verify_code_email"
+        android:name="com.developers.shopapp.ui.fragments.setup.VerifyCodeEmailFragment"
+        android:label="VerifyCodeEmailFragment" >
+        <argument
+            android:name="userEmail"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_verifyCodeEmailFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        tools:layout="@layout/fragment_change_password"
+        android:name="com.developers.shopapp.ui.fragments.setup.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <argument
+            android:name="userEmail"
+            app:argType="string" />
+        <argument
+            android:name="code"
+            app:argType="string" />
+    </fragment>
+</navigation>

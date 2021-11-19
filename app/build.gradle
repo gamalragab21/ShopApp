@@ -133,10 +133,15 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+
     // other
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.hbb20:ccp:2.5.1'
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation 'com.chaos.view:pinview:1.4.4'
 
 
 }

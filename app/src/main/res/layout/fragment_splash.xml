@@ -46,10 +46,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         android:id="@+id/content"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -114,37 +114,35 @@
             android:gravity="center_horizontal|center_vertical"
             android:padding="@dimen/_10sdp"
             android:text="Skip"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/gray"
             android:textSize="@dimen/_13sdp" />
 
         <Button
+            style="@style/button_style"
             android:id="@+id/started"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
-            android:fontFamily="@font/poppins_bold"
             android:gravity="center_horizontal|center_vertical"
-            android:padding="@dimen/_8sdp"
             android:text="Get Started"
             android:textAllCaps="false"
+            android:textStyle="bold"
             android:visibility="invisible"
-            android:textColor="@android:color/white"
             android:textSize="@dimen/_15sdp"
-            app:cornerRadius="@dimen/_15sdp"
             />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/circle"
             android:fontFamily="@font/poppins"
+            android:textStyle="bold"
             android:gravity="center_horizontal|center_vertical"
-            android:padding="@dimen/_10sdp"
-            android:text="Next"
+            android:text="NEXT"
             android:textColor="@color/Black"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_12ssp"
             />
 
     </LinearLayout>

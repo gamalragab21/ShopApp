@@ -1,7 +1,8 @@
-package com.developers.shopapp.ui.fragments
+package com.developers.shopapp.ui.fragments.setup
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,24 +15,31 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.developers.shopapp.R
+import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentSplashBinding
 import com.developers.shopapp.entities.Splash
+import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.ui.adapters.AdapterViewPagerSplash
+import com.developers.shopapp.utils.Constants.TAG
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SplashFragment : Fragment() {
+    private lateinit var  _binding: FragmentSplashBinding
+    private val binding get() = _binding
 
-
-    private var _binding: FragmentSplashBinding? = null
-    private val binding get() = _binding!!
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
 
     private val listSplash by lazy {
         ArrayList<Splash>()
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,13 +57,38 @@ class SplashFragment : Fragment() {
         }
 
         binding.skip.setOnClickListener {
-            navigateToHomeFragment(savedInstanceState)
+            checkUserStatsAndNavigate(savedInstanceState)
+
         }
 
         binding.started.setOnClickListener {
-            navigateToHomeFragment(savedInstanceState)
+
+            checkUserStatsAndNavigate(savedInstanceState)
+
         }
 
+    }
+
+    private fun checkUserStatsAndNavigate(savedInstanceState: Bundle?) {
+        lifecycleScope.launchWhenStarted {
+            dataStoreManager.infoUser.collect { userInfo ->
+
+                if (userInfo.token.isNotEmpty()) {
+                    startActivity(Intent(requireContext(),MainActivity::class.java))
+                    requireActivity().finish()
+                } else {
+
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.splashFragment, true)
+                        .build()
+                    findNavController().navigate(
+                        R.id.action_splashFragment_to_loginFragment,
+                        savedInstanceState,
+                        navOptions
+                    )
+                }
+            }
+        }
     }
 
     private fun setupBoundsImage() {
@@ -81,16 +114,6 @@ class SplashFragment : Fragment() {
         }
     }
 
-    private fun navigateToHomeFragment(savedInstanceState: Bundle?) {
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.splashFragment, true)
-            .build()
-        findNavController().navigate(
-            R.id.action_splashFragment_to_homeFragment,
-            savedInstanceState,
-            navOptions
-        )
-    }
 
     private fun initViewPagerList() {
         listSplash.add(
@@ -111,12 +134,12 @@ class SplashFragment : Fragment() {
             )
         )
         listSplash.add(
-                Splash(
-                    R.drawable.img3,
-                    "Easy Payment",
-                    "Now use your Easypaisa app to order and pay for your food from the comfort of your home."
-                )
-                )
+            Splash(
+                R.drawable.img3,
+                "Easy Payment",
+                "Now use your Easypaisa app to order and pay for your food from the comfort of your home."
+            )
+        )
         binding.viewPager2.adapter = AdapterViewPagerSplash(listSplash)
 
         initIndicators()
@@ -177,12 +200,13 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 }

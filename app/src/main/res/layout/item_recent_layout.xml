@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_8sdp"
+    android:layout_marginStart="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:layout_marginRight="@dimen/_8sdp"
+    android:layout_marginEnd="@dimen/_8sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        app:cardMaxElevation="50dp"
+        android:layout_margin="10dp"
+        android:elevation="80dp"
+        app:cardElevation="80dp"
+        android:background="@color/colorPrimaryDark"
+        app:cardCornerRadius="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:cardBackgroundColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:outlineSpotShadowColor="@color/gray"
+        android:outlineAmbientShadowColor="@color/gray"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_5sdp"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="@dimen/_80sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:layout_height="match_parent"
+        android:id="@+id/item_recent_imageview"
+        android:scaleType="fitXY"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/item_recent_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:textColor="@color/Black"
+                android:fontFamily="@font/poppins_bold"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/not_save"
+                android:id="@+id/item_recent_save"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/colorAccent"
+                android:id="@+id/item_recent_type"
+                android:fontFamily="@font/poppins"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:textSize="@dimen/_10ssp"
+                android:drawablePadding="@dimen/_3sdp"
+                app:drawableStartCompat="@drawable/type_resturant" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/item_recent_distance"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/_10ssp"
+                android:drawablePadding="@dimen/_3sdp"
+                app:drawableStartCompat="@drawable/pin" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/item_recent_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:textColor="@color/Black"
+                android:fontFamily="@font/poppins_bold"
+                android:text="0.0"
+                app:drawableStartCompat="@drawable/start_icon" />
+            <TextView
+                android:id="@+id/item_recent_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/_3sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="0.0"
+                app:drawableStartCompat="@drawable/clock" />
+            <TextView
+                android:id="@+id/item_recent_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/_3sdp"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Contact"
+                app:drawableLeftCompat="@drawable/phone" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/item_recent_progress"
+        android:indeterminateTint="@color/colorPrimaryDark"
+        style="@android:style/Widget.ProgressBar.Small"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

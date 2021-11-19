@@ -1,25 +1,38 @@
 package com.developers.shopapp.di
 
 import android.content.Context
+import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.preferencesDataStore
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.developers.shopapp.qualifiers.IOThread
 import com.developers.shopapp.qualifiers.MainThread
 import com.developers.shopapp.R
+import com.developers.shopapp.data.local.DataStoreManager
+import com.developers.shopapp.data.newtwork.ApiShopService
+import com.developers.shopapp.qualifiers.Token
+import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.Constants.TAG
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.take
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import java.util.prefs.Preferences
 import javax.inject.Singleton
 
 @Module
@@ -49,7 +62,6 @@ object AppModel {
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 
 
-
     // TODO: 11/8/2021  For implementation Glide
     @Singleton
     @Provides
@@ -62,7 +74,10 @@ object AppModel {
             .diskCacheStrategy(DiskCacheStrategy.DATA)
 
     )
-
+    @Provides
+    @Singleton
+    fun dataStoreManager(@ApplicationContext appContext: Context): DataStoreManager =
+        DataStoreManager(appContext)
 
     // TODO: 11/8/2021  For implementation AppDatabase
 
@@ -77,73 +92,7 @@ object AppModel {
 //            .build()
 //    }
 
-    // TODO: 11/8/2021  For implementation Moshi
 
-    @Provides
-    @Singleton
-    fun providesMoshi(): Moshi = Moshi
-        .Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
-
-
-
-
-    // TODO: 11/8/2021  For implementation OkHttpClient
-
-    @Provides
-    @Singleton
-    fun provideHttpLoggingInterceptor( ): HttpLoggingInterceptor {
-        val localHttpLoggingInterceptor = HttpLoggingInterceptor()
-        localHttpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return localHttpLoggingInterceptor
-    }
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor,token:String=""): OkHttpClient =
-        OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor { chain ->
-                val original: Request = chain.request()
-                val builder: Request.Builder = chain.request().newBuilder()
-                   val newQuest = if (token.isNotEmpty()){
-                    original.newBuilder()
-                        .header("Authorization",token)
-                        .header("Content-Type","application/json")
-                        .method(original.method,original.body)
-                        .build()
-                }else{
-                    original.newBuilder()
-                        .header("Content-Type","application/json")
-                        .method(original.method,original.body)
-                        .build()
-                }
-//                 builder.addHeader(Constants.CONTENT_TYPE, Constants.APP_JSON)
-//                builder.method(original.method, original.body)
-               // chain.proceed(builder.build())
-                chain.proceed(newQuest)
-            }
-            .addNetworkInterceptor(interceptor)
-            .build()
-
-
-    // TODO: 11/8/2021  For implementation Retrofit
-
-//    @Provides
-//    @Singleton
-//    fun providesApiService(moshi: Moshi, okHttpClient: OkHttpClient): ApiJobService =
-//
-//        Retrofit.Builder()
-//            .run {
-//                baseUrl(Constants.BASE_URL)
-//                client(okHttpClient)
-//                addConverterFactory(GsonConverterFactory.create())
-//                build()
-//            }.create(ApiJobService::class.java)
 
 
 }

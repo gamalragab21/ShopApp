@@ -11,9 +11,9 @@
     <color name="colorPrimaryDark">#0A8791</color>
     <color name="colorPrimaryLight">#C7F5F8</color>
     <color name="colorPrimary">#FBA83c</color>
-    <color name="colorAccent">#c2c2cb</color>
+    <color name="gray">#939395</color>
     <color name="Black">#0E122B</color>
-    <color name="gray">#E9EFEF</color>
+    <color name="colorAccent">#EDEDF1</color>
     <color name="Redgrade1">#F4AEC6</color>
     <color name="Redgrade2">#EA0C7B</color>
     <color name="dialogBackground">#4E4848</color>
