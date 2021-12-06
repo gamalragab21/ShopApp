@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaos.view.PinView
 import com.developers.shopapp.entities.AuthModel
+import com.developers.shopapp.entities.MyResponse
 import com.developers.shopapp.helpers.Event
 import com.developers.shopapp.helpers.MyValidation
 import com.developers.shopapp.helpers.Resource
@@ -13,6 +14,7 @@ import com.developers.shopapp.repositories.AuthenticationRepository
 import com.developers.shopapp.qualifiers.MainThread
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.Constants.TAG
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,12 +34,12 @@ class AuthenticationViewModel @Inject constructor(
 
 
     private val _loginUserStatus =
-        MutableStateFlow<Event<Resource<AuthModel>>>(Event(Resource.Init()))
-    val authUserStatus: MutableStateFlow<Event<Resource<AuthModel>>> = _loginUserStatus
+        MutableStateFlow<Event<Resource<MyResponse<String>>>>(Event(Resource.Init()))
+    val authUserStatus: MutableStateFlow<Event<Resource<MyResponse<String>>>> = _loginUserStatus
 
     private val _createAccountStatus =
-        MutableStateFlow<Event<Resource<AuthModel>>>(Event(Resource.Init()))
-    val createAccountStatus: MutableStateFlow<Event<Resource<AuthModel>>> = _createAccountStatus
+        MutableStateFlow<Event<Resource<MyResponse<String>>>>(Event(Resource.Init()))
+    val createAccountStatus: MutableStateFlow<Event<Resource<MyResponse<String>>>> = _createAccountStatus
 
     private val _logoutStatus = MutableStateFlow<Event<Resource<AuthModel>>>(Event(Resource.Init()))
     val logoutStatus: MutableStateFlow<Event<Resource<AuthModel>>> = _logoutStatus
@@ -55,11 +57,15 @@ class AuthenticationViewModel @Inject constructor(
     fun loginUser(
         inputTextLayoutEmail: TextInputLayout,
         inputTextLayoutPassword: TextInputLayout,
+        latLong: LatLng?
     ) {
         viewModelScope.launch(dispatcher) {
             val email = inputTextLayoutEmail.editText!!.text.toString()
             val password = inputTextLayoutPassword.editText!!.text.toString()
             when {
+                latLong == null->{
+                    _loginUserStatus.emit(Event(Resource.Error("PLZ,Open Your Location")))
+                }
                 email.isEmpty() -> {
                     _loginUserStatus.emit(Event(Resource.Error("E-mail is require")))
                     inputTextLayoutEmail.isHelperTextEnabled = true
@@ -94,7 +100,9 @@ class AuthenticationViewModel @Inject constructor(
         inputTextLayoutUserName: TextInputLayout,
         inputTextLayoutEmail: TextInputLayout,
         inputTextLayoutMobile: TextInputLayout,
-        inputTextLayoutPassword: TextInputLayout) {
+        inputTextLayoutPassword: TextInputLayout,
+        latLong: LatLng?
+    ) {
         viewModelScope.launch(dispatcher) {
             val username = inputTextLayoutUserName.editText!!.text.toString()
             val email = inputTextLayoutEmail.editText!!.text.toString()
@@ -137,6 +145,10 @@ class AuthenticationViewModel @Inject constructor(
                 !MyValidation.validatePass(context, inputTextLayoutPassword) -> {
                     _createAccountStatus.emit(Event(Resource.Error(inputTextLayoutPassword.helperText.toString())))
                 }
+                latLong==null ->{
+                    _createAccountStatus.emit(Event(Resource.Error("PLZ,Open Your Location")))
+
+                }
                 else -> {
                     _createAccountStatus.emit(Event(Resource.Loading()))
                     val result = repository.createAccount(
@@ -144,7 +156,8 @@ class AuthenticationViewModel @Inject constructor(
                         email,
                         mobile,
                         password,
-                        Constants.IMAGE_URL
+                        Constants.IMAGE_URL,
+                        latLong
                     )
                     _createAccountStatus.emit(Event(result))
                 }
@@ -227,5 +240,9 @@ class AuthenticationViewModel @Inject constructor(
                    }
                }
            }
+    }
+
+    fun showNoGpsDialoge(context: Context) {
+        Constants.buildAlertMessageNoGps(context);
     }
 }

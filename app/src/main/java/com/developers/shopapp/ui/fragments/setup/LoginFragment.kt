@@ -1,5 +1,6 @@
 package com.developers.shopapp.ui.fragments.setup
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,12 +23,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.content.Intent
-import com.developers.shopapp.entities.UserData
+import android.location.Location
+import android.os.Build
+import com.developers.shopapp.helpers.MyLocation
 import com.developers.shopapp.ui.activities.MainActivity
+import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.TrackingUtility
+import com.google.android.gms.maps.model.LatLng
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -36,9 +44,22 @@ class LoginFragment : Fragment() {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
+    lateinit var locationResult:MyLocation.LocationResult
+
+    private var latLong: LatLng?=null
+    val myLocation by lazy {   MyLocation()}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        locationResult = object : MyLocation.LocationResult() {
+            override fun gotLocation(location: Location?) {
+                Log.i(TAG, "gotLocation: ${location.toString()}")
+                location?.let {
+                    latLong= LatLng(it.latitude,it.longitude)
+                }
+            }
 
+        }
         // to get email , password if sets it as remember me
         val dataUserInfo = dataStoreManager.glucoseFlow.value
         binding.inputTextEmail.setText(dataUserInfo?.email)
@@ -48,6 +69,7 @@ class LoginFragment : Fragment() {
         binding.inputTextEmail.doAfterTextChanged {
             binding.inputTextLayoutEmail.isHelperTextEnabled = false
         }
+
         binding.inputTextPassword.doAfterTextChanged {
             binding.inputTextLayoutPassword.isHelperTextEnabled = false
         }
@@ -64,11 +86,8 @@ class LoginFragment : Fragment() {
         }
         // sign in
         binding.singinBtn.setOnClickListener {
+            requestPermissions()
 
-            authenticationViewModel.loginUser(
-                binding.inputTextLayoutEmail,
-                binding.inputTextLayoutPassword,
-            )
         }
 
         // check login state
@@ -98,9 +117,9 @@ class LoginFragment : Fragment() {
                     Log.i(TAG, "onViewCreated: onSuccess $it")
 
                     snackbar(it.message)
-                    it.userData?.let { data ->
+                    it.data?.let { token ->
                         lifecycleScope.launch {
-                           saveDataAndNavigate(data)
+                           saveDataAndNavigate(token,latLong)
                         }
                     }
 
@@ -111,11 +130,12 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private suspend fun saveDataAndNavigate(userData: UserData) {
-        updateToken(userData.token)
+    private suspend fun saveDataAndNavigate(token: String, latLong: LatLng?) {
+        updateTokenAndLatLng(token,latLong)
         if (binding.switchRememberMe.isChecked) {
             val password = binding.inputTextPassword.text.toString()
-            saveEmailAndPassword(userData.email, password)
+            val email = binding.inputTextEmail.text.toString()
+            saveEmailAndPassword(email, password)
         }
         startActivity(Intent(requireContext(), MainActivity::class.java))
         requireActivity().finish()
@@ -127,9 +147,36 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private suspend fun updateToken(token: String) {
-            dataStoreManager.setUserInfo(token = token)
+    private fun requestPermissions(){
 
+        if (TrackingUtility.hasLocationPermissions(requireContext())){
+            getMyLocation()
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept location permissions to use this app.",
+                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        }else{
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept location permissions to use this app.",
+                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+        }
+    }
+
+
+
+    private suspend fun updateTokenAndLatLng(token: String, latLong: LatLng?) {
+        dataStoreManager.setUserInfo(token = token,latLng = latLong)
     }
 
     override fun onCreateView(
@@ -146,5 +193,43 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        getMyLocation()
+    }
+
+    private fun getMyLocation() {
+       if ( myLocation.getLocation(requireContext(), locationResult)){
+           loginUser()
+       }else{
+          authenticationViewModel.showNoGpsDialoge(requireContext())
+           snackbar("PLZ, open your location ")
+       }
+    }
+
+    private fun loginUser() {
+        authenticationViewModel.loginUser(
+            binding.inputTextLayoutEmail,
+            binding.inputTextLayoutPassword,
+            latLong
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        } else {
+            requestPermissions()
+        }
     }
 }

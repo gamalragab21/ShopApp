@@ -1,7 +1,11 @@
 package com.developers.shopapp.ui.fragments.setup
 
+import android.Manifest
 import android.content.Intent
+import android.location.Location
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +18,24 @@ import androidx.navigation.fragment.findNavController
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentRegisterBinding
-import com.developers.shopapp.entities.UserData
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
+import com.developers.shopapp.utils.Constants.REQUEST_CODE_LOCATION_PERMISSIONS
+import com.developers.shopapp.utils.TrackingUtility
 import com.developers.shopapp.utils.snackbar
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
+import com.developers.shopapp.helpers.MyLocation
+import com.developers.shopapp.utils.Constants.TAG
+
 
 @AndroidEntryPoint
-class CreateAccountFragment : Fragment() {
+class CreateAccountFragment() : Fragment(), EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
@@ -32,10 +43,24 @@ class CreateAccountFragment : Fragment() {
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
+    private var latLong: LatLng? = null
 
+
+    lateinit var locationResult: MyLocation.LocationResult
+    val myLocation by lazy { MyLocation() }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        locationResult = object : MyLocation.LocationResult() {
+            override fun gotLocation(location: Location?) {
+                location?.let {
+                    latLong = LatLng(it.latitude, it.longitude)
+                }
+            }
+
+        }
+
+        //  fusedLocationProviderClient = FusedLocationProviderClient(this)
         // to get email , password if sets it as remember me
 //        val dataUserInfo=  dataStoreManager.glucoseFlow.value
 //        binding.inputTextEmail.setText(dataUserInfo?.email)
@@ -61,65 +86,83 @@ class CreateAccountFragment : Fragment() {
         binding.backIcon.setOnClickListener {
             findNavController().popBackStack()
         }
+
         // sign in
         binding.createAccountBtn.setOnClickListener {
-            authenticationViewModel.createAccount(
-                binding.inputTextLayoutUserName,
-                binding.inputTextLayoutEmail,
-                binding.inputTextLayoutPhone,
-                binding.inputTextLayoutPassword
-            )
+            requestPermissions()
         }
 
         // check login state
         subscribeToObservables()
 
 
-
-
-
     }
 
     private fun subscribeToObservables() {
         lifecycleScope.launchWhenStarted {
-               authenticationViewModel.createAccountStatus.collect(EventObserver(
-                   onLoading ={
-                   binding.spinKit.isVisible=true
-                   },
-                   onSuccess = {
-                       binding.spinKit.isVisible=false
+            authenticationViewModel.createAccountStatus.collect(EventObserver(
+                onLoading = {
+                    binding.spinKit.isVisible = true
+                },
+                onSuccess = {
+                    binding.spinKit.isVisible = false
 
-                       snackbar(it.message)
-                       it.userData?.let {
-                           lifecycleScope.launch {
-
-                              saveDataAndNavigate(it)
-                           }
-                       }
-                   },
-                   onError = {
-                       binding.spinKit.isVisible=false
-                       snackbar(it)
-                   }
-               ))
+                    snackbar(it.message)
+                    it.data?.let {
+                        lifecycleScope.launch {
+                            saveDataAndNavigate(it)
+                        }
+                    }
+                },
+                onError = {
+                    binding.spinKit.isVisible = false
+                    snackbar(it)
+                }
+            ))
         }
     }
 
-    private suspend fun saveDataAndNavigate(it: UserData) {
-        updateToken(it.token)
+    private suspend fun saveDataAndNavigate(it: String) {
+        updateTokenAndLatLng(it, latLong)
         startActivity(Intent(requireContext(), MainActivity::class.java))
         requireActivity().finish()
     }
 
-    private fun saveEmailAndPassword(email: String, password: String) {
-        lifecycleScope.launch {
-            dataStoreManager.setUserInfo(email = email,password = password)
+    private fun requestPermissions() {
+
+        if (TrackingUtility.hasLocationPermissions(requireContext())) {
+            getMyLocation()
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept location permissions to use this app.",
+                REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        } else {
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept location permissions to use this app.",
+                REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
         }
     }
 
-    private suspend fun updateToken(token: String) {
-            dataStoreManager.setUserInfo(token = token)
 
+    private fun saveEmailAndPassword(email: String, password: String) {
+        lifecycleScope.launch {
+            dataStoreManager.setUserInfo(email = email, password = password)
+        }
+    }
+
+    private suspend fun updateTokenAndLatLng(token: String, latLong: LatLng?) {
+        dataStoreManager.setUserInfo(token = token, latLng = latLong)
     }
 
     override fun onCreateView(
@@ -137,4 +180,49 @@ class CreateAccountFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        getMyLocation()
+    }
+
+    private fun getMyLocation() {
+
+        Log.i(TAG, "getMyLocation: ")
+        if (myLocation.getLocation(requireContext(), locationResult)) {
+
+            createAccountUser()
+        } else {
+            authenticationViewModel.showNoGpsDialoge(requireContext())
+            snackbar("PLZ,open your location")
+        }
+    }
+
+    private fun createAccountUser() {
+        authenticationViewModel.createAccount(
+            binding.inputTextLayoutUserName,
+            binding.inputTextLayoutEmail,
+            binding.inputTextLayoutPhone,
+            binding.inputTextLayoutPassword,
+            latLong
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        } else {
+            requestPermissions()
+        }
+    }
+
+
 }

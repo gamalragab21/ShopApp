@@ -63,7 +63,7 @@ class VerifyCodeEmailFragment:Fragment() {
                     snackbar("Verified")
                     it.userData?.let { data ->
                         Log.i(TAG, "subscribeToObservables: ${data}")
-                        val action =VerifyCodeEmailFragmentDirections.actionVerifyCodeEmailFragmentToChangePasswordFragment(data.email,binding.codeEmail.text.toString())
+                        val action =VerifyCodeEmailFragmentDirections.actionVerifyCodeEmailFragmentToChangePasswordFragment(data,binding.codeEmail.text.toString())
                         findNavController().navigate(action)
                     }
                 },

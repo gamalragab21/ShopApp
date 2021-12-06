@@ -1,12 +1,10 @@
 package com.developers.shopapp.entities
 
-data class UserInfoDB(
-    val email:String="",
-    val password:String="",
-    val token:String=""
-){
+import com.google.android.gms.maps.model.LatLng
 
-    override fun toString(): String {
-        return "email:${email},password:${password},token ${token}"
-    }
-}
+data class UserInfoDB(
+    val email: String = "",
+    val password: String = "",
+    val token: String = "",
+    val latLng: LatLng
+)

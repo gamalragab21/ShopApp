@@ -1,15 +1,14 @@
 package com.developers.shopapp.data.local
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.utils.Constants
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
@@ -24,7 +23,7 @@ class DataStoreManager(appContext: Context) {
     // For public variables, prefer use LiveData just to read values.
     val glucoseFlow: LiveData<UserInfoDB> get() = _glucoseFlow
 
-    suspend fun setUserInfo(email: String?=null,password:String?=null,token:String?=null) {
+    suspend fun setUserInfo(email: String?=null,password:String?=null,token:String?=null,latLng: LatLng?=null) {
         tokenDataStore.edit {preferences->
             email?.let {email->
                 preferences[Constants.USER_EMAIL] = email
@@ -35,6 +34,10 @@ class DataStoreManager(appContext: Context) {
             token?.let {token->
                 preferences[Constants.USER_TOKEN] = token
             }
+            latLng?.let {latLng->
+                preferences[Constants.USER_LAT] = latLng.latitude
+                preferences[Constants.USER_LONG] = latLng.longitude
+            }
         }
     }
 
@@ -42,7 +45,10 @@ class DataStoreManager(appContext: Context) {
         UserInfoDB(
             preferences[Constants.USER_EMAIL] ?: "",
             preferences[Constants.USER_PASSWORD] ?: "",
-            preferences[Constants.USER_TOKEN] ?: ""
+            preferences[Constants.USER_TOKEN] ?: "",
+            LatLng(preferences[Constants.USER_LAT]?: 0.0,
+         preferences[Constants.USER_LONG]?: 0.0
+            )
         )
 
     }
@@ -53,14 +59,16 @@ class DataStoreManager(appContext: Context) {
     }
 
     private fun getTokenUser() {
+
         scope.launch {
             infoUser.collect { token ->
                 _glucoseFlow.postValue(token)
             }
+
+
         }
 
     }
-
 
 
 

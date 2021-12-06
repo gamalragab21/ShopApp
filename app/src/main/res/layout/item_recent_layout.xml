@@ -2,21 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/_8sdp"
-    android:layout_marginStart="@dimen/_8sdp"
-    android:layout_marginBottom="@dimen/_8sdp"
-    android:layout_marginRight="@dimen/_8sdp"
-    android:layout_marginEnd="@dimen/_8sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_90sdp"
-        app:cardMaxElevation="50dp"
-        android:layout_margin="10dp"
-        android:elevation="80dp"
-        app:cardElevation="80dp"
+        android:layout_height="wrap_content"
+        app:cardMaxElevation="3dp"
+        android:layout_margin="@dimen/_4sdp"
+        android:elevation="@dimen/_3sdp"
+        app:cardElevation="@dimen/_3sdp"
         android:background="@color/colorPrimaryDark"
         app:cardCornerRadius="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,12 +28,14 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/_5sdp"
     android:orientation="horizontal">
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:layout_width="@dimen/_80sdp"
         android:layout_margin="@dimen/_3sdp"
-        android:layout_height="match_parent"
-        android:id="@+id/item_recent_imageview"
+        android:src="@drawable/ic_restaurant"
         android:scaleType="fitXY"
+        android:layout_height="@dimen/_80sdp"
+        app:riv_corner_radius="@dimen/_10sdp"
+        android:id="@+id/item_recent_imageview"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +52,7 @@
                 android:id="@+id/item_recent_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="dklkklsdlksdlk"
                 android:maxLines="1"
                 android:layout_weight="1"
                 android:textColor="@color/Black"
@@ -78,8 +75,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/colorAccent"
+                android:text="mmmm"
+                android:textColor="@color/gray"
                 android:id="@+id/item_recent_type"
                 android:fontFamily="@font/poppins"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -95,6 +92,7 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:fontFamily="@font/poppins"
                 android:textSize="@dimen/_10ssp"
+                android:textColor="@color/gray"
                 android:drawablePadding="@dimen/_3sdp"
                 app:drawableStartCompat="@drawable/pin" />
 
@@ -107,17 +105,18 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/item_recent_rating"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/_3sdp"
                 android:layout_weight="1"
+                android:maxLines="1"
                 android:textColor="@color/Black"
                 android:fontFamily="@font/poppins_bold"
                 android:text="0.0"
                 app:drawableStartCompat="@drawable/start_icon" />
             <TextView
                 android:id="@+id/item_recent_time"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/_3sdp"
@@ -126,7 +125,7 @@
                 app:drawableStartCompat="@drawable/clock" />
             <TextView
                 android:id="@+id/item_recent_contact"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/_3sdp"
                 android:layout_weight="1"

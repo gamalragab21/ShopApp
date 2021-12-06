@@ -6,6 +6,7 @@ import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.qualifiers.Token
 import com.developers.shopapp.utils.Constants
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -14,20 +15,27 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object RetrofitModel {
+object ViewModelHilt {
 
 
+
+
+
+
+    @Provides
+    @ViewModelScoped
+    fun provideFusedLocationProviderClient(
+        @ApplicationContext app:Context
+    )= FusedLocationProviderClient(app)
 
     @Provides
     @ViewModelScoped
@@ -69,7 +77,7 @@ object RetrofitModel {
                 val newQuest = if (token.isNotEmpty()) {
                     Log.i(Constants.TAG, "provideOkHttpClient: $token")
                     original.newBuilder()
-                        .header("Authorization", token)
+                        .header("Authorization", "Bearer $token")
                         .header("Content-Type", "application/json")
                         .header("lang", "ar")
                         .method(original.method, original.body)

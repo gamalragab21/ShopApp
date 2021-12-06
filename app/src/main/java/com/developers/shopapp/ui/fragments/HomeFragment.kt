@@ -18,6 +18,7 @@ import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentHomeBinding
 import com.developers.shopapp.helpers.EventObserver
+import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.ui.activities.SetupActivity
 import com.developers.shopapp.ui.adapters.ViewPagerFragmentAdapter
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
@@ -44,13 +45,21 @@ class HomeFragment : Fragment() {
 
 
 
-
+        Log.i("GAMALRAGB", "onViewCreated: ${dataStoreManager.glucoseFlow.value?.toString()}")
        // binding.tv.text = dataStoreManager.glucoseFlow.value?.token
 
         lifecycleScope.launchWhenStarted {
 
         }
         setTabs()
+
+        binding.seeMoreFav.setOnClickListener {
+            lifecycleScope.launchWhenStarted {
+                dataStoreManager.setUserInfo(token = "")
+                startActivity(Intent(requireContext(),SetupActivity::class.java))
+                requireActivity().finish()
+            }
+        }
 
     }
     private fun setTabs() {

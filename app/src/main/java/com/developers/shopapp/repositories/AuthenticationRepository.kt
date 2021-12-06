@@ -2,9 +2,13 @@ package com.developers.shopapp.repositories
 
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.entities.AuthModel
+import com.developers.shopapp.entities.MyResponse
+import com.developers.shopapp.entities.User
 import com.developers.shopapp.helpers.Resource
 import com.developers.shopapp.helpers.safeCall
 import com.developers.shopapp.qualifiers.IOThread
+import com.developers.shopapp.utils.Constants
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -16,7 +20,7 @@ class AuthenticationRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun loginUser(email:String, password:String):Resource<AuthModel> = withContext(dispatcher){
+    suspend fun loginUser(email: String, password: String):Resource<MyResponse<String>> = withContext(dispatcher){
         safeCall {
             val hasmap=HashMap<String,String>()
             hasmap["email"] = email
@@ -28,15 +32,28 @@ class AuthenticationRepository @Inject constructor(
 
 
 
-   suspend fun createAccount(username: String, email: String, mobile: String,password: String, imageUrl: String): Resource<AuthModel> = withContext(dispatcher){
+   suspend fun createAccount(
+       username: String,
+       email: String,
+       mobile: String,
+       password: String,
+       imageUrl: String,
+       latLong: LatLng
+   ): Resource<MyResponse<String>> = withContext(dispatcher){
        safeCall {
-           val hashMap=HashMap<String,String>()
-           hashMap["name"] = username
-           hashMap["phone"] = mobile
-           hashMap["email"] = email
-           hashMap["password"] = password
-           hashMap["image"] = imageUrl
-           val result=apiShopService.register(hashMap)
+
+           val user=User(
+               username=username,
+               email = email,
+               mobile = mobile,
+               password = password,
+               image = imageUrl,
+               createAt = Constants.getTimeStamp(),
+               latitude =latLong.latitude ,
+               longitude =latLong.longitude
+           )
+
+           val result=apiShopService.register(user)
            Resource.Success(result)
        }
    }

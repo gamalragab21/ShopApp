@@ -2,19 +2,19 @@ package com.developers.shopapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import javax.inject.Inject
 import com.developers.shopapp.R
-import com.developers.shopapp.entities.Product
-import com.developers.shopapp.entities.ProductData
+import com.developers.shopapp.entities.Restaurant
+import com.developers.shopapp.utils.Constants
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.item_recent_layout.view.*
 
 
@@ -26,20 +26,23 @@ class RecentAdapter @Inject constructor(
 
 //    var countries: List<CovidModelItem> =ArrayList<CovidModelItem>()
 
+    var laLng:LatLng? =null
+
+
     //
-    var producties: List<ProductData>
+    var restaurantes: List<Restaurant>
         get() = differ.currentList
         set(value) = differ.submitList(value)
 
 
-    private val diffCallback = object : DiffUtil.ItemCallback<ProductData>() {
-        override fun areContentsTheSame(oldItem: ProductData, newItem: ProductData): Boolean {
+    private val diffCallback = object : DiffUtil.ItemCallback<Restaurant>() {
+        override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
 
         //
-        override fun areItemsTheSame(oldItem: ProductData, newItem: ProductData): Boolean {
-            return oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
+            return oldItem.restaurantId == newItem.restaurantId
         }
 
     }
@@ -55,16 +58,35 @@ class RecentAdapter @Inject constructor(
         val item_recent_time = itemView.item_recent_time
         val item_recent_contact = itemView.item_recent_contact
 
-        fun bindData(item: ProductData) {
-            glide.load(item.image).into(item_recent_imageview)
-            item_recent_name.text=item.name
-            if (item.inFavorites){
+        fun bindData(item: Restaurant,position: Int) {
+            glide.load(item.imageRestaurant).into(item_recent_imageview)
+            item_recent_type.text=item.restaurantType
+            item_recent_time.text=Constants.getTimeAgo(item.createAt,context)
+
+            item_recent_rating.text="${item.rateCount}"
+
+            laLng?.let {
+                val resultDistanceKM=Constants.CalculationByDistance(it,LatLng(item.latitude,item.longitude))
+                item_recent_distance.text="$resultDistanceKM KM"
+
+            }
+            item_recent_name.text=item.restaurantName
+            if (item.inFav != false){
                 item_recent_save.setImageResource(R.drawable.saved)
             }else{
                 item_recent_save.setImageResource(R.drawable.not_save)
             }
 
+            item_recent_save.setOnClickListener {
+                onSavedClickListener?.let { clcik->
+                    clcik(item,item_recent_save)
+
+                }
+            }
+
         }
+
+
 
 
     }
@@ -83,22 +105,28 @@ class RecentAdapter @Inject constructor(
     @SuppressLint("Range")
     override fun onBindViewHolder(holder: SavedViewHolder, position: Int) {
 
-        val product = producties[position]
+        val product = restaurantes[position]
 
 
         holder.apply {
-            bindData(product)
+            bindData(product,position)
         }
+
     }
 
 
-    override fun getItemCount(): Int = producties.size
+    override fun getItemCount(): Int = restaurantes.size
 
-    private var onItemClickListener: ((ProductData) -> Unit)? = null
+    private var onItemClickListener: ((Restaurant) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (ProductData) -> Unit) {
+    fun setOnItemClickListener(listener: (Restaurant) -> Unit) {
         onItemClickListener = listener
     }
 
+    private var onSavedClickListener: ((Restaurant,ImageView) -> Unit)? = null
+
+    fun setOnSavedClickListener(listener: (Restaurant,ImageView) -> Unit) {
+        onSavedClickListener = listener
+    }
 
 }

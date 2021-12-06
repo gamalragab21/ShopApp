@@ -12,6 +12,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/drawable/circle.xml" value="0.2713541666666667" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/code_view_background.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_error.xml" value="0.2713541666666667" />
+        <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_image.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/start_icon.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/thumb_switch.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/thumb_swithc.xml" value="0.2671875" />
@@ -40,7 +41,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_splash.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_trends.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_verify_code_email.xml" value="0.25104166666666666" />
-        <entry key="..\:/Shopapp/app/src/main/res/layout/item_recent_layout.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/item_recent_layout.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_splas_screen_view_pager.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/progress_dialoge.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/register_phone.xml" value="0.25104166666666666" />

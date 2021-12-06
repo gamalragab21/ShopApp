@@ -63,8 +63,8 @@ class ForgetPasswordFragment:Fragment() {
                     binding.spinKit.isVisible=false
                     snackbar(it.message)
                    it.userData?.let { data ->
-                       Log.i(TAG, "subscribeToObservablesVerifyMail:${data.email} ")
-                       val action =ForgetPasswordFragmentDirections.actionForgetPasswordFragmentToVerifyCodeEmailFragment(data.email)
+                       Log.i(TAG, "subscribeToObservablesVerifyMail:${data} ")
+                       val action =ForgetPasswordFragmentDirections.actionForgetPasswordFragmentToVerifyCodeEmailFragment(data)
                        findNavController().navigate(action)
                    }
                 },
