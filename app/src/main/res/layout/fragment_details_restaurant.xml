@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView"
     android:fillViewport="true">
 
     <LinearLayout
@@ -24,15 +24,15 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/_20sdp"
                 app:SpinKit_Color="@color/colorPrimaryDark"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/imageRestaurantHeader"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/restaurantContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
                 <ImageView
                     android:id="@+id/resturant_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/_200sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_restaurant"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -85,18 +85,19 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/restaurantContent"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"
                 android:background="@drawable/raduis_top_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageRestaurantHeader">
 
-                  <androidx.constraintlayout.widget.ConstraintLayout
+                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/restaurantContentInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/restaurantContentInfo"
                     android:layout_margin="@dimen/_15sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/constraint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -125,14 +126,15 @@
                         android:id="@+id/restaurantInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/rta_regular"
-                        android:textColor="@color/gray"
                         android:text="kenlkef-sdmke dkjevkj-dm e"
+                        android:textColor="@color/gray"
+                        app:layout_constraintBottom_toTopOf="@+id/restaurantRating"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/restaurantName" />
+                        app:layout_constraintTop_toBottomOf="@id/imageSave" />
 
                     <TextView
                         android:id="@+id/restaurantRating"
@@ -164,21 +166,21 @@
                         android:gravity="center_vertical"
                         android:maxLines="1"
                         android:text="200+ Burger "
-                        app:layout_constraintEnd_toEndOf="parent"
                         android:textColor="@color/Black"
                         android:textSize="@dimen/_10ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/restaurantRating"
                         app:layout_constraintTop_toBottomOf="@+id/restaurantInfo" />
 
 
-                     <LinearLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/restaurantRating"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        >
+                        app:layout_constraintTop_toBottomOf="@+id/restaurantRating">
+
                         <TextView
                             android:id="@+id/restaurantDeliervery"
                             android:layout_width="wrap_content"
@@ -188,6 +190,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:text="Free Delivery"
                             app:drawableStartCompat="@drawable/money" />
+
                         <TextView
                             android:id="@+id/restaurantTime"
                             android:layout_width="wrap_content"
@@ -196,14 +199,15 @@
                             android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
                             android:text="30 min"
-                            app:drawableTint="@color/purple_700"
-                            app:drawableStartCompat="@drawable/clock" />
+                            app:drawableStartCompat="@drawable/clock"
+                            app:drawableTint="@color/purple_700" />
+
                         <TextView
                             android:id="@+id/restaurant_call"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/_3sdp"
                             android:layout_weight="1"
+                            android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
                             android:text="Contact"
                             app:drawableStartCompat="@drawable/phone" />
@@ -211,30 +215,67 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/restaurantContentInfo"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    >
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
-                    android:background="@drawable/back_tab_layout"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:tabGravity="center"
-                    app:layout_constraintTop_toBottomOf="@id/restaurantContentInfo"
-                    app:tabPaddingStart="@dimen/_4sdp"
-                    app:tabMode="scrollable"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:tabPadding="@dimen/_5sdp"
-                    app:tabIndicatorAnimationDuration="50"
-                    app:tabIndicator="@color/colorAccent"
-                    app:tabIndicatorColor="@color/colorAccent"
-                    app:tabTextAppearance="@style/CustomTabText"
-
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:background="@drawable/back_tab_layout"
                     android:contentDescription=""
-                    app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tabGravity="center"
+                    app:tabIndicator="@color/colorAccent"
+                    app:tabIndicatorAnimationDuration="50"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabMode="scrollable"
+                    app:tabPadding="@dimen/_5sdp"
+                    app:tabPaddingStart="@dimen/_4sdp"
                     app:tabSelectedTextColor="@color/Black"
+                    app:tabTextAppearance="@style/CustomTabText"
                     app:tabTextColor="@color/gray" />
 
+                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/product_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:nestedScrollingEnabled="true"
+                    android:scrollbars="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/spin_kit_smallProduct"
+                    style="@style/SpinKitView.Small.Circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_100sdp"
+                    android:padding="@dimen/_20sdp"
+                    android:visibility="gone"
+                    app:SpinKit_Color="@color/colorPrimaryDark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabs"
+                    app:layout_constraintVertical_bias="0" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

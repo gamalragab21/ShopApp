@@ -3,7 +3,6 @@ package com.developers.shopapp.ui.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import javax.inject.Inject
 import com.developers.shopapp.R
+import com.developers.shopapp.databinding.ItemRecentLayoutBinding
 import com.developers.shopapp.entities.Restaurant
 import com.developers.shopapp.utils.Utils.calculationByDistance
 import com.developers.shopapp.utils.Utils.getTimeAgo
@@ -49,53 +49,56 @@ class RestaurantAdapter @Inject constructor(
     }
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    inner class SavedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val item_recent_imageview = itemView.item_recent_imageview
-        val item_recent_name = itemView.item_recent_name
-        val item_recent_save = itemView.item_recent_save
-        val item_recent_type = itemView.item_recent_type
-        val item_recent_distance = itemView.item_recent_distance
-        val item_recent_rating = itemView.item_recent_rating
-        val item_recent_time = itemView.item_recent_time
-        val item_recent_contact = itemView.item_recent_contact
+    inner class SavedViewHolder(val itemBinding:  ItemRecentLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bindData(item: Restaurant,position: Int) {
-            glide.load(item.imageRestaurant).into(item_recent_imageview)
-            item_recent_type.text=item.restaurantType
-            item_recent_time.text=getTimeAgo(item.createAt,context)
 
-            item_recent_rating.text="${item.rateCount}"
+        fun bindData(item: Restaurant) {
+            glide.load(item.imageRestaurant).into(itemBinding.itemRecentImageview)
+            itemBinding.itemRecentType.text=item.restaurantType
+            itemBinding.itemRecentTime.text=getTimeAgo(item.createAt,context)
+
+            itemBinding.itemRecentRating.text="${item.rateCount}"
 
             laLng?.let {
                 val resultDistanceKM=calculationByDistance(it,LatLng(item.latitude,item.longitude))
-                item_recent_distance.text="$resultDistanceKM KM"
+                itemBinding.itemRecentDistance.text="$resultDistanceKM KM"
 
             }
-            item_recent_name.text=item.restaurantName
+            itemBinding.itemRecentName.text=item.restaurantName
             if (item.inFav != false){
-                item_recent_save.setImageResource(R.drawable.saved)
+                itemBinding.itemRecentSave.setImageResource(R.drawable.saved)
             }else{
-                item_recent_save.setImageResource(R.drawable.not_save)
+                itemBinding.itemRecentSave.setImageResource(R.drawable.not_save)
             }
 
-
+            setupActions(item)
 
         }
-
-
-
+        private fun setupActions(restaurant: Restaurant) {
+            itemBinding.root.setOnClickListener {
+                onItemClickListener?.let { click ->
+                    click(restaurant)
+                }
+            }
+            itemBinding.itemRecentSave.setOnClickListener {
+                onSavedClickListener?.let { clcik->
+                    clcik(restaurant,itemBinding.itemRecentSave,adapterPosition)
+                }
+            }
+            itemBinding.itemRecentContact.setOnClickListener {
+                onContactClickListener?.let { clcik->
+                    clcik(restaurant)
+                }
+            }
+        }
 
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedViewHolder {
-        return SavedViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_recent_layout,
-                parent,
-                false
-            )
-        )
+        val itemBinding = ItemRecentLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return SavedViewHolder(itemBinding)
     }
 
     @SuppressLint("Range")
@@ -105,24 +108,7 @@ class RestaurantAdapter @Inject constructor(
 
 
         holder.apply {
-            bindData(restaurant, position)
-
-
-            itemView.setOnClickListener {
-                onItemClickListener?.let { click ->
-                    click(restaurant)
-                }
-            }
-            item_recent_save.setOnClickListener {
-                onSavedClickListener?.let { clcik->
-                    clcik(restaurant,item_recent_save,position)
-                }
-            }
-            item_recent_contact.setOnClickListener {
-                onContactClickListener?.let { clcik->
-                    clcik(restaurant)
-                }
-            }
+            bindData(restaurant)
         }
     }
 

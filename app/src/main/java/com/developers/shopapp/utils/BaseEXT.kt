@@ -1,7 +1,9 @@
 package com.developers.shopapp.utils
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -64,6 +66,21 @@ fun dateFormatter(Date: String?): Long {
         return date.time
     }
     return 0
+}
+
+fun Activity.setFullScreen(){
+
+    window!!.setFlags(
+        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN
+    )
+
+}
+
+fun Activity.deleteFullScreen(){
+
+    window!!.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
 }
 
 

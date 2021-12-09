@@ -35,7 +35,7 @@ object Utils {
         val diff = now - time
         return when {
             diff < Constants.MINUTE_MILLIS -> {
-                "now"
+                "just now"
             }
             diff < 2 * Constants.MINUTE_MILLIS -> {
                 "an min"
@@ -54,7 +54,7 @@ object Utils {
                 "yesterday"
             }
             else -> {
-                "${diff / Constants.DAY_MILLIS} d"
+                "${diff / Constants.DAY_MILLIS} day"
             }
         }
     }
@@ -66,9 +66,14 @@ object Utils {
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
             .setCancelable(false)
             .setPositiveButton("Yes"
-            ) { dialog, id -> context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+            ) { dialog, id ->
+                context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                  dialog.dismiss()
+            }
             .setNegativeButton("No"
-            ) { dialog, id -> dialog.cancel() }
+            ) { dialog, id ->
+                dialog.cancel()
+            }
         val alert: AlertDialog = builder.create()
         alert.show()
     }
@@ -97,7 +102,7 @@ object Utils {
                     + " Meter   " + meterInDec
         )
         //return Radius * c
-        return  kmInDec
+        return  meterInDec
     }
 
 

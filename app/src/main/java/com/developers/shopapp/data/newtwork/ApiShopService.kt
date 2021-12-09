@@ -53,4 +53,24 @@ interface ApiShopService {
     @GET("category")
     suspend fun getCategoriesOfRestaurant(@Query("restaurantId") restaurantId: Int): MyResponse<List<Category>>
 
+    @GET("product")
+    suspend fun getProductOfCategory(@Query("restaurantId") restaurantId: Int,
+                                     @Query("categoryId")  categoryId: Int): MyResponse<List<Product>>
+
+    @GET("product/for you")
+    suspend fun getProductForYou(@Query("restaurantId") restaurantId: Int): MyResponse<List<Product>>
+
+    @DELETE("product/fav/delete")
+    suspend fun deleteFavProduct(@Query("productId") productId: Int): MyResponse<String>
+
+    @POST("product/setFav")
+    suspend fun setFavProduct(@Body productId: HashMap<String, Int>): MyResponse<String>
+
+    @GET("product/favorites")
+    suspend fun getAllFavouritesProduct(): MyResponse<List<Product>>
+
+    @GET("users/me")
+    suspend fun getMyProfile(): MyResponse<User>
+
+
 }

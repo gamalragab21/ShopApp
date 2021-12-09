@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -17,24 +17,29 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentDetailsRestaurantBinding
 import com.developers.shopapp.entities.Category
+import com.developers.shopapp.entities.Product
 import com.developers.shopapp.entities.Restaurant
 import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.activities.MainActivity
-import com.developers.shopapp.ui.adapters.RestaurantAdapter
+import com.developers.shopapp.ui.adapters.ProductAdapter
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
 import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.Constants.CURRENT_PRODUCT
 import com.developers.shopapp.utils.Constants.CURRENT_RESTAURANT
 import com.developers.shopapp.utils.Constants.TAG
 import com.developers.shopapp.utils.PermissionsUtility
 import com.developers.shopapp.utils.Utils.getTimeAgo
 import com.developers.shopapp.utils.Utils.startCallIntent
+import com.developers.shopapp.utils.setFullScreen
 import com.developers.shopapp.utils.snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,76 +50,94 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks {
+class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentDetailsRestaurantBinding? = null
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var restaurantAdapter: RestaurantAdapter
+    lateinit var productAdapter: ProductAdapter
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
     @Inject
-    lateinit var  glide: RequestManager
+    lateinit var glide: RequestManager
 
-    private val categoryProductViewModel:CategoryProductViewModel by viewModels()
+    private val categoryProductViewModel: CategoryProductViewModel by viewModels()
     private val restaurantViewModel: RestaurantViewModel by viewModels()
 
-    val navController by lazy {   findNavController()}
+    val navController by lazy { findNavController() }
 
 
-   val currentRestaurant by lazy {
-       arguments?.getParcelable<Restaurant>(CURRENT_RESTAURANT)
-   }
-       override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-           super.onViewCreated(view, savedInstanceState)
+    val currentRestaurant by lazy {
+        arguments?.getParcelable<Restaurant>(CURRENT_RESTAURANT)
+    }
 
-           val dataUserInfo = dataStoreManager.glucoseFlow.value
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-           activity?.window!!.setFlags(
-               WindowManager.LayoutParams.FLAG_FULLSCREEN,
-               WindowManager.LayoutParams.FLAG_FULLSCREEN
-           )
-
-           onScrollViewAndRecyclerView()
-
-           currentRestaurant?.let {restaurant->
-               glide.load(restaurant.imageRestaurant).into(binding.resturantImage)
-
-               binding.restaurantName.text=restaurant.restaurantName
-
-               binding.restaurantRating.text="${restaurant.rateCount}"
-
-               binding.restaurantInfo.text=restaurant.restaurantType
-
-
-               if (restaurant.inFav==true){
-                   binding.imageSave.setImageResource(R.drawable.saved)
-               }else{
-                   binding.imageSave.setImageResource(R.drawable.not_save)
-               }
-
-               binding.restaurantDeliervery.text =if (restaurant.freeDelivery==true){
-                   "Free Delivery"
-               }else{
-                   "Not Free Delivery"
-               }
-
-               binding.restaurantTime.text=getTimeAgo(restaurant.createAt,requireContext())
-               binding.restaurantCall.setOnClickListener {
-                   requestPermissions()
-               }
-               quickActions(restaurant)
-           }
+        val dataUserInfo = dataStoreManager.glucoseFlow.value
 
 
 
-           subscribeToObservers(dataUserInfo)
+        onScrollViewAndRecyclerView()
+
+        currentRestaurant?.let { restaurant ->
+            glide.load(restaurant.imageRestaurant).into(binding.resturantImage)
+
+            binding.restaurantName.text = restaurant.restaurantName
+
+            binding.restaurantRating.text = "${restaurant.rateCount}"
+
+            binding.restaurantInfo.text = restaurant.restaurantType
 
 
+            if (restaurant.inFav == true) {
+                binding.imageSave.setImageResource(R.drawable.saved)
+            } else {
+                binding.imageSave.setImageResource(R.drawable.not_save)
+            }
 
-       }
+            binding.restaurantDeliervery.text = if (restaurant.freeDelivery == true) {
+                "Free Delivery"
+            } else {
+                "Not Free Delivery"
+            }
+
+            binding.restaurantTime.text = getTimeAgo(restaurant.createAt, requireContext())
+            binding.restaurantCall.setOnClickListener {
+                requestPermissions()
+            }
+            quickActions(restaurant)
+        }
+
+        subscribeToObservers(dataUserInfo)
+
+        setupRecyclerViewProduct()
+
+        adapterActions()
+    }
+
+    private fun adapterActions() {
+        productAdapter.setOnSavedClickListener { product, imageView, position ->
+            if (product.inFav!!) {
+                categoryProductViewModel.deleteFavProduct(product)
+                imageView.setImageResource(R.drawable.not_save)
+                product.inFav = false
+            } else {
+                categoryProductViewModel.setFavProduct(product)
+                product.inFav = true
+                imageView.setImageResource(R.drawable.saved)
+            }
+        }
+
+        productAdapter.setOnItemClickListener {
+          //  val bundle = bundleOf(CURRENT_PRODUCT to it)
+            //navController.navigate(R.id.restaurantDetailsFragment,bundle)
+        }
+
+
+    }
 
     private fun quickActions(restaurant: Restaurant) {
         binding.imageSave.setOnClickListener {
@@ -130,40 +153,35 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
         }
     }
 
-
     private fun setupActionTabsCategory(categories: List<Category>) {
         binding.tabs.addTab(binding.tabs.newTab().setText("For You").setId(0))
         for (i in categories.indices) {
-            binding.tabs.addTab(binding.tabs.newTab().setText(categories[i].categoryName).setId(categories[i].categoryId!!))
+            binding.tabs.addTab(
+                binding.tabs.newTab().setText(categories[i].categoryName)
+                    .setId(categories[i].categoryId!!)
+            )
         }
 
+        categoryProductViewModel.getProductOfCategory(currentRestaurant!!.restaurantId!!, 0)
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {
-                    when (tab.id) {
-                        0 -> {
-//
-                        }
-
-                        else -> {
-
-                        }
-                    }
-                    Toast.makeText(
-                        requireContext(),
-                        tab.text.toString() + "" + tab.id,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val categoryId = tab.id
+                    categoryProductViewModel.getProductOfCategory(
+                        currentRestaurant!!.restaurantId!!,
+                        categoryId
+                    )
+                    productAdapter.products = arrayListOf()
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
         })
+
     }
 
     private fun onScrollViewAndRecyclerView() {
@@ -185,34 +203,47 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
                     Log.i(TAG, "BOTTOM SCROLL")
                 }
             }
-        })    }
+        })
+        binding.productRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    // Scrolling up
+                    (activity as MainActivity?)!!.hide()
+                } else {
+                    // Scrolling down
+                    (activity as MainActivity?)!!.show()
+                }
+
+            }
+        })
+    }
 
     private fun subscribeToObservers(dataUserInfo: UserInfoDB?) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-
-
                 launch {
                     categoryProductViewModel.categoryStatus.collect(
                         EventObserver(
-                        onLoading = {
-                      binding.spinKit.isVisible=true
-                        },
-                        onSuccess = {category->
-                            binding.tabs.isVisible=category.success
-                            binding.spinKit.isVisible=false
+                            onLoading = {
+                                binding.spinKit.isVisible = true
+                            },
+                            onSuccess = { category ->
+                                binding.tabs.isVisible = category.success
+                                binding.spinKit.isVisible = false
 
-                            category.data?.let {
-                                setupActionTabsCategory(it)
+                                category.data?.let {
+                                    setupActionTabsCategory(it)
 
+                                }
+                            },
+                            onError = {
+                                snackbar(it)
+                                binding.spinKit.isVisible = false
                             }
-                        },
-                        onError = {
-                            snackbar(it)
-                            binding.spinKit.isVisible=false
-                        }
-                    )
+                        )
                     )
                 }
 
@@ -224,7 +255,6 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
                         onSuccess = {
 
                             snackbar(it.message)
-
 
 
                         },
@@ -252,6 +282,55 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
                     )
                     )
                 }
+
+                launch {
+                    categoryProductViewModel.productStatus.collect(EventObserver(
+                        onLoading = {
+                            binding.spinKitSmallProduct.isVisible = true
+                        },
+                        onSuccess = {
+                            binding.spinKitSmallProduct.isVisible = false
+
+                            it.data?.let {
+                                productAdapter.products = it
+                            }
+                        },
+                        onError = {
+                            binding.spinKitSmallProduct.isVisible = false
+                            snackbar(it)
+
+                        }
+                    )
+                    )
+                }
+
+                launch {
+                    categoryProductViewModel.deleteFavProductStatus.collect(EventObserver(
+                        onLoading = {
+
+                        },
+                        onSuccess = {
+                            snackbar(it.message)
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                    )
+                }
+
+                launch {
+                    categoryProductViewModel.setFavProductStatus.collect(EventObserver(
+                        onLoading = {},
+                        onSuccess = {
+                            snackbar(it.message)
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                    )
+                }
             }
         }
 
@@ -259,31 +338,38 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
 
 
     override fun onCreateView(
-           inflater: LayoutInflater,
-           container: ViewGroup?,
-           savedInstanceState: Bundle?
-       ): View? {
-           _binding= FragmentDetailsRestaurantBinding.inflate(inflater, container, false)
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentDetailsRestaurantBinding.inflate(inflater, container, false)
 
-           return binding.root
-       }
-
-
-       override fun onDestroyView() {
-           super.onDestroyView()
-           _binding=null
-       }
+        return binding.root
+    }
 
 
-       override fun onResume() {
-           super.onResume()
-          categoryProductViewModel.getCategoriesOfRestaurant(currentRestaurant!!.restaurantId!!)
-       }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupRecyclerViewProduct() = binding.productRecyclerView.apply {
+        itemAnimator = null
+        isNestedScrollingEnabled = true
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = productAdapter
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        categoryProductViewModel.getCategoriesOfRestaurant(currentRestaurant!!.restaurantId!!)
+    }
 
     private fun requestPermissions() {
 
         if (PermissionsUtility.hasCallPhonePermissions(requireContext())) {
-          callPhone()
+            callPhone()
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
@@ -306,7 +392,7 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
     private fun callPhone() {
         try {
             startCallIntent(requireContext(), currentRestaurant!!.contact)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             snackbar("Phone Not Found")
         }
     }
@@ -331,4 +417,6 @@ class RestaurantDetailsFragment: Fragment(), EasyPermissions.PermissionCallbacks
             requestPermissions()
         }
     }
+
+
 }

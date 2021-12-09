@@ -44,13 +44,14 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
-    lateinit var locationResult:MyLocation.LocationResult
 
     private var latLong: LatLng?=null
-    val myLocation by lazy {   MyLocation()}
+    private lateinit var locationResult: MyLocation.LocationResult
+    private val myLocation by lazy {   MyLocation()}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         locationResult = object : MyLocation.LocationResult() {
             override fun gotLocation(location: Location?) {
                 Log.i(TAG, "gotLocation: ${location.toString()}")
@@ -60,6 +61,7 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
             }
 
         }
+
         // to get email , password if sets it as remember me
         val dataUserInfo = dataStoreManager.glucoseFlow.value
         binding.inputTextEmail.setText(dataUserInfo?.email)
@@ -206,6 +208,7 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
           authenticationViewModel.showNoGpsDialog(requireContext())
            snackbar("PLZ, open your location ")
        }
+
     }
 
     private fun loginUser() {
@@ -232,4 +235,6 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
             requestPermissions()
         }
     }
+
+
 }

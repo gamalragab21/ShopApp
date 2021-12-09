@@ -168,6 +168,7 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         layoutManager = LinearLayoutManager(requireContext())
         adapter = restaurantAdapter
 
+
     }
 
     override fun onCreateView(

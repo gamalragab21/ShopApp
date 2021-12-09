@@ -1,9 +1,7 @@
 package com.developers.shopapp.repositories
 
 import com.developers.shopapp.data.newtwork.ApiShopService
-import com.developers.shopapp.entities.Category
-import com.developers.shopapp.entities.MyResponse
-import com.developers.shopapp.entities.Restaurant
+import com.developers.shopapp.entities.*
 import com.developers.shopapp.helpers.Resource
 import com.developers.shopapp.helpers.safeCall
 import com.developers.shopapp.qualifiers.IOThread
@@ -58,12 +56,13 @@ class DefaultHomeRepository @Inject constructor(
         }
     }
 
-    suspend fun filterRestaurant(restaurantName: String): Resource<MyResponse<List<Restaurant>>> = withContext(dispatcher) {
-        safeCall {
-            val result = apiShopService.filterRestaurant(restaurantName)
-            Resource.Success(result)
+    suspend fun filterRestaurant(restaurantName: String): Resource<MyResponse<List<Restaurant>>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.filterRestaurant(restaurantName)
+                Resource.Success(result)
+            }
         }
-    }
 
     suspend fun deleteFavRestaurant(restaurantId: Int?): Resource<MyResponse<String>> =
         withContext(dispatcher) {
@@ -85,15 +84,68 @@ class DefaultHomeRepository @Inject constructor(
             }
         }
 
-    suspend fun getCategoriesOfRestaurant(restaurantId: Int): Resource<MyResponse<List<Category>>> = withContext(dispatcher) {
+    suspend fun getCategoriesOfRestaurant(restaurantId: Int): Resource<MyResponse<List<Category>>> =
+        withContext(dispatcher) {
+
+            safeCall {
+
+                val result = apiShopService.getCategoriesOfRestaurant(restaurantId)
+                Resource.Success(result)
+            }
+
+        }
+
+    suspend fun getProductOfCategory(restaurantId: Int, categoryId: Int) = withContext(dispatcher) {
 
         safeCall {
 
-            val result = apiShopService.getCategoriesOfRestaurant(restaurantId)
+            val result = apiShopService.getProductOfCategory(restaurantId, categoryId)
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun getProductForYou(restaurantId: Int): Resource<MyResponse<List<Product>>> =
+        withContext(dispatcher) {
+            safeCall {
+
+                val result = apiShopService.getProductForYou(restaurantId)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun deleteFavProduct(productId: Int?): Resource<MyResponse<String>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.deleteFavProduct(productId ?: -1)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun setFavProduct(productId: Int?): Resource<MyResponse<String>> =
+        withContext(dispatcher) {
+            safeCall {
+                val hasmap = HashMap<String, Int>()
+                hasmap["productId"] = productId ?: -1
+                val result = apiShopService.setFavProduct(hasmap)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun getAllFavouritesProduct(): Resource<MyResponse<List<Product>>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.getAllFavouritesProduct()
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun getProfile(): Resource<MyResponse<User>> = withContext(dispatcher) {
+
+        safeCall {
+            val result=apiShopService.getMyProfile()
             Resource.Success(result)
         }
 
     }
-
 
 }

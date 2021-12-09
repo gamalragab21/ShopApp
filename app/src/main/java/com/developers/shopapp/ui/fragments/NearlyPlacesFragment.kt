@@ -1,5 +1,7 @@
 package com.developers.shopapp.ui.fragments
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -14,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
@@ -25,15 +29,19 @@ import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.Constants.SEARCH_TIME_DELAY
+import com.developers.shopapp.utils.PermissionsUtility
+import com.developers.shopapp.utils.Utils
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener{
+class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentNearlyPlacesBinding? = null
     private val binding get() = _binding!!
 
@@ -106,6 +114,16 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener{
                 restaurant.inFav = true
                 imageView.setImageResource(R.drawable.saved)
             }
+        }
+
+        restaurantAdapter.setOnItemClickListener {
+            val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
+            findNavController().navigate(R.id.restaurantDetailsFragment,bundle)
+        }
+
+        restaurantAdapter.setOnContactClickListener {
+            restaurantViewModel.callPhone.postValue(it.contact)
+            requestPermissions()
         }
     }
 
@@ -255,5 +273,57 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener{
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
         // Another interface callback
+    }
+
+    private fun requestPermissions() {
+
+        if (PermissionsUtility.hasCallPhonePermissions(requireContext())) {
+            callPhone()
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept Call Phone permissions to use this Option.",
+                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.CALL_PHONE
+            )
+        } else {
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept Call Phone permissions to use this Option.",
+                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.CALL_PHONE
+            )
+        }
+    }
+
+    private fun callPhone() {
+        try {
+            Utils.startCallIntent(requireContext(),restaurantViewModel.callPhone.value.toString())
+        }catch (e:Exception){
+            snackbar("Phone Not Found")
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        callPhone()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        } else {
+            requestPermissions()
+        }
     }
 }

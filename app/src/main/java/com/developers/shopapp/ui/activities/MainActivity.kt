@@ -3,6 +3,7 @@ package com.developers.shopapp.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.navigation.findNavController
@@ -10,6 +11,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.developers.shopapp.R
 import com.developers.shopapp.databinding.ActivityMainBinding
+import com.developers.shopapp.utils.deleteFullScreen
+import com.developers.shopapp.utils.setFullScreen
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.prefs.Preferences
 
@@ -41,10 +44,13 @@ class MainActivity : AppCompatActivity() {
        navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
             when(destination.id){
-//                R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment->{
-//                    bottomNavigationView.isVisible=true
-//                }
-                R.id.navigation_home,R.id.navigation_cart->{}
+                R.id.restaurantDetailsFragment->{
+                   setFullScreen()
+                }
+                else->{
+                    deleteFullScreen()
+                }
+
 //                else ->  bottomNavigationView.isVisible=false
 
             }
