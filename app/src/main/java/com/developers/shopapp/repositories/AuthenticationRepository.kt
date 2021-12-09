@@ -8,6 +8,7 @@ import com.developers.shopapp.helpers.Resource
 import com.developers.shopapp.helpers.safeCall
 import com.developers.shopapp.qualifiers.IOThread
 import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.Utils.getTimeStamp
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -48,7 +49,7 @@ class AuthenticationRepository @Inject constructor(
                mobile = mobile,
                password = password,
                image = imageUrl,
-               createAt = Constants.getTimeStamp(),
+               createAt = getTimeStamp(),
                latitude =latLong.latitude ,
                longitude =latLong.longitude
            )

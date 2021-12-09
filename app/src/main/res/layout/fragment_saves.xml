@@ -1,6 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:layout_margin="@dimen/_8sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/lean2"
+        android:id="@+id/lean1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/back_icon"
+            android:padding="@dimen/_10sdp"
+            android:id="@+id/back_icon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="My Saves"
+            android:textColor="@color/Black"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/lean1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/lean2"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/foods_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Foods"
+            android:padding="@dimen/_8sdp"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:cornerRadius="@dimen/_8sdp"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/poppins"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ln_option"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/restaurant_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_8sdp"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="@dimen/_8sdp"
+            android:textColor="@color/black"
+            android:text="Restaurants"
+            android:background="@null"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/poppins"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ln_option"
+            />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fav_foods_recyclerview"
+        app:layout_constraintTop_toBottomOf="@+id/lean2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="true"
+        android:nestedScrollingEnabled="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@color/colorPrimaryDark"
+        android:layout_marginBottom="@dimen/_30sdp"
+        tools:listitem="@layout/item_recent_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fav_restaurants_recyclerview"
+        app:layout_constraintTop_toBottomOf="@+id/lean2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="true"
+        android:nestedScrollingEnabled="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:visibility="gone"
+        android:scrollbarThumbVertical="@color/colorPrimaryDark"
+        android:layout_marginBottom="@dimen/_30sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.FadingCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/_20sdp"
+        app:SpinKit_Color="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lean2">
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/ic_undraw_empty" />
+        <TextView
+            android:id="@+id/textEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:paddingEnd="16dp"
+            android:text="No Data Found"
+            android:fontFamily="@font/israr_syria"/>
+        <TextView
+            android:id="@+id/textEmptyErr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:paddingEnd="16dp"
+            android:fontFamily="@font/brandon_medium"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

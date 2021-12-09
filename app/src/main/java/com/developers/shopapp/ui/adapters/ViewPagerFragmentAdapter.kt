@@ -1,13 +1,18 @@
 package com.developers.shopapp.ui.adapters
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.developers.shopapp.R
 import com.developers.shopapp.ui.fragments.tabs.*
 
-class ViewPagerFragmentAdapter
-constructor(fragmentManger: FragmentManager, lifecycle: Lifecycle) :
+class ViewPagerFragmentAdapter(
+     fragmentManger: FragmentManager,
+     lifecycle: Lifecycle,
+) :
     FragmentStateAdapter(fragmentManger, lifecycle) {
 
 
@@ -17,7 +22,7 @@ constructor(fragmentManger: FragmentManager, lifecycle: Lifecycle) :
 
         return when (position) {
             0 -> {
-                RecentFragment()
+               RecentFragment()
             }
             1 -> {
                 FavouriteFragment()

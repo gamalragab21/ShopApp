@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.FadingCircle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_20sdp"
+                app:SpinKit_Color="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/imageRestaurantHeader"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                app:layout_constraintBottom_toTopOf="@+id/restaurantContent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageView
+                    android:id="@+id/resturant_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_restaurant"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/search"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20ssp"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/search"
+                    app:layout_constraintEnd_toStartOf="@+id/viewImageRestaurant"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:id="@+id/viewImageRestaurant"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20ssp"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:src="@drawable/view_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:id="@+id/backIcon"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20ssp"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:src="@drawable/back_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/restaurantContent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="-20dp"
+                android:background="@drawable/raduis_top_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageRestaurantHeader">
+
+                  <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/restaurantContentInfo"
+                    android:layout_margin="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/restaurantName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Mcdonc's"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintEnd_toStartOf="@+id/imageSave"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageSave"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/not_save"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/restaurantInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/rta_regular"
+                        android:textColor="@color/gray"
+                        android:text="kenlkef-sdmke dkjevkj-dm e"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/restaurantName" />
+
+                    <TextView
+                        android:id="@+id/restaurantRating"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:drawablePadding="@dimen/_3sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="5.6"
+                        android:textColor="@color/Black"
+                        android:textSize="@dimen/_10ssp"
+                        app:drawableStartCompat="@drawable/start_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/restaurantInfo" />
+
+
+                    <TextView
+                        android:id="@+id/count_item"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:drawablePadding="@dimen/_3sdp"
+                        android:fontFamily="@font/rta_regular"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="200+ Burger "
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textColor="@color/Black"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintStart_toEndOf="@+id/restaurantRating"
+                        app:layout_constraintTop_toBottomOf="@+id/restaurantInfo" />
+
+
+                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/restaurantRating"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        >
+                        <TextView
+                            android:id="@+id/restaurantDeliervery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_3sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Free Delivery"
+                            app:drawableStartCompat="@drawable/money" />
+                        <TextView
+                            android:id="@+id/restaurantTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/_3sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="30 min"
+                            app:drawableTint="@color/purple_700"
+                            app:drawableStartCompat="@drawable/clock" />
+                        <TextView
+                            android:id="@+id/restaurant_call"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/_3sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Contact"
+                            app:drawableStartCompat="@drawable/phone" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:background="@drawable/back_tab_layout"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:tabGravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/restaurantContentInfo"
+                    app:tabPaddingStart="@dimen/_4sdp"
+                    app:tabMode="scrollable"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tabPadding="@dimen/_5sdp"
+                    app:tabIndicatorAnimationDuration="50"
+                    app:tabIndicator="@color/colorAccent"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabTextAppearance="@style/CustomTabText"
+
+                    android:contentDescription=""
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:tabSelectedTextColor="@color/Black"
+                    app:tabTextColor="@color/gray" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

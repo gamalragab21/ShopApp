@@ -22,7 +22,7 @@ import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
 import com.developers.shopapp.utils.Constants.REQUEST_CODE_LOCATION_PERMISSIONS
-import com.developers.shopapp.utils.TrackingUtility
+import com.developers.shopapp.utils.PermissionsUtility
 import com.developers.shopapp.utils.snackbar
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
@@ -130,7 +130,7 @@ class CreateAccountFragment() : Fragment(), EasyPermissions.PermissionCallbacks 
 
     private fun requestPermissions() {
 
-        if (TrackingUtility.hasLocationPermissions(requireContext())) {
+        if (PermissionsUtility.hasLocationPermissions(requireContext())) {
             getMyLocation()
         }
 
@@ -192,7 +192,7 @@ class CreateAccountFragment() : Fragment(), EasyPermissions.PermissionCallbacks 
 
             createAccountUser()
         } else {
-            authenticationViewModel.showNoGpsDialoge(requireContext())
+            authenticationViewModel.showNoGpsDialog(requireContext())
             snackbar("PLZ,open your location")
         }
     }

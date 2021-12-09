@@ -41,22 +41,61 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:src="@drawable/notification"
+                        android:gravity="center_vertical"
+                        app:layout_constraintStart_toEndOf="@id/ln_location"
                         app:layout_constraintBottom_toTopOf="@id/inputTextLayoutSearch"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:id="@+id/ln_location"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:src="@drawable/notification"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/home_notification"
+                        app:layout_constraintBottom_toBottomOf="@id/home_notification"
+                        app:layout_constraintTop_toTopOf="@id/home_notification"
+                        >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/placeholder_location_spinner"
+                            app:tint="@color/colorAccent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivered to "
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/_10ssp"
+                            android:fontFamily="@font/rta_regular"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_10ssp"
+                            android:fontFamily="@font/rta_regular"
+                            android:text="Home"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:textColor="@android:color/holo_orange_light"
+                            />
+                    </LinearLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/inputTextLayoutSearch"
                         style="@style/text_input_style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:hint="Search..."
                         android:enabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_notification"
                         app:layout_constraintBottom_toTopOf="@+id/ln_option"
-                        app:startIconDrawable="@drawable/user">
+                        app:startIconDrawable="@drawable/search">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/inputTextUserName"
@@ -306,6 +345,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ln_app_bar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

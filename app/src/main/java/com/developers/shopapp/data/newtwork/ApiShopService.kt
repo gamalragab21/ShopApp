@@ -2,10 +2,7 @@ package com.developers.shopapp.data.newtwork
 
 
 
-import com.developers.shopapp.entities.AuthModel
-import com.developers.shopapp.entities.MyResponse
-import com.developers.shopapp.entities.Restaurant
-import com.developers.shopapp.entities.User
+import com.developers.shopapp.entities.*
 import retrofit2.http.*
 import kotlin.collections.HashMap
 
@@ -37,5 +34,23 @@ interface ApiShopService {
 
     @POST("restaurants/createFav")
     suspend fun setFavRestaurant(@Body restaurantId: HashMap<String, Int>): MyResponse<String>
+
+    @GET("restaurants/favourites")
+    suspend fun getAllFavouritesRestaurant():MyResponse<List<Restaurant>>
+
+    @GET("restaurants/rating")
+    suspend fun getAllRatingRestaurants():MyResponse<List<Restaurant>>
+
+    @GET("restaurants/popular")
+    suspend fun getPopularRestaurant(): MyResponse<List<Restaurant>>
+
+    @POST("restaurants/nearlyLocation")
+    suspend fun getNearlyRestaurant(@Query("latitude") latitude:Double,@Query("longitude") longitude:Double): MyResponse<List<Restaurant>>
+
+    @GET("restaurants/filter")
+    suspend fun filterRestaurant(@Query("restaurantName") restaurantName: String): MyResponse<List<Restaurant>>
+
+    @GET("category")
+    suspend fun getCategoriesOfRestaurant(@Query("restaurantId") restaurantId: Int): MyResponse<List<Category>>
 
 }

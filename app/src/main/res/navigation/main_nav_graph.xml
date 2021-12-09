@@ -10,7 +10,11 @@
         android:id="@+id/navigation_home"
         tools:layout="@layout/fragment_home"
         android:name="com.developers.shopapp.ui.fragments.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_navigation_home_to_restaurantDetailsFragment"
+            app:destination="@id/restaurantDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_cart"
         tools:layout="@layout/fragment_cart"
@@ -20,7 +24,11 @@
         android:id="@+id/navigation_nearly_places"
         tools:layout="@layout/fragment_nearly_places"
         android:name="com.developers.shopapp.ui.fragments.NearlyPlacesFragment"
-        android:label="NearlyPlacesFragment" />
+        android:label="NearlyPlacesFragment" >
+        <action
+            android:id="@+id/action_navigation_nearly_places_to_restaurantDetailsFragment"
+            app:destination="@id/restaurantDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         tools:layout="@layout/fragment_profile"
@@ -30,6 +38,21 @@
         android:id="@+id/navigation_saves"
         tools:layout="@layout/fragment_saves"
         android:name="com.developers.shopapp.ui.fragments.SavesFragment"
-        android:label="SavesFragment" />
+        android:label="SavesFragment" >
+        <action
+            android:id="@+id/action_navigation_saves_to_restaurantDetailsFragment"
+            app:destination="@id/restaurantDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/restaurantDetailsFragment"
+        tools:layout="@layout/fragment_details_restaurant"
+        android:name="com.developers.shopapp.ui.fragments.RestaurantDetailsFragment"
+        android:label="RestaurantDetailsFragment" >
+        <argument
+            android:name="restaurant"
+            app:nullable="true"
+            app:argType="com.developers.shopapp.entities.Restaurant" />
+    </fragment>
+
 
 </navigation>

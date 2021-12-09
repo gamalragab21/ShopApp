@@ -14,6 +14,7 @@ import com.developers.shopapp.repositories.AuthenticationRepository
 import com.developers.shopapp.qualifiers.MainThread
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.Constants.TAG
+import com.developers.shopapp.utils.Utils.buildAlertMessageNoGps
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -239,10 +240,11 @@ class AuthenticationViewModel @Inject constructor(
                        _resetPasswordStatus.emit(Event(result))
                    }
                }
+
            }
     }
 
-    fun showNoGpsDialoge(context: Context) {
-        Constants.buildAlertMessageNoGps(context);
+    fun showNoGpsDialog(context: Context) {
+        buildAlertMessageNoGps(context);
     }
 }

@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat.startActivity
 
 
 object Constants {
+    const val CURRENT_RESTAURANT: String="currentRestaurant"
     val USER_LAT=doublePreferencesKey("USER_LAT")
     val USER_LONG=doublePreferencesKey("USER_LONG")
     val ACTION_LOGIN_FRAGMENT_AFTER_LOGOUT: String="ACTION_LOGIN_FRAGMENT_AFTER_LOGOUT"
@@ -31,7 +32,7 @@ object Constants {
 const val REQUEST_CODE_LOCATION_PERMISSIONS=717
     const val USERS_INFO_FILE: String = "USER_INFO"
    // const val BASE_URL = "https://student.valuxapps.com/api/"
-    const val BASE_URL = "http://eb3f-197-38-34-239.ngrok.io/v1/"
+    const val BASE_URL = "http://4591-197-38-34-239.ngrok.io/v1/"
     val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
     val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
     val USER_PASSWORD = stringPreferencesKey("USER_PASSWORD")
@@ -42,62 +43,15 @@ const val REQUEST_CODE_LOCATION_PERMISSIONS=717
     const val FASTEST_LOCATION_INTERVAL=2000L
     const val TIMER_UPDATE_INTERVAL=500L
 
+
+    const val SEARCH_TIME_DELAY=1000L
+
+
     private const val SECOND_MILLIS = 1000
-    private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
-    private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
-    private const val DAY_MILLIS = 24 * HOUR_MILLIS
+    internal const val MINUTE_MILLIS = 60 * SECOND_MILLIS
+    internal const val HOUR_MILLIS = 60 * MINUTE_MILLIS
+    internal const val DAY_MILLIS = 24 * HOUR_MILLIS
 
-    fun getTimeAgo(time: Long, ctx: Context?): String? {
-        var time = time
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000
-        }
-        val now: Long = Date().time
-        if (time > now || time <= 0) {
-            return null
-        }
-
-        // TODO: localize
-        val diff = now - time
-        return when {
-            diff < MINUTE_MILLIS -> {
-                "now"
-            }
-            diff < 2 * MINUTE_MILLIS -> {
-                "an min"
-            }
-            diff < 50 * MINUTE_MILLIS -> {
-                " ${diff / MINUTE_MILLIS}  min"
-            }
-            diff < 90 * MINUTE_MILLIS -> {
-                "an hour"
-            }
-            diff < 24 * HOUR_MILLIS -> {
-                " ${diff / HOUR_MILLIS} hours"
-            }
-            diff < 48 * HOUR_MILLIS -> {
-                "yesterday"
-            }
-            else -> {
-                "${diff / DAY_MILLIS} d"
-            }
-        }
-    }
-
-    fun getTimeStamp()=System.currentTimeMillis() / 1000
-
-     fun buildAlertMessageNoGps(context: Context) {
-        val builder: AlertDialog.Builder =AlertDialog.Builder(context)
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-            .setCancelable(false)
-            .setPositiveButton("Yes",
-                { dialog, id -> context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) })
-            .setNegativeButton("No",
-                { dialog, id -> dialog.cancel() })
-        val alert: AlertDialog = builder.create()
-        alert.show()
-    }
 
 //    private var suffixes: NavigableMap<Long, String> = TreeMap()
 //
@@ -125,31 +79,5 @@ const val REQUEST_CODE_LOCATION_PERMISSIONS=717
 //    }
 //
 
-    fun CalculationByDistance(StartP: LatLng, EndP: LatLng): Int {
-        val Radius = 6371 // radius of earth in Km
-        val lat1 = StartP.latitude
-        val lat2 = EndP.latitude
-        val lon1 = StartP.longitude
-        val lon2 = EndP.longitude
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + (Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2)))
-        val c = 2 * Math.asin(Math.sqrt(a))
-        val valueResult = Radius * c
-        val km = valueResult / 1
-        val newFormat = DecimalFormat("####")
-        val kmInDec: Int = Integer.valueOf(newFormat.format(km))
-        val meter = valueResult % 1000
-        val meterInDec: Int = Integer.valueOf(newFormat.format(meter))
-        Log.i(
-            "Radius Value", "" + valueResult + "   KM  " + kmInDec
-                    + " Meter   " + meterInDec
-        )
-        //return Radius * c
-        return  kmInDec
-    }
 
 }

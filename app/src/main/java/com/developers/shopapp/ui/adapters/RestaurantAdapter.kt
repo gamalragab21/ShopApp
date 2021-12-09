@@ -13,15 +13,16 @@ import com.bumptech.glide.RequestManager
 import javax.inject.Inject
 import com.developers.shopapp.R
 import com.developers.shopapp.entities.Restaurant
-import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.Utils.calculationByDistance
+import com.developers.shopapp.utils.Utils.getTimeAgo
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.item_recent_layout.view.*
 
 
-class RecentAdapter @Inject constructor(
+class RestaurantAdapter @Inject constructor(
     private val glide: RequestManager,
     private val context: Context,
-) : RecyclerView.Adapter<RecentAdapter.SavedViewHolder>() {
+) : RecyclerView.Adapter<RestaurantAdapter.SavedViewHolder>() {
 
 
 //    var countries: List<CovidModelItem> =ArrayList<CovidModelItem>()
@@ -61,12 +62,12 @@ class RecentAdapter @Inject constructor(
         fun bindData(item: Restaurant,position: Int) {
             glide.load(item.imageRestaurant).into(item_recent_imageview)
             item_recent_type.text=item.restaurantType
-            item_recent_time.text=Constants.getTimeAgo(item.createAt,context)
+            item_recent_time.text=getTimeAgo(item.createAt,context)
 
             item_recent_rating.text="${item.rateCount}"
 
             laLng?.let {
-                val resultDistanceKM=Constants.CalculationByDistance(it,LatLng(item.latitude,item.longitude))
+                val resultDistanceKM=calculationByDistance(it,LatLng(item.latitude,item.longitude))
                 item_recent_distance.text="$resultDistanceKM KM"
 
             }
@@ -77,12 +78,7 @@ class RecentAdapter @Inject constructor(
                 item_recent_save.setImageResource(R.drawable.not_save)
             }
 
-            item_recent_save.setOnClickListener {
-                onSavedClickListener?.let { clcik->
-                    clcik(item,item_recent_save)
 
-                }
-            }
 
         }
 
@@ -105,13 +101,29 @@ class RecentAdapter @Inject constructor(
     @SuppressLint("Range")
     override fun onBindViewHolder(holder: SavedViewHolder, position: Int) {
 
-        val product = restaurantes[position]
+        val restaurant = restaurantes[position]
 
 
         holder.apply {
-            bindData(product,position)
-        }
+            bindData(restaurant, position)
 
+
+            itemView.setOnClickListener {
+                onItemClickListener?.let { click ->
+                    click(restaurant)
+                }
+            }
+            item_recent_save.setOnClickListener {
+                onSavedClickListener?.let { clcik->
+                    clcik(restaurant,item_recent_save,position)
+                }
+            }
+            item_recent_contact.setOnClickListener {
+                onContactClickListener?.let { clcik->
+                    clcik(restaurant)
+                }
+            }
+        }
     }
 
 
@@ -123,10 +135,25 @@ class RecentAdapter @Inject constructor(
         onItemClickListener = listener
     }
 
-    private var onSavedClickListener: ((Restaurant,ImageView) -> Unit)? = null
+    private var onSavedClickListener: ((Restaurant,ImageView,Int) -> Unit)? = null
 
-    fun setOnSavedClickListener(listener: (Restaurant,ImageView) -> Unit) {
+    fun setOnSavedClickListener(listener: (Restaurant,ImageView,Int) -> Unit) {
         onSavedClickListener = listener
+    }
+    private var onContactClickListener: ((Restaurant) -> Unit)? = null
+
+    fun setOnContactClickListener(listener: (Restaurant) -> Unit) {
+        onContactClickListener = listener
+    }
+    fun clearItemAndIfLast(restaurant: Restaurant,position:Int):Boolean{
+        val restaurantList=restaurantes.toMutableList()
+        restaurantList.remove(restaurant)
+        notifyItemRemoved(position)
+        restaurantes=restaurantList.toList()
+
+       return restaurantList.isEmpty()
+//        notifyItemChanged(position)
+//        notifyDataSetChanged()
     }
 
 }

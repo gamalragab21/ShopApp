@@ -28,7 +28,7 @@ import android.os.Build
 import com.developers.shopapp.helpers.MyLocation
 import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.utils.Constants
-import com.developers.shopapp.utils.TrackingUtility
+import com.developers.shopapp.utils.PermissionsUtility
 import com.google.android.gms.maps.model.LatLng
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -149,7 +149,7 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
 
     private fun requestPermissions(){
 
-        if (TrackingUtility.hasLocationPermissions(requireContext())){
+        if (PermissionsUtility.hasLocationPermissions(requireContext())){
             getMyLocation()
         }
 
@@ -203,7 +203,7 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
        if ( myLocation.getLocation(requireContext(), locationResult)){
            loginUser()
        }else{
-          authenticationViewModel.showNoGpsDialoge(requireContext())
+          authenticationViewModel.showNoGpsDialog(requireContext())
            snackbar("PLZ, open your location ")
        }
     }
