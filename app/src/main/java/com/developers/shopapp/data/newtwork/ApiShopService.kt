@@ -69,6 +69,10 @@ interface ApiShopService {
     @GET("product/favorites")
     suspend fun getAllFavouritesProduct(): MyResponse<List<Product>>
 
+    @GET("product/popular")
+    suspend fun getPopularProduct(): MyResponse<List<Product>>
+
+
     @GET("users/me")
     suspend fun getMyProfile(): MyResponse<User>
 

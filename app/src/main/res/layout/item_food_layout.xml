@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_5sdp"
@@ -36,15 +36,44 @@
                 android:layout_margin="@dimen/_3sdp"
                 android:src="@drawable/ic_restaurant"
                 android:scaleType="fitXY"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/item_info"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_height="@dimen/_80sdp"
                 app:riv_corner_radius="@dimen/_10sdp"
                 android:id="@+id/item_food_imageview"
                 />
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                app:shimmer_auto_start="true"
+                app:shimmer_duration="800"
+                android:layout_margin="@dimen/_3sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/item_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/progressShimmer"
+                >
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@android:color/darker_gray"
+                    />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/item_info"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_food_imageview"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -132,7 +161,7 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -93,11 +93,14 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.ratingRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
+                            binding.shimmer.isVisible=true
+                            binding.shimmer.startShimmer()
                             binding.spinKit.isVisible = true
                             binding.emptyView.isVisible = false
                         },
                         onSuccess = { ratingRestaurant ->
-
+                            binding.shimmer.isVisible=false
+                            binding.shimmer.stopShimmer()
                             binding.spinKit.isVisible = false
                             binding.emptyView.isVisible = false
 
@@ -109,6 +112,8 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
 
                         },
                         onError = {
+                            binding.shimmer.isVisible=false
+                            binding.shimmer.stopShimmer()
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
                             binding.spinKit.isVisible = false

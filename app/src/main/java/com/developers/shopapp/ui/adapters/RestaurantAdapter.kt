@@ -2,13 +2,19 @@ package com.developers.shopapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.Nullable
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import javax.inject.Inject
 import com.developers.shopapp.R
 import com.developers.shopapp.databinding.ItemRecentLayoutBinding
@@ -17,6 +23,7 @@ import com.developers.shopapp.utils.Utils.calculationByDistance
 import com.developers.shopapp.utils.Utils.getTimeAgo
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.item_recent_layout.view.*
+import javax.sql.DataSource
 
 
 class RestaurantAdapter @Inject constructor(
@@ -53,7 +60,31 @@ class RestaurantAdapter @Inject constructor(
 
 
         fun bindData(item: Restaurant) {
-            glide.load(item.imageRestaurant).into(itemBinding.itemRecentImageview)
+            glide.load(item.imageRestaurant).listener(object : RequestListener<Drawable?> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable?>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    itemBinding.progressShimmer.stopShimmer()
+                    itemBinding.progressShimmer.visibility = View.GONE
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<Drawable?>?,
+                    dataSource: com.bumptech.glide.load.DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    itemBinding.progressShimmer.stopShimmer()
+                    itemBinding.progressShimmer.visibility = View.GONE
+
+                    return false
+                }
+            }).into(itemBinding.itemRecentImageview)
             itemBinding.itemRecentType.text=item.restaurantType
             itemBinding.itemRecentTime.text=getTimeAgo(item.createAt,context)
 

@@ -97,12 +97,15 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                         onLoading = {
                             binding.spinKit.isVisible = true
                             binding.emptyView.isVisible = false
+                            binding.shimmer.isVisible=true
+                            binding.shimmer.startShimmer()
                         },
                         onSuccess = { restaurant ->
 
                             binding.spinKit.isVisible = false
                             binding.emptyView.isVisible = false
-
+                            binding.shimmer.isVisible=false
+                            binding.shimmer.stopShimmer()
                             restaurant.data?.let {
                                 binding.emptyView.isVisible = it.isEmpty()
                                 restaurantAdapter.restaurantes = it
@@ -115,6 +118,8 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                             snackbar(it)
                             binding.spinKit.isVisible = false
                             binding.emptyView.isVisible = true
+                            binding.shimmer.isVisible=false
+                            binding.shimmer.stopShimmer()
                         }
                     )
                     )

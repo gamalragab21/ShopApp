@@ -138,13 +138,16 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.favouritesRestaurantStatus.collect(
                         EventObserver(
                             onLoading = {
+                                binding.shimmer.isVisible=true
+                                binding.shimmer.startShimmer()
                                 binding.spinKit.isVisible = true
                                 binding.emptyView.isVisible = false
                             },
                             onSuccess = { favRestaurant ->
                                 binding.spinKit.isVisible = false
                                 binding.emptyView.isVisible = false
-
+                                binding.shimmer.isVisible=false
+                                binding.shimmer.stopShimmer()
                                 favRestaurant.data?.let {
                                     binding.emptyView.isVisible = it.isEmpty()
                                     restaurantAdapter.restaurantes = it
@@ -155,6 +158,8 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                             onError = {
                                 Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                                 snackbar(it)
+                                binding.shimmer.isVisible=false
+                                binding.shimmer.stopShimmer()
                                 binding.spinKit.isVisible = false
                                 binding.emptyView.isVisible = true
                             }
@@ -167,10 +172,14 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                     categoryProductViewModel.favouritesProductStatus.collect(
                         EventObserver(
                             onLoading = {
+                                binding.shimmer.isVisible=true
+                                binding.shimmer.startShimmer()
                                 binding.spinKit.isVisible = true
                                 binding.emptyView.isVisible = false
                             },
                             onSuccess = { favProduct ->
+                                binding.shimmer.isVisible=false
+                                binding.shimmer.stopShimmer()
                                 binding.spinKit.isVisible = false
                                 binding.emptyView.isVisible = false
 
@@ -182,6 +191,8 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
 
                             },
                             onError = {
+                                binding.shimmer.isVisible=false
+                                binding.shimmer.stopShimmer()
                                 Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                                 snackbar(it)
                                 binding.spinKit.isVisible = false

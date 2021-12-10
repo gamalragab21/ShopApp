@@ -137,9 +137,12 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                         onLoading = {
                             binding.spinKit.isVisible = true
                             binding.emptyView.isVisible = false
+                            binding.shimmer.isVisible=true
+                            binding.shimmer.startShimmer()
                         },
                         onSuccess = { restaurant ->
-
+                            binding.shimmer.isVisible=false
+                            binding.shimmer.stopShimmer()
                             binding.spinKit.isVisible = false
                             binding.emptyView.isVisible = false
 
@@ -152,6 +155,8 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
 
                         },
                         onError = {
+                            binding.shimmer.isVisible=false
+                            binding.shimmer.stopShimmer()
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
                             binding.spinKit.isVisible = false

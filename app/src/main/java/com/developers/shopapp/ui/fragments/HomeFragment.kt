@@ -1,6 +1,5 @@
 package com.developers.shopapp.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,28 +12,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentHomeBinding
 import com.developers.shopapp.helpers.EventObserver
-import com.developers.shopapp.ui.activities.SetupActivity
-import com.developers.shopapp.ui.adapters.FavRestaurantAdapter
-import com.developers.shopapp.ui.adapters.RestaurantAdapter
+import com.developers.shopapp.ui.adapters.PopularFoodAdapter
 import com.developers.shopapp.ui.adapters.ViewPagerFragmentAdapter
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
+import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.snackbar
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-
-
 
 
 @AndroidEntryPoint
@@ -45,10 +37,10 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
-    val restaurantViewModel: RestaurantViewModel by viewModels()
+    val categoryProductViewModel:CategoryProductViewModel by viewModels()
 
     @Inject
-    lateinit var favRestaurantAdapter: FavRestaurantAdapter
+    lateinit var popularFoodAdapter: PopularFoodAdapter
 
 
     private val authenticationViewModel: AuthenticationViewModel by viewModels()
@@ -60,9 +52,8 @@ class HomeFragment : Fragment() {
 
         val myHomeLocation = dataStoreManager.glucoseFlow.value
 
-        favRestaurantAdapter.laLng = myHomeLocation?.latLng
 
-        setupRecyclerViewFavRestaurant()
+        setupRecyclerViewPopularProducts()
 
         subscribeToObservers()
 
@@ -77,34 +68,39 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun setupRecyclerViewFavRestaurant() = binding.homeFragmentRecyclerFav.apply {
+    private fun setupRecyclerViewPopularProducts() = binding.homeFragmentRecyclerPopular.apply {
         itemAnimator = null
         isNestedScrollingEnabled = true
         layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,true)
-        adapter = favRestaurantAdapter
+        adapter = popularFoodAdapter
 
     }
 
     private fun subscribeToObservers() {
         lifecycleScope.launchWhenStarted {
-            restaurantViewModel.favouritesRestaurantStatus.collect(
+            categoryProductViewModel.popularProductStatus.collect(
                 EventObserver(
                     onLoading = {
                         binding.spinKitFav.isVisible = true
+                        binding.shimmer.isVisible=true
+                        binding.shimmer.startShimmer()
                     },
-                    onSuccess = { favRestaurant ->
+                    onSuccess = { poplarRestaurant ->
                         binding.spinKitFav.isVisible = false
-
-                        favRestaurant.data?.let {
+                        binding.shimmer.isVisible=false
+                        binding.shimmer.stopShimmer()
+                        poplarRestaurant.data?.let {
                             binding.leanerFav.isVisible=it.isNotEmpty()
-                            binding.seeMoreFav.isVisible = it.size > 2
-                            favRestaurantAdapter.restaurants = it
+                            binding.seeMoreFav.isVisible = it.size > 10
+                            popularFoodAdapter.products = it
                         }
                     },
                     onError = {
                         Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                         snackbar(it)
                         binding.spinKitFav.isVisible = false
+                        binding.shimmer.isVisible=false
+                        binding.shimmer.stopShimmer()
                     }
                 )
             )
@@ -115,9 +111,9 @@ class HomeFragment : Fragment() {
 
     private fun adapterActions() {
 
-        favRestaurantAdapter.setOnItemClickListener {
-            val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
-            findNavController().navigate(R.id.restaurantDetailsFragment, bundle)
+        popularFoodAdapter.setOnItemClickListener {
+//            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
+//            findNavController().navigate(R.id.restaurantDetailsFragment, bundle)
         }
 
 
@@ -198,7 +194,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        restaurantViewModel.getAllFavouritesRestaurant()
+        categoryProductViewModel.getPopularRestaurant()
     }
 
 

@@ -74,5 +74,8 @@
         <item name="fontFamily">@font/poppins</item>
         <item name="android:padding">@dimen/_10sdp</item>
     </style>
-
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
 </resources>

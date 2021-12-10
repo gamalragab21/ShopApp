@@ -3,11 +3,9 @@ package com.developers.shopapp.ui.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,18 +13,15 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.developers.shopapp.R
-import javax.inject.Inject
-import com.developers.shopapp.databinding.ItemFoodLayoutBinding
+import com.developers.shopapp.databinding.ItemPopularFoodBinding
 import com.developers.shopapp.entities.Product
-import com.developers.shopapp.entities.Restaurant
-import com.developers.shopapp.utils.Constants.TAG
+import javax.inject.Inject
 
 
-class ProductAdapter @Inject constructor(
+class PopularFoodAdapter @Inject constructor(
     private val glide: RequestManager,
     private val context: Context,
-) : RecyclerView.Adapter<ProductAdapter.FoodViewHolder>() {
+) : RecyclerView.Adapter<PopularFoodAdapter.FoodViewHolder>() {
 
 
 
@@ -44,13 +39,13 @@ class ProductAdapter @Inject constructor(
 
         //
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-            return oldItem.productId == newItem.productId
+            return oldItem.restaurantId == newItem.restaurantId
         }
 
     }
     private val differ = AsyncListDiffer(this, diffCallback)
 
-    inner class FoodViewHolder(val itemBinding:  ItemFoodLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class FoodViewHolder(val itemBinding:  ItemPopularFoodBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
 
         fun bindData(item: Product) {
@@ -78,16 +73,9 @@ class ProductAdapter @Inject constructor(
 
                     return false
                 }
-            }).into(itemBinding.itemFoodImageview)
-            itemBinding.itemProductDesc.text=item.productDescription
-            itemBinding.itemProductName.text=item.productName
-            itemBinding.itemProductPrice.text="${item.productPrice}"
-
-            if (item.inFav==true){
-                itemBinding.itemProductSave.setImageResource(R.drawable.saved)
-            }else{
-                itemBinding.itemProductSave.setImageResource(R.drawable.not_save)
-            }
+            }).into(itemBinding.itemPopularImage)
+            itemBinding.itemPopularName.text=item.productName
+            itemBinding.ratingCount.rating=item.rateCount!!.toFloat()
 
             setupActions(item)
         }
@@ -99,11 +87,6 @@ class ProductAdapter @Inject constructor(
                 }
             }
 
-           itemBinding.itemProductSave.setOnClickListener {
-               onSavedClickListener?.let {click->
-                   click(item,itemBinding.itemProductSave,adapterPosition)
-               }
-           }
         }
 
 
@@ -112,7 +95,7 @@ class ProductAdapter @Inject constructor(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
-        val itemBinding = ItemFoodLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemPopularFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FoodViewHolder(itemBinding)
     }
 
@@ -138,25 +121,7 @@ class ProductAdapter @Inject constructor(
         onItemClickListener = listener
     }
 
-    private var onSavedClickListener: ((Product,ImageView,Int) -> Unit)? = null
 
-    fun setOnSavedClickListener(listener: (Product,ImageView,Int) -> Unit) {
-        onSavedClickListener = listener
-    }
-    private var onContactClickListener: ((Restaurant) -> Unit)? = null
 
-    fun setOnContactClickListener(listener: (Restaurant) -> Unit) {
-        onContactClickListener = listener
-    }
-    fun clearItemAndIfLast(restaurant: Product,position:Int):Boolean{
-        val productsList=products.toMutableList()
-        productsList.remove(restaurant)
-        notifyItemRemoved(position)
-        products=productsList.toList()
-
-       return productsList.isEmpty()
-//        notifyItemChanged(position)
-//        notifyDataSetChanged()
-    }
 
 }

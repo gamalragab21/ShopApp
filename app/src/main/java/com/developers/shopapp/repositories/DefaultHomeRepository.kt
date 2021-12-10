@@ -139,6 +139,14 @@ class DefaultHomeRepository @Inject constructor(
             }
         }
 
+    suspend fun getPopularProduct(): Resource<MyResponse<List<Product>>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.getPopularProduct()
+                Resource.Success(result)
+            }
+        }
+
     suspend fun getProfile(): Resource<MyResponse<User>> = withContext(dispatcher) {
 
         safeCall {

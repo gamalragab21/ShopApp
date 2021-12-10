@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" >
+
+        <View
+            android:id="@+id/icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_photo_item" />
+
+        <View
+            android:id="@+id/title"
+            android:layout_width="180dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@id/icon"
+            android:background="@drawable/bg_strip_round" />
+        <View
+            android:id="@+id/subtitle"
+            android:layout_below="@id/title"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="130dp"
+            android:layout_width="110dp"
+            android:layout_toEndOf="@id/icon"
+            android:layout_height="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_strip_round" />
+
+        <View
+            android:layout_below="@id/subtitle"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="130dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="140dp"
+            android:layout_toEndOf="@id/icon"
+            android:layout_height="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_strip_round" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
