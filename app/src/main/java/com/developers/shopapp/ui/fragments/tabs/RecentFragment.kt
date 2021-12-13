@@ -23,18 +23,17 @@ import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.*
 import com.developers.shopapp.utils.Constants.CURRENT_RESTAURANT
 import com.developers.shopapp.utils.Constants.TAG
-import com.developers.shopapp.utils.PermissionsUtility
-import com.developers.shopapp.utils.Utils
-import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentRecentBinding? = null
@@ -60,6 +59,7 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         subscribeToObservers(dataUserInfo)
 
         adapterActions()
+        hideBottomSheetOrShowWhenScroll(recyclerView = binding.recentFragmentRecycler, activity = requireActivity())
 
     }
 
@@ -95,19 +95,18 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                 launch {
                     restaurantViewModel.restaurantStatus.collect(EventObserver(
                         onLoading = {
-                            binding.spinKit.isVisible = true
-                            binding.emptyView.isVisible = false
-                            binding.shimmer.isVisible=true
-                            binding.shimmer.startShimmer()
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { restaurant ->
 
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = false
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                            )
                             restaurant.data?.let {
-                                binding.emptyView.isVisible = it.isEmpty()
+                                if(it.isEmpty())setupViewBeforeLoadData(
+                                    onLoading = false, onError = true
+                                    , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                 restaurantAdapter.restaurantes = it
                             }
 
@@ -116,10 +115,10 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                         onError = {
                             Log.i(TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = true
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
+                            setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                onLoading =false, onError = true, errorMessage = it
+                                , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
+
                         }
                     )
                     )

@@ -18,24 +18,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
-import com.developers.shopapp.databinding.FragmentFavouriteBinding
+import com.developers.shopapp.databinding.FragmentRecentBinding
 import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
-import com.developers.shopapp.utils.PermissionsUtility
-import com.developers.shopapp.utils.Utils
-import com.developers.shopapp.utils.snackbar
+import com.developers.shopapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
-    private var _binding: FragmentFavouriteBinding? = null
+    private var _binding: FragmentRecentBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -60,6 +59,7 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
         subscribeToObservers(dataUserInfo)
 
         adapterActions()
+        hideBottomSheetOrShowWhenScroll(recyclerView = binding.recentFragmentRecycler, activity = requireActivity())
 
 
     }
@@ -89,7 +89,7 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       _binding= FragmentFavouriteBinding.inflate(inflater, container, false)
+       _binding= FragmentRecentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -104,18 +104,17 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.favouritesRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            binding.spinKit.isVisible = true
-                            binding.emptyView.isVisible = false
-                            binding.shimmer.isVisible=true
-                            binding.shimmer.startShimmer()
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { favRestaurant ->
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = false
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                                , emptyView = binding.emptyView)
                             favRestaurant.data?.let {
-                                binding.emptyView.isVisible = it.isEmpty()
+                                if(it.isEmpty())setupViewBeforeLoadData(
+                                    onLoading = false, onError = true
+                                    , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                 restaurantAdapter.restaurantes = it
                             }
 
@@ -124,10 +123,9 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
                         onError = {
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = true
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
+                            setupViewBeforeLoadData(
+                                onLoading =false, onError = true, errorMessage = it
+                                , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                         }
                     )
                     )
@@ -161,7 +159,7 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
 
     }
 
-    private fun setupRecyclerViewRecent() = binding.favouritesFragmentRecycler.apply {
+    private fun setupRecyclerViewRecent() = binding.recentFragmentRecycler.apply {
         itemAnimator = null
         isNestedScrollingEnabled = true
         layoutManager = LinearLayoutManager(requireContext())

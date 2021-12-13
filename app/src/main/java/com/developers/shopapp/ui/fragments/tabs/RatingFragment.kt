@@ -18,24 +18,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
-import com.developers.shopapp.databinding.FragmentRatingBinding
+import com.developers.shopapp.databinding.FragmentRecentBinding
 import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
-import com.developers.shopapp.utils.PermissionsUtility
-import com.developers.shopapp.utils.Utils
-import com.developers.shopapp.utils.snackbar
+import com.developers.shopapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
-    private var _binding: FragmentRatingBinding? = null
+    private var _binding: FragmentRecentBinding? = null
     private val binding get() = _binding!!
 
 
@@ -83,6 +82,8 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
             restaurantViewModel.callPhone.postValue(it.contact)
             requestPermissions()
         }
+        hideBottomSheetOrShowWhenScroll(recyclerView = binding.recentFragmentRecycler, activity = requireActivity())
+
     }
 
     private fun subscribeToObservers(dataUserInfo: UserInfoDB?) {
@@ -93,31 +94,30 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.ratingRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            binding.shimmer.isVisible=true
-                            binding.shimmer.startShimmer()
-                            binding.spinKit.isVisible = true
-                            binding.emptyView.isVisible = false
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { ratingRestaurant ->
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = false
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                            )
 
                             ratingRestaurant.data?.let {
-                                binding.emptyView.isVisible = it.isEmpty()
+                                if(it.isEmpty())setupViewBeforeLoadData(
+                                    onLoading = false, onError = true
+                                    , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                 restaurantAdapter.restaurantes = it
                             }
 
 
                         },
                         onError = {
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
+                            setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                onLoading =false, onError = true, errorMessage = it
+                                , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = true
+
                         }
                     )
                     )
@@ -167,7 +167,7 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
 
     }
 
-    private fun setupRecyclerViewRecent() = binding.ratingFragmentRecycler.apply {
+    private fun setupRecyclerViewRecent() = binding.recentFragmentRecycler.apply {
         itemAnimator = null
         isNestedScrollingEnabled = true
         layoutManager = LinearLayoutManager(requireContext())
@@ -180,7 +180,7 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       _binding= FragmentRatingBinding.inflate(inflater, container, false)
+       _binding= FragmentRecentBinding.inflate(inflater, container, false)
 
         return binding.root
     }

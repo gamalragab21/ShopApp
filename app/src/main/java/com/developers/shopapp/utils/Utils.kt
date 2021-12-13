@@ -54,7 +54,7 @@ object Utils {
                 "yesterday"
             }
             else -> {
-                "${diff / Constants.DAY_MILLIS} day"
+                "${diff / Constants.DAY_MILLIS} days"
             }
         }
     }

@@ -8,11 +8,12 @@ import androidx.fragment.app.Fragment
 import com.developers.shopapp.databinding.FragmentCartBinding
 import com.developers.shopapp.databinding.FragmentHomeBinding
 import com.developers.shopapp.databinding.FragmentNotificationBinding
+import com.developers.shopapp.databinding.FragmentRecentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotificationFragment:Fragment() {
-    private var _binding: FragmentNotificationBinding? = null
+    private var _binding: FragmentRecentBinding? = null
     private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ class NotificationFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       _binding= FragmentNotificationBinding.inflate(inflater, container, false)
+       _binding= FragmentRecentBinding.inflate(inflater, container, false)
 
         return binding.root
     }

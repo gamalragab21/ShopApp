@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.RequestManager
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentHomeBinding
@@ -24,9 +25,11 @@ import com.developers.shopapp.ui.viewmodels.UserViewModel
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class ProfileFragment:Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -51,7 +54,9 @@ class ProfileFragment:Fragment() {
                 logOut()
             }
         }
-
+        binding.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private suspend fun logOut() {

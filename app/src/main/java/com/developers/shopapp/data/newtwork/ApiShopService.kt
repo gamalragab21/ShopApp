@@ -45,7 +45,8 @@ interface ApiShopService {
     suspend fun getPopularRestaurant(): MyResponse<List<Restaurant>>
 
     @POST("restaurants/nearlyLocation")
-    suspend fun getNearlyRestaurant(@Query("latitude") latitude:Double,@Query("longitude") longitude:Double): MyResponse<List<Restaurant>>
+    suspend fun getNearlyRestaurant(@Query("latitude") latitude:Double,
+                                    @Query("longitude") longitude:Double): MyResponse<List<Restaurant>>
 
     @GET("restaurants/filter")
     suspend fun filterRestaurant(@Query("restaurantName") restaurantName: String): MyResponse<List<Restaurant>>
@@ -72,9 +73,20 @@ interface ApiShopService {
     @GET("product/popular")
     suspend fun getPopularProduct(): MyResponse<List<Product>>
 
-
     @GET("users/me")
     suspend fun getMyProfile(): MyResponse<User>
+
+    @POST("restaurants/rate")
+    suspend fun setupRatingMyRestaurant(@Body rateRestaurant: RateRestaurant): MyResponse<RateRestaurant>
+
+    @GET("restaurants/findById")
+    suspend fun findMyRestaurant(@Query("restaurantId") restaurantId: Int): MyResponse<Restaurant>
+
+    @PUT("restaurants/updateRate")
+    suspend fun updateRateRestaurant(@Body rateRestaurant: RateRestaurant): MyResponse<RateRestaurant>
+
+    @GET("product/findByID")
+    suspend fun findProductById(@Query("productId") productId: Int): MyResponse<Product>
 
 
 }

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_110sdp"
+                android:background="@color/colorPrimaryDark" />
+
+             <RelativeLayout
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-75dp"
+                android:background="@drawable/round_back_with_sroke_100"
+                android:padding="@dimen/_10sdp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/round_back_white" />
+
+                 <ImageView
+                     android:id="@+id/emojiStatus"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:layout_centerInParent="true"
+                     android:adjustViewBounds="true"
+                     android:padding="@dimen/_20sdp"
+                     android:src="@drawable/three_star" />
+            </RelativeLayout>
+<TextView
+    android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Rate Our Restaurant"
+    android:textSize="@dimen/_18sdp"
+    android:textColor="@color/black"
+    android:textStyle="bold"
+    android:fontFamily="@font/rta_regular"
+    android:maxLines="1"
+    android:layout_gravity="center"
+    android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Please select some stars and give your feedback"
+                android:fontFamily="@font/rta_regular"
+           />
+
+          <androidx.appcompat.widget.AppCompatRatingBar
+              android:id="@+id/ratingStars"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginTop="@dimen/_15sdp"
+              android:layout_marginBottom="@dimen/_10sdp"
+              android:rating="3"
+              android:theme="@style/MyAlertDialogStyle"
+              />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_80sdp"
+                app:boxCornerRadiusTopStart="@dimen/_10sdp"
+                app:boxBackgroundColor="@color/colorAccent"
+                app:boxCornerRadiusTopEnd="@dimen/_10sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_10sdp"
+                app:boxCornerRadiusBottomEnd="@dimen/_10sdp"
+                app:boxStrokeWidth="@dimen/_1sdp"
+                app:boxStrokeColor="@color/colorPrimaryDark"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/messageFeedBack"
+                    android:layout_height="@dimen/_80sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:hint="Please write your comment here ..."
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/colorPrimary"
+                    android:fontFamily="@font/brandon_medium"
+                    android:textSize="@dimen/_15ssp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                >
+
+               <com.google.android.material.button.MaterialButton
+                   android:layout_width="wrap_content"
+                   android:layout_height="@dimen/_40sdp"
+                   android:textAllCaps="false"
+                   android:textColor="@color/black"
+                   android:text="May Be , Later"
+                   android:paddingStart="@dimen/_10sdp"
+                   android:paddingEnd="@dimen/_10sdp"
+                   android:backgroundTint="@color/colorPrimary"
+                   app:cornerRadius="@dimen/_10sdp"
+                   android:id="@+id/cancelRating"
+                   />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="Submit"
+                    android:id="@+id/submitRating"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

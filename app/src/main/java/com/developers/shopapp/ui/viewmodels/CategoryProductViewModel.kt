@@ -53,6 +53,9 @@ class CategoryProductViewModel @Inject constructor(
         MutableStateFlow<Event<Resource<MyResponse<List<Product>>>>>(Event(Resource.Init()))
     val popularProductStatus: MutableStateFlow<Event<Resource<MyResponse<List<Product>>>>> = _popularProductStatus
 
+    private val _findProductStatus =
+        MutableStateFlow<Event<Resource<MyResponse<Product>>>>(Event(Resource.Init()))
+    val findProductStatus: MutableStateFlow<Event<Resource<MyResponse<Product>>>> = _findProductStatus
 
 
     fun getCategoriesOfRestaurant(restaurantId: Int) {
@@ -104,6 +107,14 @@ class CategoryProductViewModel @Inject constructor(
             _popularProductStatus.emit(Event(Resource.Loading()))
             val result = repository.getPopularProduct()
             _popularProductStatus.emit(Event(result))
+        }
+    }
+
+    fun findProductById(productId: Int) {
+        viewModelScope.launch(dispatcher) {
+            _findProductStatus.emit(Event(Resource.Loading()))
+            val result = repository.findProductById(productId)
+            _findProductStatus.emit(Event(result))
         }
     }
 

@@ -30,10 +30,12 @@ import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.PermissionsUtility
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.InternalCoroutinesApi
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentLoginBinding? = null

@@ -18,8 +18,10 @@ import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class ChangePasswordFragment:Fragment() {
     private var _binding: FragmentChangePasswordBinding? = null

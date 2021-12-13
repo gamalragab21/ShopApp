@@ -7,10 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,31 +17,29 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentDetailsRestaurantBinding
 import com.developers.shopapp.entities.Category
-import com.developers.shopapp.entities.Product
+import com.developers.shopapp.entities.RateRestaurant
 import com.developers.shopapp.entities.Restaurant
 import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.helpers.EventObserver
-import com.developers.shopapp.ui.activities.MainActivity
 import com.developers.shopapp.ui.adapters.ProductAdapter
+import com.developers.shopapp.ui.dialog.RateDialogListener
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.*
 import com.developers.shopapp.utils.Constants.CURRENT_PRODUCT
 import com.developers.shopapp.utils.Constants.CURRENT_RESTAURANT
 import com.developers.shopapp.utils.Constants.TAG
-import com.developers.shopapp.utils.PermissionsUtility
 import com.developers.shopapp.utils.Utils.getTimeAgo
+import com.developers.shopapp.utils.Utils.getTimeStamp
 import com.developers.shopapp.utils.Utils.startCallIntent
-import com.developers.shopapp.utils.setFullScreen
-import com.developers.shopapp.utils.snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -50,7 +47,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
+class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks, RateDialogListener {
     private var _binding: FragmentDetailsRestaurantBinding? = null
     private val binding get() = _binding!!
 
@@ -73,49 +70,62 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
         arguments?.getParcelable<Restaurant>(CURRENT_RESTAURANT)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val dataUserInfo = dataStoreManager.glucoseFlow.value
 
 
-
-        onScrollViewAndRecyclerView()
+        //onScrollViewAndRecyclerView()
 
         currentRestaurant?.let { restaurant ->
-            glide.load(restaurant.imageRestaurant).into(binding.resturantImage)
-
-            binding.restaurantName.text = restaurant.restaurantName
-
-            binding.restaurantRating.text = "${restaurant.rateCount}"
-
-            binding.restaurantInfo.text = restaurant.restaurantType
-
-
-            if (restaurant.inFav == true) {
-                binding.imageSave.setImageResource(R.drawable.saved)
-            } else {
-                binding.imageSave.setImageResource(R.drawable.not_save)
-            }
-
-            binding.restaurantDeliervery.text = if (restaurant.freeDelivery == true) {
-                "Free Delivery"
-            } else {
-                "Not Free Delivery"
-            }
-
-            binding.restaurantTime.text = getTimeAgo(restaurant.createAt, requireContext())
-            binding.restaurantCall.setOnClickListener {
-                requestPermissions()
-            }
-            quickActions(restaurant)
+           bindRestaurantData(restaurant)
+            restaurantViewModel.findMyRestaurant(restaurant.restaurantId!!)
         }
+
+        quickActions(currentRestaurant!!)
 
         subscribeToObservers(dataUserInfo)
 
         setupRecyclerViewProduct()
 
         adapterActions()
+
+        hideBottomSheetOrShowWhenScroll(
+            recyclerView = binding.productRecyclerView,
+            binding.scrollView,
+            activity = requireActivity()
+        )
+
+    }
+
+    private fun bindRestaurantData(restaurant: Restaurant) {
+        Log.d(TAG, "bindRestaurantData: ${restaurant}")
+
+        glide.load(restaurant.imageRestaurant).into(binding.resturantImage)
+
+        binding.restaurantName.text = restaurant.restaurantName
+
+        binding.restaurantRating.text = "${restaurant.rateCount}"
+
+        binding.restaurantInfo.text = restaurant.restaurantType
+
+
+        if (restaurant.inFav == true) {
+            binding.imageSave.setImageResource(R.drawable.saved)
+        } else {
+            binding.imageSave.setImageResource(R.drawable.not_save)
+        }
+
+        binding.restaurantDeliervery.text = if (restaurant.freeDelivery == true) {
+            "Free Delivery"
+        } else {
+            "Not Free Delivery"
+        }
+
+        binding.restaurantTime.text = getTimeAgo(restaurant.createAt, requireContext())
+
     }
 
     private fun adapterActions() {
@@ -132,8 +142,9 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
         }
 
         productAdapter.setOnItemClickListener {
-          //  val bundle = bundleOf(CURRENT_PRODUCT to it)
-            //navController.navigate(R.id.restaurantDetailsFragment,bundle)
+
+              val bundle = bundleOf(CURRENT_PRODUCT to it)
+            navController.navigate(R.id.foodDetailsFragment,bundle)
         }
 
 
@@ -151,9 +162,48 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                 binding.imageSave.setImageResource(R.drawable.saved)
             }
         }
+        binding.restaurantTakeAway.setOnClickListener {
+            val action =
+                RestaurantDetailsFragmentDirections.actionRestaurantDetailsFragmentToMapsFragment(
+                    currentRestaurant!!
+                )
+            navController.navigate(action)
+        }
+        binding.restaurantCall.setOnClickListener {
+            requestPermissions()
+        }
+        binding.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.rate.setOnClickListener {
+          val rateRestaurant:RateRestaurant?= currentRestaurant!!.rateRestaurant?.firstOrNull {
+              it.userId == currentRestaurant!!.user.id
+          }
+
+            Log.w(TAG, "quickActions: ${rateRestaurant}")
+
+            showRatingDialog(requireContext(),
+                rateRestaurant?.rateId,
+                true,
+                rateRestaurant?.countRate?.toFloat()?:3f,
+                this,
+                currentRestaurant!!.restaurantName,
+                null,childFragmentManager)
+
+        }
+
+        binding.viewImageRestaurant.setOnClickListener {
+            val images = arrayOf(currentRestaurant?.imageRestaurant!!)
+            val action =
+                RestaurantDetailsFragmentDirections.globalActionToImageViewFragment(images = images)
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun setupActionTabsCategory(categories: List<Category>) {
+        binding.tabs.removeAllTabs()
         binding.tabs.addTab(binding.tabs.newTab().setText("For You").setId(0))
         for (i in categories.indices) {
             binding.tabs.addTab(
@@ -184,46 +234,13 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
 
     }
 
-    private fun onScrollViewAndRecyclerView() {
-        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            when {
-                scrollY > oldScrollY -> {
-                    Log.i(TAG, "Scroll DOWN")
-                    (activity as MainActivity?)!!.hide()
 
-                }
-                scrollY < oldScrollY -> {
-                    Log.i(TAG, "Scroll UP")
-                    (activity as MainActivity?)!!.show()
-                }
-                scrollY == 0 -> {
-                    Log.i(TAG, "TOP SCROLL")
-                }
-                scrollY == v.measuredHeight - v.getChildAt(0).measuredHeight -> {
-                    Log.i(TAG, "BOTTOM SCROLL")
-                }
-            }
-        })
-        binding.productRecyclerView.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    // Scrolling up
-                    (activity as MainActivity?)!!.hide()
-                } else {
-                    // Scrolling down
-                    (activity as MainActivity?)!!.show()
-                }
-
-            }
-        })
-    }
-
+    @OptIn(InternalCoroutinesApi::class)
     private fun subscribeToObservers(dataUserInfo: UserInfoDB?) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                // category
                 launch {
                     categoryProductViewModel.categoryStatus.collect(
                         EventObserver(
@@ -246,7 +263,30 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                         )
                     )
                 }
+                //rating
+                launch {
+                    restaurantViewModel.myRatingRestaurantStatus.collect(
+                        EventObserver(
+                            onLoading = {
+                            },
+                            onSuccess = { item ->
 
+                                  snackbar(item.message)
+
+                                item.data?.let {
+                                 // updateRating(it)
+                                    restaurantViewModel.findMyRestaurant(currentRestaurant!!.restaurantId!!)
+                                }
+
+                            },
+                            onError = {
+                                snackbar(it)
+                            }
+                        )
+                    )
+                }
+
+                // delete fa
                 launch {
                     restaurantViewModel.deleteFavRestaurantStatus.collect(EventObserver(
                         onLoading = {
@@ -266,6 +306,7 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                     )
                 }
 
+                // set fav
                 launch {
                     restaurantViewModel.setFavRestaurantStatus.collect(EventObserver(
                         onLoading = {
@@ -283,20 +324,47 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                     )
                 }
 
+                // load product
                 launch {
                     categoryProductViewModel.productStatus.collect(EventObserver(
                         onLoading = {
-                            binding.spinKitSmallProduct.isVisible = true
+                            setupViewBeforeLoadData(
+                                spinKit = binding.spinKitSmallProduct,
+                                shimmerFrameLayout = binding.shimmer, onLoading = true
+                            )
+
                         },
                         onSuccess = {
+                            setupViewBeforeLoadData(
+                                spinKit = binding.spinKitSmallProduct,
+                                shimmerFrameLayout = binding.shimmer,
+                                onLoading = false,
+                                emptyView = binding.emptyView
+                            )
                             binding.spinKitSmallProduct.isVisible = false
 
                             it.data?.let {
+                                if (it.isEmpty()) setupViewBeforeLoadData(
+                                    onLoading = false,
+                                    onError = true,
+                                    emptyView = binding.emptyView,
+                                    tvError = binding.textEmpty,
+                                    errorMessage = "No Data Found"
+                                )
                                 productAdapter.products = it
+                                binding.countItem.text="${it.size}+ ${binding.tabs.getTabAt(binding.tabs.selectedTabPosition)?.text}"
                             }
                         },
                         onError = {
-                            binding.spinKitSmallProduct.isVisible = false
+                            setupViewBeforeLoadData(
+                                spinKit = binding.spinKit,
+                                shimmerFrameLayout = binding.shimmer,
+                                onLoading = false,
+                                onError = true,
+                                errorMessage = it,
+                                emptyView = binding.emptyView,
+                                tvError = binding.textEmptyErr
+                            )
                             snackbar(it)
 
                         }
@@ -304,6 +372,7 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                     )
                 }
 
+                // delete fav product
                 launch {
                     categoryProductViewModel.deleteFavProductStatus.collect(EventObserver(
                         onLoading = {
@@ -319,7 +388,8 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                     )
                 }
 
-                launch {
+                // set fav product
+                 launch {
                     categoryProductViewModel.setFavProductStatus.collect(EventObserver(
                         onLoading = {},
                         onSuccess = {
@@ -331,10 +401,28 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                     )
                     )
                 }
+
+                // find restaurant
+                launch {
+                    restaurantViewModel.findRestaurantStatus.collect(EventObserver(
+                        onLoading = {},
+                        onSuccess = {
+                          it.data?.let {
+                              Log.d(TAG, "subscribeToObservers: ${it.toString()}")
+                              bindRestaurantData(it)
+                          }
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                    )
+                }
             }
         }
 
     }
+
 
 
     override fun onCreateView(
@@ -363,6 +451,7 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
 
     override fun onResume() {
         super.onResume()
+        Log.i(TAG, "onResume: ")
         categoryProductViewModel.getCategoriesOfRestaurant(currentRestaurant!!.restaurantId!!)
     }
 
@@ -418,5 +507,21 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+    override fun onSubMitClick(rateCount: Float, feedbackMessage: String,rateId:Int?) {
+        if (rateId==null) {
+            val rateRestaurant = RateRestaurant(
+                restaurantId = currentRestaurant!!.restaurantId!!,
+                countRate = rateCount.toDouble(), createAt = getTimeStamp()
+            )
+            restaurantViewModel.setupRatingMyRestaurant(rateRestaurant)
+        }else{
+            val rateRestaurant = RateRestaurant(
+                rateId=rateId,
+                restaurantId = currentRestaurant!!.restaurantId!!,
+                countRate = rateCount.toDouble(), createAt = getTimeStamp()
+            )
+            restaurantViewModel.updateRateRestaurant(rateRestaurant)
+        }
 
+    }
 }

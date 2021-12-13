@@ -1,10 +1,12 @@
 package com.developers.shopapp.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,14 +23,18 @@ import com.developers.shopapp.ui.adapters.PopularFoodAdapter
 import com.developers.shopapp.ui.adapters.ViewPagerFragmentAdapter
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
-import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
 import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.Constants.TAG
+import com.developers.shopapp.utils.hideBottomSheetOrShowWhenScroll
+import com.developers.shopapp.utils.setupViewBeforeLoadData
 import com.developers.shopapp.utils.snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -46,6 +52,7 @@ class HomeFragment : Fragment() {
     private val authenticationViewModel: AuthenticationViewModel by viewModels()
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,9 +69,13 @@ class HomeFragment : Fragment() {
 
         setTabs()
 
-        binding.seeMoreFav.setOnClickListener {
-
+        binding.seeMorePopular.setOnClickListener {
+             val action=HomeFragmentDirections.actionNavigationHomeToPopularFragmentProduct()
+            findNavController().navigate(action)
         }
+
+        hideBottomSheetOrShowWhenScroll(scrollView = binding.scrollView, activity = requireActivity())
+
 
     }
 
@@ -81,26 +92,27 @@ class HomeFragment : Fragment() {
             categoryProductViewModel.popularProductStatus.collect(
                 EventObserver(
                     onLoading = {
-                        binding.spinKitFav.isVisible = true
-                        binding.shimmer.isVisible=true
-                        binding.shimmer.startShimmer()
+                        setupViewBeforeLoadData( spinKit = binding.spinKitFav,
+                            shimmerFrameLayout= binding.shimmer, onLoading = true)
                     },
                     onSuccess = { poplarRestaurant ->
-                        binding.spinKitFav.isVisible = false
-                        binding.shimmer.isVisible=false
-                        binding.shimmer.stopShimmer()
+                        setupViewBeforeLoadData( spinKit = binding.spinKitFav,
+                            shimmerFrameLayout= binding.shimmer, onLoading = false)
                         poplarRestaurant.data?.let {
+                            if(it.isEmpty())setupViewBeforeLoadData(
+                                onLoading = false, onError = true
+                                , emptyView = binding.leanerFav)
                             binding.leanerFav.isVisible=it.isNotEmpty()
-                            binding.seeMoreFav.isVisible = it.size > 10
+                            binding.seeMorePopular.isVisible = it.size > 10
                             popularFoodAdapter.products = it
                         }
                     },
                     onError = {
-                        Log.i(Constants.TAG, "subscribeToObservers: ${it}")
+                        Log.e(TAG, "subscribeToObservers: ${it} ", )
+                        setupViewBeforeLoadData( spinKit = binding.spinKitFav,
+                            shimmerFrameLayout= binding.shimmer, onLoading = false,
+                        onError = true, errorMessage = it)
                         snackbar(it)
-                        binding.spinKitFav.isVisible = false
-                        binding.shimmer.isVisible=false
-                        binding.shimmer.stopShimmer()
                     }
                 )
             )
@@ -111,9 +123,11 @@ class HomeFragment : Fragment() {
 
     private fun adapterActions() {
 
+
         popularFoodAdapter.setOnItemClickListener {
-//            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
-//            findNavController().navigate(R.id.restaurantDetailsFragment, bundle)
+
+            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
+            findNavController().navigate(R.id.foodDetailsFragment,bundle)
         }
 
 

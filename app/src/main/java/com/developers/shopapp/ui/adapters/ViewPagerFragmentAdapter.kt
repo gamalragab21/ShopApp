@@ -1,14 +1,13 @@
 package com.developers.shopapp.ui.adapters
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.developers.shopapp.R
 import com.developers.shopapp.ui.fragments.tabs.*
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 class ViewPagerFragmentAdapter(
      fragmentManger: FragmentManager,
      lifecycle: Lifecycle,
@@ -31,7 +30,7 @@ class ViewPagerFragmentAdapter(
                 RatingFragment()
             }
             3 -> {
-                PopularFragment()
+                PopularFragmentRestaurant()
             }
             4 -> {
                 TrendsFragment()

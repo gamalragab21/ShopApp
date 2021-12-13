@@ -142,12 +142,16 @@ dependencies {
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.chaos.view:pinview:1.4.4'
+    implementation 'com.stepstone.apprating:app-rating:2.3.1'
+    implementation 'com.github.piasy:GlideImageLoader:1.8.1'
+
+
     // For developers using AndroidX in their applications
     implementation 'pub.devrel:easypermissions:3.0.0'
 
     // Google Maps Location Services
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:19.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.1'
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
 }

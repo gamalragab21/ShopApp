@@ -3,8 +3,19 @@ package com.developers.shopapp.utils
 import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Build
+import android.util.Log
 import android.view.WindowManager
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.developers.shopapp.ui.activities.MainActivity
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.github.ybq.android.spinkit.SpinKitView
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,6 +26,10 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.fragment.app.FragmentManager
+import com.developers.shopapp.ui.dialog.MyCustomRateDialog
+import com.developers.shopapp.ui.dialog.RateDialogListener
+
 
 fun isNetworkConnected(@ApplicationContext context: Context): Flow<Boolean> = flow {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -82,5 +97,83 @@ fun Activity.deleteFullScreen(){
     window!!.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 }
+
+fun setupViewBeforeLoadData(spinKit:SpinKitView?=null,shimmerFrameLayout: ShimmerFrameLayout?=null,emptyView:LinearLayout?=null,
+                            onLoading:Boolean,onError:Boolean?=false,errorMessage:String?="No Data Found",tvError:TextView?=null){
+    spinKit?.isVisible=onLoading
+    shimmerFrameLayout?.isVisible=onLoading
+    emptyView?.isVisible=onLoading
+    if (onLoading) shimmerFrameLayout?.startShimmer() else shimmerFrameLayout?.stopShimmer()
+    if (onError == true) {
+        emptyView?.isVisible=true
+        tvError?.text=errorMessage
+    }
+}
+
+
+
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun hideBottomSheetOrShowWhenScroll(recyclerView: RecyclerView? =null, scrollView: ScrollView?=null, activity: Activity){
+
+    recyclerView ?.addOnScrollListener(object :
+        RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (dy > 0) {
+                // Scrolling up
+                (activity as MainActivity?)!!.hide()
+            } else {
+                // Scrolling down
+                (activity as MainActivity?)!!.show()
+            }
+
+        }
+    })
+
+    scrollView?.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY  ->
+        when {
+            scrollY > oldScrollY -> {
+                Log.i(Constants.TAG, "Scroll DOWN")
+                (activity as MainActivity?)!!.hide()
+
+            }
+            scrollY < oldScrollY -> {
+                Log.i(Constants.TAG, "Scroll UP")
+                (activity as MainActivity?)!!.show()
+            }
+            scrollY == 0 -> {
+                Log.i(Constants.TAG, "TOP SCROLL")
+            }
+
+        }
+    }
+
+
+
+
+}
+fun showRatingDialog(
+    context: Context,
+    rateId: Int?,
+    editTextEnable: Boolean? = true,
+    ratingCount: Float ,
+    listener: RateDialogListener,
+    itemName: String,
+    commentMessage: String?,
+    childFragmentManager: FragmentManager
+) {
+    MyCustomRateDialog
+        .build(context)
+        .rateId(rateId)
+        .enableEditText(editTextEnable!!)
+        .feedBackMessage(commentMessage)
+        .ratingCount(ratingCount)
+        .setListenerWith(listener)
+        .setTitle("Rate Our $itemName Restaurant")
+        .show(childFragmentManager)
+}
+
+
 
 

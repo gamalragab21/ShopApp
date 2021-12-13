@@ -18,8 +18,10 @@ import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
 import com.developers.shopapp.utils.Constants.TAG
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class ForgetPasswordFragment:Fragment() {
     private var _binding: FragmentForgetPasswordBinding? = null

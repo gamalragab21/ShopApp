@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_navigation_home_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_popularFragmentProduct"
+            app:destination="@id/popularFragmentProduct" />
     </fragment>
     <fragment
         android:id="@+id/navigation_cart"
@@ -52,7 +55,42 @@
             android:name="restaurant"
             app:nullable="true"
             app:argType="com.developers.shopapp.entities.Restaurant" />
+        <action
+            android:id="@+id/action_restaurantDetailsFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.developers.shopapp.ui.fragments.maps.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <argument
+            android:name="restaurant"
+            app:argType="com.developers.shopapp.entities.Restaurant" />
+    </fragment>
+    <fragment
+        android:id="@+id/popularFragmentProduct"
+        tools:layout="@layout/fragment_popular_product"
+        android:name="com.developers.shopapp.ui.fragments.PopularFragmentProduct"
+        android:label="PopularFragmentProduct" />
+    <fragment
+        android:id="@+id/imageViewerFragment"
+        tools:layout="@layout/fragment_image_viewer"
+        android:name="com.developers.shopapp.ui.fragments.ImageViewerFragment"
+        android:label="ImageViewerFragment" >
+        <argument
+            android:name="images"
+            app:argType="string[]" />
+    </fragment>
+
+    <action android:id="@+id/globalActionToImageViewFragment"
+        app:destination="@+id/imageViewerFragment"
+        />
+    <fragment
+        android:id="@+id/foodDetailsFragment"
+        tools:layout="@layout/fragment_details_food"
+        android:name="com.developers.shopapp.ui.fragments.FoodDetailsFragment"
+        android:label="FoodDetailsFragment" />
 
 
 </navigation>

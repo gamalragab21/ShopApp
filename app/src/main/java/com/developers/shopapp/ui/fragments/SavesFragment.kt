@@ -28,16 +28,15 @@ import com.developers.shopapp.ui.adapters.ProductAdapter
 import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
-import com.developers.shopapp.utils.PermissionsUtility
-import com.developers.shopapp.utils.Utils
-import com.developers.shopapp.utils.snackbar
+import com.developers.shopapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentSavesBinding? = null
@@ -75,6 +74,21 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
         adapterActions()
 
         binding.foodsButton.setOnClickListener {
+            buttonsTopClick(true)
+        }
+
+        binding.restaurantButton.setOnClickListener {
+            buttonsTopClick(false)
+        }
+        binding.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        hideBottomSheetOrShowWhenScroll(recyclerView = binding.favRestaurantsRecyclerview, activity = requireActivity())
+
+    }
+
+    private fun buttonsTopClick(foods:Boolean){
+        if (foods) {
             binding.foodsButton.setTextColor(Color.WHITE)
 
             binding.foodsButton.backgroundTintList =
@@ -82,16 +96,9 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
 
             binding.restaurantButton.backgroundTintList =
                 ContextCompat.getColorStateList(requireContext(), R.color.colorAccent)
-              binding.restaurantButton.setTextColor(Color.BLACK)
-
-            binding.favFoodsRecyclerview.isVisible=true
-            binding.favRestaurantsRecyclerview.isVisible=false
-
+            binding.restaurantButton.setTextColor(Color.BLACK)
             categoryProductViewModel.getAllFavProducts()
-
-        }
-
-        binding.restaurantButton.setOnClickListener {
+        }else{
             binding.restaurantButton.setTextColor(Color.WHITE)
             binding.restaurantButton.backgroundTintList =
                 ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryDark)
@@ -100,13 +107,12 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                 ContextCompat.getColorStateList(requireContext(), R.color.colorAccent)
             binding.foodsButton.setTextColor(Color.BLACK)
 
-            binding.favFoodsRecyclerview.isVisible=false
-            binding.favRestaurantsRecyclerview.isVisible=true
+
             restaurantViewModel.getAllFavouritesRestaurant()
-
         }
-
-
+        binding.favFoodsRecyclerview.isVisible=foods
+        binding.favRestaurantsRecyclerview.isVisible=!foods
+        binding.emptyView.isVisible=false
     }
     private fun adapterActions() {
         productAdapter.setOnSavedClickListener { product, imageView, position ->
@@ -138,18 +144,18 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.favouritesRestaurantStatus.collect(
                         EventObserver(
                             onLoading = {
-                                binding.shimmer.isVisible=true
-                                binding.shimmer.startShimmer()
-                                binding.spinKit.isVisible = true
-                                binding.emptyView.isVisible = false
+                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                    shimmerFrameLayout= binding.shimmer, onLoading = true)
                             },
                             onSuccess = { favRestaurant ->
-                                binding.spinKit.isVisible = false
-                                binding.emptyView.isVisible = false
-                                binding.shimmer.isVisible=false
-                                binding.shimmer.stopShimmer()
+                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                    shimmerFrameLayout= binding.shimmer, onLoading = false
+                                )
+
                                 favRestaurant.data?.let {
-                                    binding.emptyView.isVisible = it.isEmpty()
+                                    if(it.isEmpty())setupViewBeforeLoadData(
+                                        onLoading = false, onError = true
+                                        , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                     restaurantAdapter.restaurantes = it
                                 }
 
@@ -158,10 +164,9 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                             onError = {
                                 Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                                 snackbar(it)
-                                binding.shimmer.isVisible=false
-                                binding.shimmer.stopShimmer()
-                                binding.spinKit.isVisible = false
-                                binding.emptyView.isVisible = true
+                                setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                    onLoading =false, onError = true, errorMessage = it
+                                    , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                             }
                         )
                     )
@@ -172,31 +177,30 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                     categoryProductViewModel.favouritesProductStatus.collect(
                         EventObserver(
                             onLoading = {
-                                binding.shimmer.isVisible=true
-                                binding.shimmer.startShimmer()
-                                binding.spinKit.isVisible = true
-                                binding.emptyView.isVisible = false
+                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                    shimmerFrameLayout= binding.shimmer, onLoading = true)
                             },
                             onSuccess = { favProduct ->
-                                binding.shimmer.isVisible=false
-                                binding.shimmer.stopShimmer()
-                                binding.spinKit.isVisible = false
-                                binding.emptyView.isVisible = false
+                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                    shimmerFrameLayout= binding.shimmer, onLoading = false
+                                )
 
                                 favProduct.data?.let {
-                                    binding.emptyView.isVisible = it.isEmpty()
+                                    if(it.isEmpty())setupViewBeforeLoadData(
+                                        onLoading = false, onError = true
+                                        , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                     productAdapter.products = it
                                 }
 
 
                             },
                             onError = {
-                                binding.shimmer.isVisible=false
-                                binding.shimmer.stopShimmer()
+
                                 Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                                 snackbar(it)
-                                binding.spinKit.isVisible = false
-                                binding.emptyView.isVisible = true
+                                setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                    onLoading =false, onError = true, errorMessage = it
+                                    , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                             }
                         )
                     )

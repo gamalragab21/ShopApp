@@ -16,9 +16,10 @@ data class Restaurant (
     val createAt :Long,
     val restaurantType:String,
     val freeDelivery:Boolean?=true,
-    val rateRestaurant:List<RateRestaurant>?=null,
+    var rateRestaurant:List<RateRestaurant>?=null,
     var inFav:Boolean?=false,
-    var rateCount:Float?=0.0f
+    var rateCount:Float?=0.0f,
+    var user: User
 ):Parcelable {
     override fun describeContents(): Int =0
 

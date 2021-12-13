@@ -27,12 +27,10 @@ import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.helpers.MyLocation
 import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.*
 import com.developers.shopapp.utils.Constants.SEARCH_TIME_DELAY
-import com.developers.shopapp.utils.PermissionsUtility
-import com.developers.shopapp.utils.Utils
-import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,6 +38,7 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentNearlyPlacesBinding? = null
@@ -84,6 +83,13 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
         adapterActions()
 
         setupSpinner(dataUserInfo)
+
+        binding.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        hideBottomSheetOrShowWhenScroll(recyclerView = binding.nearlyRestaurantFragmentRecycler, activity = requireActivity())
+
 
     }
     private fun setupSpinner(dataUserInfo: UserInfoDB?) {
@@ -135,19 +141,18 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                     restaurantViewModel.nearlyRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            binding.spinKit.isVisible = true
-                            binding.emptyView.isVisible = false
-                            binding.shimmer.isVisible=true
-                            binding.shimmer.startShimmer()
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { restaurant ->
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = false
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                                )
 
                             restaurant.data?.let {
-                                binding.emptyView.isVisible = it.isEmpty()
+                                if(it.isEmpty())setupViewBeforeLoadData(
+                                    onLoading = false, onError = true
+                                    , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                 binding.countRestaurant.text="${it.size} Restaurants found near you"
                                 restaurantAdapter.restaurantes = it
                             }
@@ -155,12 +160,13 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
 
                         },
                         onError = {
-                            binding.shimmer.isVisible=false
-                            binding.shimmer.stopShimmer()
+                            setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                onLoading =false, onError = true, errorMessage = it
+                                , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
+
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = true
+
                         }
                     )
                     )
@@ -171,16 +177,19 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                     restaurantViewModel.filterRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            binding.spinKit.isVisible = true
-                            binding.emptyView.isVisible = false
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { filterRestaurant ->
 
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = false
+                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                                , emptyView = binding.emptyView)
                              restaurantAdapter.restaurantes=ArrayList()
                             filterRestaurant.data?.let {
-                                binding.emptyView.isVisible = it.isEmpty()
+                                if(it.isEmpty())setupViewBeforeLoadData(
+                                    onLoading = false, onError = true
+                                    , emptyView = binding.emptyView, tvError = binding.textEmpty, errorMessage = "No Data Found")
                                 binding.countRestaurant.text="${it.size} Restaurants found near you"
 
                                 restaurantAdapter.restaurantes = it
@@ -190,8 +199,9 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                         onError = {
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
-                            binding.spinKit.isVisible = false
-                            binding.emptyView.isVisible = true
+                            setupViewBeforeLoadData(
+                                onLoading =false, onError = true, errorMessage = it
+                                , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                         }
                     )
                     )

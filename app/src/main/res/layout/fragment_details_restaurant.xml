@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
@@ -49,7 +49,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <ImageView
                     android:id="@+id/search"
                     android:layout_width="@dimen/_20sdp"
@@ -57,10 +56,26 @@
                     android:layout_margin="@dimen/_6sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/search"
+                    app:layout_constraintEnd_toStartOf="@+id/rate"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+                <ImageView
+                    android:id="@+id/rate"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20ssp"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/start_icon"
                     app:layout_constraintEnd_toStartOf="@+id/viewImageRestaurant"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/white" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/background_top_tags"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
                 <ImageView
                     android:id="@+id/viewImageRestaurant"
                     android:layout_width="@dimen/_20sdp"
@@ -92,7 +107,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageRestaurantHeader">
 
-                 <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/restaurantContentInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,8 +145,8 @@
                         android:fontFamily="@font/rta_regular"
                         android:text="kenlkef-sdmke dkjevkj-dm e"
                         android:textColor="@color/gray"
-                        app:layout_constraintBottom_toTopOf="@+id/restaurantRating"
                         android:textSize="@dimen/_12ssp"
+                        app:layout_constraintBottom_toTopOf="@+id/restaurantRating"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/imageSave" />
@@ -144,11 +159,11 @@
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/_3sdp"
                         android:fontFamily="@font/poppins_bold"
-                        android:gravity="center_vertical"
                         android:maxLines="1"
                         android:text="5.6"
                         android:textColor="@color/Black"
                         android:textSize="@dimen/_10ssp"
+                        android:layout_gravity="center_vertical"
                         app:drawableStartCompat="@drawable/start_icon"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/restaurantInfo" />
@@ -165,13 +180,28 @@
                         android:fontFamily="@font/rta_regular"
                         android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:text="200+ Burger "
+                        android:layout_gravity="center_vertical"
                         android:textColor="@color/Black"
                         android:textSize="@dimen/_10ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/restaurant_call"
                         app:layout_constraintStart_toEndOf="@+id/restaurantRating"
                         app:layout_constraintTop_toBottomOf="@+id/restaurantInfo" />
 
+                    <TextView
+                    android:id="@+id/restaurant_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/restaurantInfo"
+                        app:layout_constraintStart_toEndOf="@+id/count_item"
+                    android:drawablePadding="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Contact"
+                    app:drawableStartCompat="@drawable/phone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -185,6 +215,7 @@
                             android:id="@+id/restaurantDeliervery"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
@@ -195,6 +226,8 @@
                             android:id="@+id/restaurantTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
@@ -202,15 +235,27 @@
                             app:drawableStartCompat="@drawable/clock"
                             app:drawableTint="@color/purple_700" />
 
-                        <TextView
-                            android:id="@+id/restaurant_call"
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/restaurant_call"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_weight="1"-->
+                        <!--                            android:drawablePadding="@dimen/_3sdp"-->
+                        <!--                            android:fontFamily="@font/poppins_bold"-->
+                        <!--                            android:text="Contact"-->
+                        <!--                            app:drawableStartCompat="@drawable/phone" />-->
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/restaurant_take_away"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center_vertical"
                             android:layout_weight="1"
+                            android:background="@drawable/radius_all_side"
                             android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="Contact"
-                            app:drawableStartCompat="@drawable/phone" />
+                            android:gravity="center"
+                            android:text="Take Away"
+                            android:textColor="#FF5722" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -219,62 +264,145 @@
                     android:id="@+id/constraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/restaurantContentInfo"
                     android:layout_marginTop="@dimen/_10sdp"
-                    >
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:background="@drawable/back_tab_layout"
-                    android:contentDescription=""
-                   app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:tabGravity="center"
-                    app:tabIndicator="@color/colorAccent"
-                    app:tabIndicatorAnimationDuration="50"
-                    app:tabIndicatorColor="@color/colorAccent"
-                    app:tabMode="scrollable"
-                    app:tabPadding="@dimen/_5sdp"
-                    app:tabPaddingStart="@dimen/_4sdp"
-                    app:tabSelectedTextColor="@color/Black"
-                    app:tabTextAppearance="@style/CustomTabText"
-                    app:tabTextColor="@color/gray" />
-
-                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/product_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:nestedScrollingEnabled="true"
-                    android:scrollbars="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tabs" />
+                    app:layout_constraintTop_toBottomOf="@id/restaurantContentInfo">
 
-                <com.github.ybq.android.spinkit.SpinKitView
-                    android:id="@+id/spin_kit_smallProduct"
-                    style="@style/SpinKitView.Small.Circle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_100sdp"
-                    android:padding="@dimen/_20sdp"
-                    android:visibility="gone"
-                    app:SpinKit_Color="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tabs"
-                    app:layout_constraintVertical_bias="0" />
+                    <LinearLayout
+                        android:id="@+id/emptyView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="250dp"
+                            android:layout_height="250dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_undraw_empty" />
+
+                        <TextView
+                            android:id="@+id/textEmpty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/israr_syria"
+                            android:gravity="center"
+                            android:paddingStart="16dp"
+                            android:paddingTop="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="No Data Found"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <TextView
+                            android:id="@+id/textEmptyErr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon_medium"
+                            android:gravity="center"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="16dp"
+                            android:textColor="@android:color/holo_red_dark" />
+                    </LinearLayout>
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabs"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:background="@drawable/back_tab_layout"
+                        android:contentDescription=""
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tabGravity="start"
+                        app:tabIndicator="@color/colorAccent"
+                        app:tabIndicatorAnimationDuration="50"
+                        app:tabIndicatorColor="@color/colorAccent"
+                        app:tabMode="scrollable"
+                        app:tabPadding="@dimen/_5sdp"
+                        android:visibility="gone"
+                        app:tabPaddingStart="@dimen/_4sdp"
+                        app:tabSelectedTextColor="@color/Black"
+                        app:tabTextAppearance="@style/CustomTabText"
+                        app:tabTextColor="@color/gray" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/product_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:nestedScrollingEnabled="true"
+                        android:scrollbars="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tabs"
+                        app:shimmer_auto_start="true"
+                        app:shimmer_duration="800">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+
+                            <include layout="@layout/item_restaurant_food_placholder" />
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/spin_kit_smallProduct"
+                        style="@style/SpinKitView.Small.Circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_100sdp"
+                        android:padding="@dimen/_20sdp"
+                        android:visibility="gone"
+                        app:SpinKit_Color="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tabs"
+                        app:layout_constraintVertical_bias="0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -282,4 +410,4 @@
     </LinearLayout>
 
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

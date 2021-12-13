@@ -1,5 +1,6 @@
 package com.developers.shopapp.repositories
 
+import android.provider.Telephony
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.entities.*
 import com.developers.shopapp.helpers.Resource
@@ -155,5 +156,34 @@ class DefaultHomeRepository @Inject constructor(
         }
 
     }
+
+    suspend fun setupRatingMyRestaurant(rateRestaurant: RateRestaurant): Resource<MyResponse<RateRestaurant>> = withContext(dispatcher) {
+        safeCall {
+            val result=apiShopService.setupRatingMyRestaurant(rateRestaurant)
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun updateRateRestaurant (rateRestaurant: RateRestaurant): Resource<MyResponse<RateRestaurant>> = withContext(dispatcher) {
+        safeCall {
+            val result=apiShopService.updateRateRestaurant(rateRestaurant)
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun findMyRestaurant(restaurantId: Int): Resource<MyResponse<Restaurant>> = withContext(dispatcher) {
+        safeCall {
+            val result=apiShopService.findMyRestaurant(restaurantId)
+            Resource.Success(result)
+        }
+    }
+
+   suspend fun findProductById(productId: Int): Resource<MyResponse<Product>> = withContext(dispatcher){
+        safeCall {
+            val result=apiShopService.findProductById(productId)
+            Resource.Success(result)
+        }
+    }
+
 
 }

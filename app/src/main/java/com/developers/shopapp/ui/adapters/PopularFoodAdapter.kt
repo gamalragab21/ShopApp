@@ -75,6 +75,7 @@ class PopularFoodAdapter @Inject constructor(
                 }
             }).into(itemBinding.itemPopularImage)
             itemBinding.itemPopularName.text=item.productName
+            itemBinding.priceItem.text="${item.productPrice} $"
             itemBinding.ratingCount.rating=item.rateCount!!.toFloat()
 
             setupActions(item)

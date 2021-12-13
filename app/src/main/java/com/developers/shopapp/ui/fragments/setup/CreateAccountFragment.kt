@@ -32,8 +32,10 @@ import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 import com.developers.shopapp.helpers.MyLocation
 import com.developers.shopapp.utils.Constants.TAG
+import kotlinx.coroutines.InternalCoroutinesApi
 
 
+@InternalCoroutinesApi
 @AndroidEntryPoint
 class CreateAccountFragment() : Fragment(), EasyPermissions.PermissionCallbacks {
     private var _binding: FragmentRegisterBinding? = null

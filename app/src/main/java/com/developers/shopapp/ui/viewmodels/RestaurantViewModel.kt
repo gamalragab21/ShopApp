@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.shopapp.entities.MyResponse
+import com.developers.shopapp.entities.RateRestaurant
 import com.developers.shopapp.entities.Restaurant
 import com.developers.shopapp.helpers.Event
 import com.developers.shopapp.helpers.Resource
@@ -32,6 +33,11 @@ class RestaurantViewModel @Inject constructor(
     private val _restaurantStatus =
         MutableStateFlow<Event<Resource<MyResponse<List<Restaurant>>>>>(Event(Resource.Init()))
     val restaurantStatus: MutableStateFlow<Event<Resource<MyResponse<List<Restaurant>>>>> = _restaurantStatus
+
+    private val _findRestaurantStatus =
+        MutableStateFlow<Event<Resource<MyResponse<Restaurant>>>>(Event(Resource.Init()))
+    val findRestaurantStatus: MutableStateFlow<Event<Resource<MyResponse<Restaurant>>>> = _findRestaurantStatus
+
 
     private val _deleteFavRestaurantStatus =
         MutableStateFlow<Event<Resource<MyResponse<String>>>>(Event(Resource.Init()))
@@ -61,11 +67,22 @@ class RestaurantViewModel @Inject constructor(
         MutableStateFlow<Event<Resource<MyResponse<List<Restaurant>>>>>(Event(Resource.Init()))
     val filterRestaurantStatus: MutableStateFlow<Event<Resource<MyResponse<List<Restaurant>>>>> = _filterRestaurantStatus
 
+    private val _myRatingRestaurantStatus =
+        MutableStateFlow<Event<Resource<MyResponse<RateRestaurant>>>>(Event(Resource.Init()))
+    val myRatingRestaurantStatus: MutableStateFlow<Event<Resource<MyResponse<RateRestaurant>>>> = _myRatingRestaurantStatus
+
     fun getAllRestaurant(){
         viewModelScope.launch(dispatcher) {
             _restaurantStatus.emit(Event(Resource.Loading()))
             val result = repository.getAllRestaurants()
             _restaurantStatus.emit(Event(result))
+        }
+    }
+    fun findMyRestaurant(restaurantId: Int){
+        viewModelScope.launch(dispatcher) {
+            _findRestaurantStatus.emit(Event(Resource.Loading()))
+            val result = repository.findMyRestaurant(restaurantId)
+            _findRestaurantStatus.emit(Event(result))
         }
     }
 
@@ -74,6 +91,21 @@ class RestaurantViewModel @Inject constructor(
             _favouritesRestaurantStatus.emit(Event(Resource.Loading()))
             val result = repository.getAllFavouritesRestaurant()
             _favouritesRestaurantStatus.emit(Event(result))
+        }
+    }
+
+    fun setupRatingMyRestaurant(rateRestaurant: RateRestaurant) {
+        viewModelScope.launch(dispatcher) {
+            _myRatingRestaurantStatus.emit(Event(Resource.Loading()))
+            val result = repository.setupRatingMyRestaurant(rateRestaurant)
+            _myRatingRestaurantStatus.emit(Event(result))
+        }
+    }
+    fun updateRateRestaurant(rateRestaurant: RateRestaurant) {
+        viewModelScope.launch(dispatcher) {
+            _myRatingRestaurantStatus.emit(Event(Resource.Loading()))
+            val result = repository.updateRateRestaurant(rateRestaurant)
+            _myRatingRestaurantStatus.emit(Event(result))
         }
     }
 
@@ -123,6 +155,7 @@ class RestaurantViewModel @Inject constructor(
             _nearlyRestaurantStatus.emit(Event(result))
         }
     }
+
 
 
 

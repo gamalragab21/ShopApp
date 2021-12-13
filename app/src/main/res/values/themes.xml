@@ -78,4 +78,14 @@
         <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
+
+
+    <!-- Dialog -->
+    <style name="MyAlertDialogStyle" parent="@style/Widget.AppCompat.RatingBar">
+        <item name="android:background">@color/white</item>
+      <item name="colorControlNormal">@color/colorPrimary</item>
+      <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
+
+
 </resources>

@@ -33,7 +33,7 @@ object Constants {
 const val REQUEST_CODE_LOCATION_PERMISSIONS=717
     const val USERS_INFO_FILE: String = "USER_INFO"
    // const val BASE_URL = "https://student.valuxapps.com/api/"
-    const val BASE_URL = " http://0eb1-197-38-34-239.ngrok.io/v1/"
+    const val BASE_URL = "http://35e6-197-38-100-229.ngrok.io/v1/"
     val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
     val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
     val USER_PASSWORD = stringPreferencesKey("USER_PASSWORD")
