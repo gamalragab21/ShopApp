@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.shopapp.entities.Category
-import com.developers.shopapp.entities.MyResponse
-import com.developers.shopapp.entities.Product
-import com.developers.shopapp.entities.Restaurant
+import com.developers.shopapp.entities.*
 import com.developers.shopapp.helpers.Event
 import com.developers.shopapp.helpers.Resource
 import com.developers.shopapp.qualifiers.MainThread
@@ -56,6 +53,10 @@ class CategoryProductViewModel @Inject constructor(
     private val _findProductStatus =
         MutableStateFlow<Event<Resource<MyResponse<Product>>>>(Event(Resource.Init()))
     val findProductStatus: MutableStateFlow<Event<Resource<MyResponse<Product>>>> = _findProductStatus
+
+    private val _myRatingProductStatus =
+        MutableStateFlow<Event<Resource<MyResponse<RateProduct>>>>(Event(Resource.Init()))
+    val myRatingProductStatus: MutableStateFlow<Event<Resource<MyResponse<RateProduct>>>> = _myRatingProductStatus
 
 
     fun getCategoriesOfRestaurant(restaurantId: Int) {
@@ -115,6 +116,23 @@ class CategoryProductViewModel @Inject constructor(
             _findProductStatus.emit(Event(Resource.Loading()))
             val result = repository.findProductById(productId)
             _findProductStatus.emit(Event(result))
+        }
+    }
+
+
+
+    fun setupRatingMyProduct(rateProduct: RateProduct) {
+        viewModelScope.launch(dispatcher) {
+            _myRatingProductStatus.emit(Event(Resource.Loading()))
+            val result = repository.setupRatingMyProduct(rateProduct)
+            _myRatingProductStatus.emit(Event(result))
+        }
+    }
+    fun updateRateProduct(rateProduct: RateProduct) {
+        viewModelScope.launch(dispatcher) {
+            _myRatingProductStatus.emit(Event(Resource.Loading()))
+            val result = repository.updateRateProduct(rateProduct)
+            _myRatingProductStatus.emit(Event(result))
         }
     }
 

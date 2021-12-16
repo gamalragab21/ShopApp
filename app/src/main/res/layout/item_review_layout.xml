@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_8sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageUser"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:src="@drawable/ic_restaurant"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textDescripition"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintEnd_toStartOf="@+id/contentInfoRate"
+        />
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/progressShimmer"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textDescripition"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintEnd_toStartOf="@+id/contentInfoRate">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bg_photo_item"
+            app:layout_constraintBottom_toTopOf="@id/textDescripition"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintEnd_toStartOf="@+id/contentInfoRate"
+            />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+      <LinearLayout
+        android:id="@+id/contentInfoRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="@id/imageUser"
+        app:layout_constraintStart_toEndOf="@id/imageUser"
+        app:layout_constraintBottom_toBottomOf="@id/imageUser"
+        android:layout_margin="@dimen/_5sdp"
+        >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/imageUser"
+        android:text="UserName"
+        app:layout_constraintTop_toTopOf="parent"
+         android:textSize="@dimen/_15ssp"
+        android:fontFamily="@font/rta_regular"
+        android:textColor="@color/black"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/createAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/imageUser"
+        android:text="for 3 days"
+        app:layout_constraintStart_toStartOf="@+id/userName"
+        app:layout_constraintTop_toBottomOf="@+id/userName"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/rta_regular"
+        android:textColor="@color/gray"
+        />
+    </LinearLayout>
+
+    <RatingBar
+        android:id="@+id/ratingCount"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/contentInfoRate"
+        app:layout_constraintStart_toEndOf="@id/contentInfoRate"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        app:layout_constraintHorizontal_bias="0.9"
+        android:theme="@style/AppRatingBar"
+        />
+    <TextView
+        android:id="@+id/textDescripition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_bold"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="@dimen/_2sdp"
+        android:maxLines="4"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintStart_toStartOf="@id/contentInfoRate"
+        app:layout_constraintTop_toBottomOf="@id/imageUser"
+        />
+
+    <TextView
+        android:id="@+id/textReadMore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/brandon_medium"
+        android:includeFontPadding="false"
+        android:maxLines="4"
+        android:text="Read More"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintStart_toStartOf="@id/textDescripition"
+        app:layout_constraintTop_toBottomOf="@id/textDescripition" />
+
+    <View
+        app:layout_constraintTop_toBottomOf="@id/textReadMore"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:layout_constraintStart_toStartOf="@id/contentInfoRate"
+        app:layout_constraintEnd_toEndOf="@id/ratingCount"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_2sdp"
+        android:background="@color/gray"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

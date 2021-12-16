@@ -41,6 +41,9 @@ class PopularFragmentProduct: Fragment() {
 
     @Inject
     lateinit var popularFoodAdapter: PopularFoodAdapter
+    private val navController by lazy {
+        findNavController()
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,8 +110,8 @@ class PopularFragmentProduct: Fragment() {
 
         popularFoodAdapter.setOnItemClickListener {
 
-            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
-            findNavController().navigate(R.id.foodDetailsFragment,bundle)
+           val action = PopularFragmentProductDirections.actionPopularFragmentProductToFoodDetailsFragment(it)
+            navController.navigate(action)
         }
 
 

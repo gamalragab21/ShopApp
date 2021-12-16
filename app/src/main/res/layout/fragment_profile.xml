@@ -276,6 +276,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/mange_account"
                 android:orientation="horizontal">
                 <TextView
@@ -301,6 +302,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:padding="@dimen/_5sdp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"
@@ -340,6 +342,7 @@
                     android:text="Notification"
                     android:layout_weight="1"
                     android:textSize="@dimen/_12ssp"
+                    android:gravity="center_vertical"
                     android:textColor="@android:color/darker_gray"
                     android:fontFamily="@font/poppins"
                     android:drawablePadding="@dimen/_8sdp"
@@ -361,7 +364,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"
@@ -369,6 +371,8 @@
                     android:text="Promotional Notification"
                     android:layout_weight="1"
                     android:textSize="@dimen/_12ssp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:textColor="@android:color/darker_gray"
                     android:fontFamily="@font/poppins"
                     android:drawablePadding="@dimen/_8sdp"
@@ -399,6 +403,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:id="@+id/theme_mode"
+                android:padding="@dimen/_5sdp"
+
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"
@@ -433,6 +439,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:id="@+id/logout_profile"
+                android:padding="@dimen/_5sdp"
+                android:background="?attr/selectableItemBackground"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp"

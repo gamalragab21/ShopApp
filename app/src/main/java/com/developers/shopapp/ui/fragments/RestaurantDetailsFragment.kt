@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.developers.shopapp.R
@@ -66,13 +67,14 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
     val navController by lazy { findNavController() }
 
 
-    val currentRestaurant by lazy {
-        arguments?.getParcelable<Restaurant>(CURRENT_RESTAURANT)
-    }
+
+    private lateinit var currentRestaurant :Restaurant
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentRestaurant = requireArguments().getParcelable(CURRENT_RESTAURANT)!!
 
         val dataUserInfo = dataStoreManager.glucoseFlow.value
 
@@ -92,11 +94,6 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
 
         adapterActions()
 
-        hideBottomSheetOrShowWhenScroll(
-            recyclerView = binding.productRecyclerView,
-            binding.scrollView,
-            activity = requireActivity()
-        )
 
     }
 
@@ -143,8 +140,8 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
 
         productAdapter.setOnItemClickListener {
 
-              val bundle = bundleOf(CURRENT_PRODUCT to it)
-            navController.navigate(R.id.foodDetailsFragment,bundle)
+          val action=RestaurantDetailsFragmentDirections.actionRestaurantDetailsFragmentToFoodDetailsFragment(it)
+            navController.navigate(action)
         }
 
 
@@ -177,15 +174,14 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
         }
 
         binding.rate.setOnClickListener {
+            Log.i(TAG, "quickActions: ${currentRestaurant.rateRestaurant}")
           val rateRestaurant:RateRestaurant?= currentRestaurant!!.rateRestaurant?.firstOrNull {
               it.userId == currentRestaurant!!.user.id
           }
 
-            Log.w(TAG, "quickActions: ${rateRestaurant}")
-
             showRatingDialog(requireContext(),
                 rateRestaurant?.rateId,
-                true,
+                false,
                 rateRestaurant?.countRate?.toFloat()?:3f,
                 this,
                 currentRestaurant!!.restaurantName,
@@ -268,11 +264,10 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                     restaurantViewModel.myRatingRestaurantStatus.collect(
                         EventObserver(
                             onLoading = {
+                                Log.w(TAG, "EventObserver: ${"onLoading"}" )
                             },
                             onSuccess = { item ->
-
                                   snackbar(item.message)
-
                                 item.data?.let {
                                  // updateRating(it)
                                     restaurantViewModel.findMyRestaurant(currentRestaurant!!.restaurantId!!)
@@ -408,7 +403,8 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
                         onLoading = {},
                         onSuccess = {
                           it.data?.let {
-                              Log.d(TAG, "subscribeToObservers: ${it.toString()}")
+                              currentRestaurant=it
+                              Log.d(TAG, "subscribeToObservers: ${currentRestaurant.rateRestaurant.toString()}")
                               bindRestaurantData(it)
                           }
                         },
@@ -453,6 +449,7 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
         super.onResume()
         Log.i(TAG, "onResume: ")
         categoryProductViewModel.getCategoriesOfRestaurant(currentRestaurant!!.restaurantId!!)
+        categoryProductViewModel.findProductById(currentRestaurant!!.restaurantId!!)
     }
 
     private fun requestPermissions() {
@@ -508,6 +505,7 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
     }
 
     override fun onSubMitClick(rateCount: Float, feedbackMessage: String,rateId:Int?) {
+        Log.i(TAG, "onSubMitClick: $rateCount  , $feedbackMessage , $rateId")
         if (rateId==null) {
             val rateRestaurant = RateRestaurant(
                 restaurantId = currentRestaurant!!.restaurantId!!,

@@ -86,6 +86,11 @@
       <item name="colorControlNormal">@color/colorPrimary</item>
       <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
-
+    <style name="AppRatingBar" >
+        <item name="android:progressTint">@color/rate_active_color</item>
+        <item name="android:backgroundTint">@color/rate_normal_color</item>
+        <item name="android:secondaryProgressTint">@android:color/transparent</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
 
 </resources>

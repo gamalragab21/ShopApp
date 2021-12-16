@@ -164,13 +164,12 @@ fun showRatingDialog(
     childFragmentManager: FragmentManager
 ) {
     MyCustomRateDialog
-        .build(context)
+        .build(context, editTextEnable!!)
         .rateId(rateId)
-        .enableEditText(editTextEnable!!)
         .feedBackMessage(commentMessage)
         .ratingCount(ratingCount)
         .setListenerWith(listener)
-        .setTitle("Rate Our $itemName Restaurant")
+        .setTitle("Rate Our $itemName ")
         .show(childFragmentManager)
 }
 

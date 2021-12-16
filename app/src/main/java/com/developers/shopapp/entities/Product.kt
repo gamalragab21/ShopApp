@@ -17,14 +17,13 @@ data class Product(
     val inCart:Boolean?=false,
     var rateCount:Double?=0.0,
     val images:List<ProductImage>,
-    val rating:List<RateProduct>?=null
+    val rating:List<RateProduct>?=null,
+    var user:User
+
 
 ):Parcelable {
-    override fun describeContents(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun describeContents(): Int =0
 
     override fun writeToParcel(p0: Parcel?, p1: Int) {
-        TODO("Not yet implemented")
     }
 }

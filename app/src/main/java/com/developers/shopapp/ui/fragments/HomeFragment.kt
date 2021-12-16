@@ -12,12 +12,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentHomeBinding
+import com.developers.shopapp.entities.Product
+import com.developers.shopapp.entities.ProductImage
+import com.developers.shopapp.entities.RateProduct
+import com.developers.shopapp.entities.User
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.PopularFoodAdapter
 import com.developers.shopapp.ui.adapters.ViewPagerFragmentAdapter
@@ -51,6 +56,9 @@ class HomeFragment : Fragment() {
 
     private val authenticationViewModel: AuthenticationViewModel by viewModels()
 
+    private val navController by lazy {
+        findNavController()
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,6 +81,7 @@ class HomeFragment : Fragment() {
              val action=HomeFragmentDirections.actionNavigationHomeToPopularFragmentProduct()
             findNavController().navigate(action)
         }
+
 
         hideBottomSheetOrShowWhenScroll(scrollView = binding.scrollView, activity = requireActivity())
 
@@ -126,8 +135,10 @@ class HomeFragment : Fragment() {
 
         popularFoodAdapter.setOnItemClickListener {
 
-            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
-            findNavController().navigate(R.id.foodDetailsFragment,bundle)
+//            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
+//            findNavController().navigate(R.id.foodDetailsFragment,bundle)
+            val action=HomeFragmentDirections.actionNavigationHomeToFoodDetailsFragment(it)
+            navController .navigate(action)
         }
 
 

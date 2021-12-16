@@ -88,5 +88,14 @@ interface ApiShopService {
     @GET("product/findByID")
     suspend fun findProductById(@Query("productId") productId: Int): MyResponse<Product>
 
+    @POST("product/rate")
+    suspend fun setupRatingMyProduct(@Body rateProduct: RateProduct): MyResponse<RateProduct>
+
+    @PUT("product/updateRate")
+    suspend fun updateRateProduct(@Body rateProduct: RateProduct): MyResponse<RateProduct>
+
+    @GET("users/findUserById")
+    suspend fun findUserById(@Query("userId") userId: Int): User
+
 
 }

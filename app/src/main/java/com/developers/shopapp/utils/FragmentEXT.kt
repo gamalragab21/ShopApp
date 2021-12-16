@@ -1,18 +1,18 @@
 package com.developers.shopapp.utils
 
-import android.app.Activity
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDelegate
+import android.view.Gravity
+import android.view.View
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
-fun Fragment.snackbar(message:String){
 
-Snackbar.make(
-    requireView(),
-    message,
-    Snackbar.LENGTH_LONG
-).show()
+fun Fragment.snackbar(message: String) {
+    Snackbar.make(
+        requireView(),
+        message,
+        Snackbar.LENGTH_LONG
+    ).show()
 
 }
 

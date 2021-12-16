@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -29,6 +30,7 @@ import com.developers.shopapp.ui.adapters.RestaurantAdapter
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
 import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
 import com.developers.shopapp.utils.*
+import com.developers.shopapp.utils.Constants.CURRENT_RESTAURANT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -52,7 +54,11 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
     val restaurantViewModel: RestaurantViewModel by viewModels()
     private val categoryProductViewModel: CategoryProductViewModel by viewModels()
 
+    val navController by lazy {
+        findNavController()
+    }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,18 +69,19 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
 
 
 
-        setupRecyclerViewForFavFoods()
 
-        setupRecyclerViewForFavRestaurant()
 
         subscribeToObservers(dataUserInfo)
 
         adapterRestaurantActions()
 
-        adapterActions()
+        adapterProductActions()
+
+        setupRecyclerViewFav(true)
 
         binding.foodsButton.setOnClickListener {
             buttonsTopClick(true)
+
         }
 
         binding.restaurantButton.setOnClickListener {
@@ -83,11 +90,14 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
         binding.backIcon.setOnClickListener {
             findNavController().popBackStack()
         }
-        hideBottomSheetOrShowWhenScroll(recyclerView = binding.favRestaurantsRecyclerview, activity = requireActivity())
+        hideBottomSheetOrShowWhenScroll(recyclerView = binding.favRecyclerview,
+            activity = requireActivity())
 
     }
 
     private fun buttonsTopClick(foods:Boolean){
+        setupRecyclerViewFav(foods)
+
         if (foods) {
             binding.foodsButton.setTextColor(Color.WHITE)
 
@@ -110,11 +120,9 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
 
             restaurantViewModel.getAllFavouritesRestaurant()
         }
-        binding.favFoodsRecyclerview.isVisible=foods
-        binding.favRestaurantsRecyclerview.isVisible=!foods
         binding.emptyView.isVisible=false
     }
-    private fun adapterActions() {
+    private fun adapterProductActions() {
         productAdapter.setOnSavedClickListener { product, imageView, position ->
             if (product.inFav!!) {
                 categoryProductViewModel.deleteFavProduct(product)
@@ -129,8 +137,8 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
         }
 
         productAdapter.setOnItemClickListener {
-            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
-            //navController.navigate(R.id.restaurantDetailsFragment,bundle)
+          val action=SavesFragmentDirections.actionNavigationSavesToFoodDetailsFragment(it)
+            navController.navigate(action)
         }
 
 
@@ -269,8 +277,9 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
             }
         }
         restaurantAdapter.setOnItemClickListener {
-            val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
-            findNavController().navigate(R.id.restaurantDetailsFragment,bundle)
+            val bundle = bundleOf(CURRENT_RESTAURANT to it)
+            navController.navigate(R.id.restaurantDetailsFragment,bundle)
+
         }
 
         restaurantAdapter.setOnContactClickListener {
@@ -289,20 +298,15 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
         return binding.root
     }
 
-    private fun setupRecyclerViewForFavFoods() = binding.favFoodsRecyclerview.apply {
+    private fun setupRecyclerViewFav(foods: Boolean) = binding.favRecyclerview.apply {
         itemAnimator = null
         isNestedScrollingEnabled = true
         layoutManager = LinearLayoutManager(requireContext())
-       adapter = productAdapter
+        adapter =  if (foods) productAdapter else restaurantAdapter
 
     }
 
-    private fun setupRecyclerViewForFavRestaurant() = binding.favRestaurantsRecyclerview.apply {
-        itemAnimator = null
-        isNestedScrollingEnabled = true
-        layoutManager = LinearLayoutManager(requireContext())
-        adapter = restaurantAdapter
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

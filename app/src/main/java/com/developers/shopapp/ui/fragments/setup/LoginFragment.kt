@@ -204,12 +204,12 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
     }
 
     private fun getMyLocation() {
-       if ( myLocation.getLocation(requireContext(), locationResult)){
+      // if ( myLocation.getLocation(requireContext(), locationResult)){
            loginUser()
-       }else{
-          authenticationViewModel.showNoGpsDialog(requireContext())
-           snackbar("PLZ, open your location ")
-       }
+//       }else{
+//          authenticationViewModel.showNoGpsDialog(requireContext())
+//           snackbar("PLZ, open your location ")
+//       }
 
     }
 
@@ -217,7 +217,6 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
         authenticationViewModel.loginUser(
             binding.inputTextLayoutEmail,
             binding.inputTextLayoutPassword,
-            latLong
         )
     }
 

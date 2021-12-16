@@ -22,4 +22,10 @@
     <color name="Red">#F40505</color>
     <color name="background">#B5F0F4</color>
 
+    //
+
+    <color name="rate_active_color">#FFFEBA39</color>
+    <color name="rate_normal_color">#FFA5A5A5</color>
+    <color name="rate_button_color">#006cbc</color>
+
 </resources>

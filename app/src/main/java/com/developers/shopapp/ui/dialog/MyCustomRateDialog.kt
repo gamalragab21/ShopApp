@@ -1,5 +1,6 @@
 package com.developers.shopapp.ui.dialog
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -14,26 +15,32 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.developers.shopapp.R
-import com.developers.shopapp.databinding.FragmentRateDialogBinding
+import com.developers.shopapp.databinding.DialogFeedbackBinding
+import com.developers.shopapp.databinding.DialogRateBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 object MyCustomRateDialog : DialogFragment(), MyBuilder {
-    private var _binding: FragmentRateDialogBinding? = null
-    private val binding get() = _binding!!
+    private var _bindingRateDialog: DialogRateBinding? = null
+    private val bindingRateDialog get()  = _bindingRateDialog!!
+    lateinit var _bindingFeedBackDialog: DialogFeedbackBinding
+    private val bindingFeedBackDialog get()  = _bindingFeedBackDialog!!
 
-    val builder: MyBuilder = this
+
+    private var showFeedBackDialog:Boolean=false
+
 
     private var rateId: Int? = null
+    private var rateStarCount:Float=0.0f
 
     private lateinit var rateDialogListener: RateDialogListener
+    private lateinit var dialogFeedback:androidx.appcompat.app.AlertDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-
         return MaterialAlertDialogBuilder(requireContext())
             .setBackground(ColorDrawable(Color.TRANSPARENT))
-            .setView(binding.root)
+            .setView(bindingRateDialog.root)
             .create()
     }
 
@@ -42,40 +49,62 @@ object MyCustomRateDialog : DialogFragment(), MyBuilder {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding.cancelRating.setOnClickListener {
+        bindingRateDialog.btNo.setOnClickListener {
             dismiss()
         }
+        bindingFeedBackDialog.btNo.setOnClickListener {
+            dialogFeedback.dismiss()
+        }
 
-        binding.submitRating.setOnClickListener {
+        bindingRateDialog.btSend.setOnClickListener {
+            rateStarCount=bindingRateDialog.rbStars.rating
+
+            if (showFeedBackDialog){
+                dialogFeedback= MaterialAlertDialogBuilder(requireContext())
+                    .setBackground(ColorDrawable(Color.TRANSPARENT))
+                    .setView(bindingFeedBackDialog.root)
+                    .create()
+                dialogFeedback.show()
+            }else{
+                rateDialogListener.onSubMitClick(
+                    rateStarCount, "", rateId
+                )
+            }
+
+            dismiss()
+        }
+        bindingFeedBackDialog.btSend.setOnClickListener {
             rateDialogListener.onSubMitClick(
-                binding.ratingStars.rating, binding.messageFeedBack.text.toString(), rateId
+                rateStarCount, bindingFeedBackDialog.etFeedback.text.toString(), rateId
             )
 
-            dismiss()
+            dialogFeedback.dismiss()
+
         }
-        binding.ratingStars.setOnRatingBarChangeListener { ratingBar, fl, b ->
+
+        bindingRateDialog.rbStars.setOnRatingBarChangeListener { ratingBar, fl, b ->
             setupImageRating(fl)
             animateImageView()
         }
-        return binding.root
+        return bindingRateDialog.root
     }
 
     private fun setupImageRating(fl: Float) {
         when {
             fl <= 1 -> {
-                binding.emojiStatus.setImageResource(R.drawable.one_star)
+                bindingRateDialog.icon.setImageResource(R.drawable.one_star)
             }
             fl <= 2 -> {
-                binding.emojiStatus.setImageResource(R.drawable.two_star)
+                bindingRateDialog.icon.setImageResource(R.drawable.two_star)
             }
             fl <= 3 -> {
-                binding.emojiStatus.setImageResource(R.drawable.three_star)
+                bindingRateDialog.icon.setImageResource(R.drawable.three_star)
             }
             fl <= 4 -> {
-                binding.emojiStatus.setImageResource(R.drawable.four_star)
+                bindingRateDialog.icon.setImageResource(R.drawable.four_star)
             }
             else -> {
-                binding.emojiStatus.setImageResource(R.drawable.five_start)
+                bindingRateDialog.icon.setImageResource(R.drawable.five_start)
 
             }
         }
@@ -89,33 +118,29 @@ object MyCustomRateDialog : DialogFragment(), MyBuilder {
 
         scaleAnimation.fillAfter = true
         scaleAnimation.duration = 200
-        binding.emojiStatus.startAnimation(scaleAnimation)
+        bindingRateDialog.icon.startAnimation(scaleAnimation)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
-    }
-
-
-    override fun enableEditText(enable: Boolean): MyBuilder {
-        binding.messageFeedBack.isVisible = enable
-        return this
+        _bindingRateDialog = null
     }
 
     override fun setTitle(title: String): MyBuilder {
-        binding.title.text = title
+        bindingRateDialog.dialogTitle.text = title
         return this
     }
 
-    override fun build(context: Context): MyBuilder {
-        _binding = FragmentRateDialogBinding.inflate(LayoutInflater.from(context))
+    override fun build(context: Context,enableEditText:Boolean): MyBuilder {
+        showFeedBackDialog=enableEditText
+        _bindingRateDialog = DialogRateBinding.inflate(LayoutInflater.from(context))
+        _bindingFeedBackDialog = DialogFeedbackBinding.inflate(LayoutInflater.from(context))
+
         return this
     }
 
     override fun show(childFragmentManager: FragmentManager) {
         show(childFragmentManager, null)
-
 
     }
 
@@ -124,15 +149,14 @@ object MyCustomRateDialog : DialogFragment(), MyBuilder {
         return this
     }
 
-
     override fun ratingCount(ratingCount: Float): MyBuilder {
-        binding.ratingStars.rating = ratingCount
+        bindingRateDialog.rbStars.rating = ratingCount
         setupImageRating(ratingCount)
         return this
     }
 
     override fun feedBackMessage(message: String?): MyBuilder {
-        binding.messageFeedBack.setText(message)
+        bindingFeedBackDialog.etFeedback.setText(message)
         return this
     }
 
@@ -144,12 +168,11 @@ object MyCustomRateDialog : DialogFragment(), MyBuilder {
 }
 
 interface MyBuilder {
-    fun enableEditText(enable: Boolean): MyBuilder
     fun setTitle(title: String): MyBuilder
     fun ratingCount(ratingCount: Float = 3f): MyBuilder
     fun feedBackMessage(message: String? = ""): MyBuilder
     fun setListenerWith(_rateDialogListener: RateDialogListener): MyBuilder
-    fun build(context: Context): MyBuilder
+    fun build(context: Context,enableEditText:Boolean): MyBuilder
     fun show(childFragmentManager: FragmentManager)
     fun rateId(rateId: Int?): MyBuilder
 }

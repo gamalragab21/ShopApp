@@ -13,10 +13,12 @@ import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.qualifiers.Token
+import com.developers.shopapp.ui.fragments.ReviewsFragment
 import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.Constants.TAG
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

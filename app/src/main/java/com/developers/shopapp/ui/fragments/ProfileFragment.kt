@@ -23,6 +23,7 @@ import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.activities.SetupActivity
 import com.developers.shopapp.ui.viewmodels.UserViewModel
 import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.utils.Constants.LOGIN_ME
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -61,7 +62,8 @@ class ProfileFragment:Fragment() {
 
     private suspend fun logOut() {
          dataStoreManager.setUserInfo(token = "")
-            startActivity(Intent(requireContext(), SetupActivity::class.java))
+            startActivity(Intent(requireContext(), SetupActivity::class.java)
+                .setAction(Constants.ACTION_LOGIN_FRAGMENT_AFTER_LOGOUT))
             requireActivity().finish()
     }
 

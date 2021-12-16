@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
        navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
             when(destination.id){
-                R.id.restaurantDetailsFragment,R.id.mapsFragment,R.id.imageViewerFragment->{
+                R.id.restaurantDetailsFragment,R.id.foodDetailsFragment,R.id.mapsFragment,R.id.imageViewerFragment->{
                    setFullScreen()
                     hide()
                 }

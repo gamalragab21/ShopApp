@@ -5,6 +5,13 @@
     android:id="@+id/setup_nav_graph.xml"
     app:startDestination="@id/splashFragment">
 
+
+
+    <action
+        android:id="@+id/globalActionToLoginFragment"
+        app:destination="@id/loginFragment"
+        />
+
     <fragment
         android:id="@+id/splashFragment"
         tools:layout="@layout/fragment_splash"

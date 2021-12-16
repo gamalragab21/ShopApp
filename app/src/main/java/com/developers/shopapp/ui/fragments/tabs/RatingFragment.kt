@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -46,6 +47,10 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
 
     val restaurantViewModel: RestaurantViewModel by viewModels()
 
+    val navController by lazy {
+        findNavController()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,8 +79,9 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         restaurantAdapter.setOnItemClickListener {
-            val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
-            findNavController().navigate(R.id.restaurantDetailsFragment,bundle)
+         val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
+            navController.navigate(R.id.restaurantDetailsFragment,bundle)
+
         }
 
         restaurantAdapter.setOnContactClickListener {

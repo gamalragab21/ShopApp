@@ -49,52 +49,72 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/search"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/search"
-                    app:layout_constraintEnd_toStartOf="@+id/rate"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
-                <ImageView
-                    android:id="@+id/rate"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/start_icon"
-                    app:layout_constraintEnd_toStartOf="@+id/viewImageRestaurant"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:background="@drawable/background_top_tags"
-                    android:visibility="visible"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent"
-                    />
-                <ImageView
-                    android:id="@+id/viewImageRestaurant"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:src="@drawable/view_image"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
-
-                <ImageView
-                    android:id="@+id/backIcon"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:src="@drawable/back_icon"
+                    android:padding="@dimen/_8sdp"
+                    android:gravity="top"
+                    android:background="@drawable/background_top_tags"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    >
+                    <ImageView
+                        android:id="@+id/backIcon"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20ssp"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:src="@drawable/back_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        >
+
+                        <ImageView
+                            android:id="@+id/rate"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_margin="@dimen/_6sdp"
+                            android:src="@drawable/start_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/search"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/colorPrimaryDark"
+                            />
+                        <ImageView
+                            android:id="@+id/search"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20ssp"
+                            android:layout_margin="@dimen/_6sdp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/search"
+                            app:layout_constraintEnd_toStartOf="@+id/viewImageRestaurant"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/colorPrimaryDark" />
+                        <ImageView
+                            android:id="@+id/viewImageRestaurant"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20ssp"
+                            android:layout_margin="@dimen/_6sdp"
+                            android:src="@drawable/view_image"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/colorPrimaryDark" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,6 +181,7 @@
                         android:fontFamily="@font/poppins_bold"
                         android:maxLines="1"
                         android:text="5.6"
+                        android:gravity="center_vertical"
                         android:textColor="@color/Black"
                         android:textSize="@dimen/_10ssp"
                         android:layout_gravity="center_vertical"

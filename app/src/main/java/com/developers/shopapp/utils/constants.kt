@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat.startActivity
 
 object Constants {
     const val CURRENT_RESTAURANT: String="currentRestaurant"
+        const val LOGIN_ME="LOGINME"
     const val CURRENT_PRODUCT: String="currentProduct"
     val USER_LAT=doublePreferencesKey("USER_LAT")
     val USER_LONG=doublePreferencesKey("USER_LONG")
@@ -33,7 +34,7 @@ object Constants {
 const val REQUEST_CODE_LOCATION_PERMISSIONS=717
     const val USERS_INFO_FILE: String = "USER_INFO"
    // const val BASE_URL = "https://student.valuxapps.com/api/"
-    const val BASE_URL = "http://35e6-197-38-100-229.ngrok.io/v1/"
+    const val BASE_URL = "http://6724-197-38-21-210.ngrok.io/v1/"
     val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
     val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
     val USER_PASSWORD = stringPreferencesKey("USER_PASSWORD")

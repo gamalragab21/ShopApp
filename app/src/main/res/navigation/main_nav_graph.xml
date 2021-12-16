@@ -17,12 +17,20 @@
         <action
             android:id="@+id/action_navigation_home_to_popularFragmentProduct"
             app:destination="@id/popularFragmentProduct" />
+        <action
+            android:id="@+id/action_navigation_home_to_foodDetailsFragment"
+            app:destination="@id/foodDetailsFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_foodDetailsFragment2"
+            app:destination="@id/foodDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/navigation_cart"
         tools:layout="@layout/fragment_cart"
         android:name="com.developers.shopapp.ui.fragments.CartFragment"
         android:label="CartFragment" />
+
     <fragment
         android:id="@+id/navigation_nearly_places"
         tools:layout="@layout/fragment_nearly_places"
@@ -32,11 +40,13 @@
             android:id="@+id/action_navigation_nearly_places_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/navigation_profile"
         tools:layout="@layout/fragment_profile"
         android:name="com.developers.shopapp.ui.fragments.ProfileFragment"
         android:label="ProfileFragment" />
+
     <fragment
         android:id="@+id/navigation_saves"
         tools:layout="@layout/fragment_saves"
@@ -45,20 +55,26 @@
         <action
             android:id="@+id/action_navigation_saves_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
+        <action
+            android:id="@+id/action_navigation_saves_to_foodDetailsFragment"
+            app:destination="@id/foodDetailsFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/restaurantDetailsFragment"
         tools:layout="@layout/fragment_details_restaurant"
         android:name="com.developers.shopapp.ui.fragments.RestaurantDetailsFragment"
         android:label="RestaurantDetailsFragment" >
-        <argument
-            android:name="restaurant"
-            app:nullable="true"
-            app:argType="com.developers.shopapp.entities.Restaurant" />
+
         <action
             android:id="@+id/action_restaurantDetailsFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_restaurantDetailsFragment_to_foodDetailsFragment"
+            app:destination="@id/foodDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.developers.shopapp.ui.fragments.maps.MapsFragment"
@@ -68,11 +84,17 @@
             android:name="restaurant"
             app:argType="com.developers.shopapp.entities.Restaurant" />
     </fragment>
+
     <fragment
         android:id="@+id/popularFragmentProduct"
         tools:layout="@layout/fragment_popular_product"
         android:name="com.developers.shopapp.ui.fragments.PopularFragmentProduct"
-        android:label="PopularFragmentProduct" />
+        android:label="PopularFragmentProduct" >
+        <action
+            android:id="@+id/action_popularFragmentProduct_to_foodDetailsFragment"
+            app:destination="@id/foodDetailsFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/imageViewerFragment"
         tools:layout="@layout/fragment_image_viewer"
@@ -86,11 +108,30 @@
     <action android:id="@+id/globalActionToImageViewFragment"
         app:destination="@+id/imageViewerFragment"
         />
+
     <fragment
         android:id="@+id/foodDetailsFragment"
         tools:layout="@layout/fragment_details_food"
         android:name="com.developers.shopapp.ui.fragments.FoodDetailsFragment"
-        android:label="FoodDetailsFragment" />
+        android:label="FoodDetailsFragment" >
+        <action
+            android:id="@+id/action_foodDetailsFragment_to_reviewsFragment"
+            app:destination="@id/reviewsFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.developers.shopapp.entities.Product" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviewsFragment"
+        tools:layout="@layout/fragment_reviews"
+        android:name="com.developers.shopapp.ui.fragments.ReviewsFragment"
+        android:label="ReviewsFragment" >
+
+        <argument
+            android:name="product"
+            app:argType="com.developers.shopapp.entities.Product" />
+    </fragment>
 
 
 </navigation>

@@ -16,25 +16,11 @@
             android:layout_height="match_parent">
 
 
-            <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/spin_kit"
-                style="@style/SpinKitView.FadingCircle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/_20sdp"
-                android:visibility="gone"
-                app:SpinKit_Color="@color/colorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+              <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/imageRestaurantHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/foodContent"
+                app:layout_constraintBottom_toTopOf="@+id/layoutMarker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,7 +29,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/sliderViewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
+                    android:layout_height="@dimen/_220sdp"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -53,88 +39,140 @@
                 <View
                     android:id="@+id/viewFadingEdge"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:background="@drawable/background_fading_edge"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@id/sliderViewPager" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:background="@drawable/background_top_tags"
-                    android:visibility="visible"
-                    app:layout_constraintTop_toTopOf="parent"
-/>
+
+
                 <LinearLayout
                     android:id="@+id/layoutSliderIndicators"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:gravity="end|center_vertical"
                     android:orientation="horizontal"
                     android:padding="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageSave"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:src="@drawable/not_save"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/search"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                   <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      android:padding="@dimen/_8sdp"
+                      android:gravity="top"
+                      android:background="@drawable/background_top_tags"
+                      app:layout_constraintStart_toStartOf="parent"
+                      >
+                      <ImageView
+                          android:id="@+id/backIcon"
+                          android:layout_width="@dimen/_20sdp"
+                          android:layout_height="@dimen/_20ssp"
+                          android:layout_margin="@dimen/_6sdp"
+                          android:src="@drawable/back_icon"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintTop_toTopOf="parent" />
+                       <LinearLayout
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_weight="1"
+                          android:layout_gravity="end"
+                          android:gravity="end"
+                          >
 
-                <ImageView
-                    android:id="@+id/search"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/search"
-                    app:layout_constraintEnd_toStartOf="@+id/viewImageRestaurant"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                      <ImageView
+                          android:id="@+id/rate"
+                          android:layout_width="@dimen/_20sdp"
+                          android:layout_height="@dimen/_20sdp"
+                          android:layout_margin="@dimen/_6sdp"
+                          android:src="@drawable/start_icon"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          app:layout_constraintEnd_toStartOf="@+id/search"
+                          app:layout_constraintTop_toTopOf="parent"
+                          app:tint="@color/colorPrimaryDark" />
+                      <ImageView
+                          android:id="@+id/search"
+                          android:layout_width="@dimen/_20sdp"
+                          android:layout_height="@dimen/_20ssp"
+                          android:layout_margin="@dimen/_6sdp"
+                          android:scaleType="fitXY"
+                          android:src="@drawable/search"
+                          app:layout_constraintEnd_toStartOf="@+id/viewImageRestaurant"
+                          app:layout_constraintTop_toTopOf="parent"
+                          app:tint="@color/colorPrimaryDark" />
+                      <ImageView
+                          android:id="@+id/viewImageRestaurant"
+                          android:layout_width="@dimen/_20sdp"
+                          android:layout_height="@dimen/_20ssp"
+                          android:layout_margin="@dimen/_6sdp"
+                          android:src="@drawable/view_image"
+                          app:layout_constraintEnd_toEndOf="parent"
+                          app:layout_constraintTop_toTopOf="parent"
+                          app:tint="@color/colorPrimaryDark" />
+                      </LinearLayout>
+                  </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/viewImageRestaurant"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:src="@drawable/view_image"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
 
-                <ImageView
-                    android:id="@+id/backIcon"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:src="@drawable/back_icon"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/foodContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp"
-                android:background="@drawable/raduis_top_background"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutMarker"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                  android:padding="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                  android:background="@drawable/round_back_white"
+                android:layout_marginTop="-40dp"
                 app:layout_constraintTop_toBottomOf="@+id/imageRestaurantHeader">
+                <RelativeLayout
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="-25dp"
+                    android:background="@drawable/bg_rounded_darkcolor_outline">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                    <ImageView
+                        android:id="@+id/btnMark"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_centerInParent="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/not_save"
+                        app:tint="@color/colorPrimaryDark" />
+
+                </RelativeLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+               <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/foodContent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutMarker">
+
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/restaurantContentInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15sdp"
-                    app:layout_constraintBottom_toTopOf="@+id/constraint"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -156,8 +194,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="12.00"
                         android:gravity="center_vertical"
+                        android:text="12.00"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_18ssp"
                         app:drawableStartCompat="@drawable/money_yellow"
@@ -191,12 +229,12 @@
                             android:id="@+id/foodTime"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="30 min"
                             android:gravity="center_vertical"
-                            android:layout_gravity="center_vertical"
+                            android:text="30 min"
                             android:textSize="@dimen/_10ssp"
                             app:drawableStartCompat="@drawable/clock"
                             app:drawableTint="@color/Redgrade2" />
@@ -205,126 +243,244 @@
                             android:id="@+id/fooddeleivery"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/_3sdp"
                             android:fontFamily="@font/poppins_bold"
                             android:maxLines="1"
-                            android:layout_gravity="center_vertical"
                             android:text="Free Delivery"
                             android:textSize="@dimen/_10ssp"
                             app:drawableStartCompat="@drawable/money" />
+
+
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraint"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/restaurantContentInfo">
 
-                    <LinearLayout
-                        android:id="@+id/emptyView"
+                    <View
+                        android:id="@+id/view1"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        android:layout_height="@dimen/_2sdp"
+                        android:background="@color/gray"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:layout_width="250dp"
-                            android:layout_height="250dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_undraw_empty" />
-
-                        <TextView
-                            android:id="@+id/textEmpty"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/israr_syria"
-                            android:gravity="center"
-                            android:paddingStart="16dp"
-                            android:paddingTop="16dp"
-                            android:paddingEnd="16dp"
-                            android:text="No Data Found"
-                            android:textColor="@color/colorPrimaryDark" />
-
-                        <TextView
-                            android:id="@+id/textEmptyErr"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/brandon_medium"
-                            android:gravity="center"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:paddingBottom="16dp"
-                            android:textColor="@android:color/holo_red_dark" />
-                    </LinearLayout>
-
-
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/shimmer"
+                       <LinearLayout
+                        android:id="@+id/lean1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                           android:padding="@dimen/_5sdp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tabs"
-                        app:shimmer_auto_start="true"
-                        app:shimmer_duration="800">
+                        app:layout_constraintTop_toBottomOf="@+id/view1"
+                        app:layout_constraintBottom_toTopOf="@id/view2"
+                        >
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
                             android:orientation="vertical">
 
-                            <include layout="@layout/item_restaurant_food_placholder" />
+                            <TextView
+                                android:id="@+id/detailsProduct"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/rta_regular"
+                                android:text="Details"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold"
 
-                            <include layout="@layout/item_restaurant_food_placholder" />
+                                />
 
-                            <include layout="@layout/item_restaurant_food_placholder" />
-
-                            <include layout="@layout/item_restaurant_food_placholder" />
-
-                            <include layout="@layout/item_restaurant_food_placholder" />
-
-                            <include layout="@layout/item_restaurant_food_placholder" />
-
-                            <include layout="@layout/item_restaurant_food_placholder" />
-
-                            <include layout="@layout/item_restaurant_food_placholder" />
-
-                            <include layout="@layout/item_restaurant_food_placholder" />
+                            <View
+                                android:id="@+id/pointDetails"
+                                android:layout_width="@dimen/_8sdp"
+                                android:layout_height="@dimen/_8sdp"
+                                android:background="@drawable/circle_points" />
                         </LinearLayout>
-                    </com.facebook.shimmer.ShimmerFrameLayout>
 
-                    <com.github.ybq.android.spinkit.SpinKitView
-                        android:id="@+id/spin_kit_smallProduct"
-                        style="@style/SpinKitView.Small.Circle"
-                        android:layout_width="wrap_content"
+                        <View
+                            android:layout_width="@dimen/_2sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@color/gray"
+                            android:layout_gravity="center_vertical"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/reviewProduct"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/rta_regular"
+                                android:gravity="center_horizontal"
+                                android:text="Review"
+                                android:textColor="@color/gray"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:id="@+id/pointReview"
+                                android:visibility="gone"
+                                android:layout_width="@dimen/_8sdp"
+                                android:layout_height="@dimen/_8sdp"
+                                android:background="@drawable/circle_points" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_2sdp"
+                        android:background="@color/gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/textDescripition"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lean1" />
+                    <TextView
+                        android:id="@+id/textDescripition"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_100sdp"
-                        android:padding="@dimen/_20sdp"
-                        android:visibility="gone"
-                        app:SpinKit_Color="@color/colorPrimaryDark"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/poppins_bold"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="@dimen/_2sdp"
+                        android:maxLines="4"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintTop_toBottomOf="@id/view2" />
+
+                    <TextView
+                        android:id="@+id/textReadMore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/brandon_medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="4"
+                        android:text="Read More"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toStartOf="@id/textDescripition"
+                        app:layout_constraintTop_toBottomOf="@id/textDescripition" />
+
+                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tabs"
-                        app:layout_constraintVertical_bias="0" />
+                        android:orientation="horizontal">
+
+
+                            <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_50sdp"
+                            android:padding="@dimen/_10sdp"
+                               android:layout_marginEnd="@dimen/_8sdp"
+                            android:background="@drawable/add_to_cart_layout"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:src="@drawable/minus"
+                                android:id="@+id/min_tot_cart"
+                                android:layout_weight="1"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:gravity="center_vertical|center_horizontal"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:id="@+id/item_catogery_mount"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/_15ssp"
+                                android:fontFamily="@font/poppins_bold"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                />
+                            <ImageView
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:src="@drawable/add"
+                                android:id="@+id/add_to_cart"
+                                />
+
+                        </LinearLayout>
+                         <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:padding="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/add_to_cart_layout2"
+                            android:orientation="horizontal">
+
+                           <TextView
+                               android:layout_width="0dp"
+                               android:layout_height="wrap_content"
+                               android:text="Add To Cart"
+                               android:layout_weight="1"
+                               android:textColor="@color/white"
+                               android:textSize="@dimen/_15ssp"
+                               android:fontFamily="@font/poppins"
+                               android:textStyle="bold"
+                               />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="12 $"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_15ssp"
+                                android:fontFamily="@font/poppins"
+                                android:textStyle="bold"
+                                />
+
+                        </LinearLayout>
+
+
+                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

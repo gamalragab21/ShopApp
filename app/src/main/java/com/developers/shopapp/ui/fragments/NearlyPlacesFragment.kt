@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -55,6 +56,11 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
         MyLocation()
     }
 
+    val navController by lazy {
+        findNavController()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -124,7 +130,8 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
 
         restaurantAdapter.setOnItemClickListener {
             val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
-            findNavController().navigate(R.id.restaurantDetailsFragment,bundle)
+           navController.navigate(R.id.restaurantDetailsFragment,bundle)
+
         }
 
         restaurantAdapter.setOnContactClickListener {
@@ -146,7 +153,7 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                         },
                         onSuccess = { restaurant ->
                             setupViewBeforeLoadData( spinKit = binding.spinKit,
-                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                                shimmerFrameLayout= binding.shimmer, onLoading = false, emptyView = binding.emptyView
                                 )
 
                             restaurant.data?.let {

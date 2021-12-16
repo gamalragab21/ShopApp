@@ -19,7 +19,6 @@
         app:elevation="@dimen/_5sdp"
         android:outlineAmbientShadowColor="@color/colorPrimaryDark"
         android:outlineSpotShadowColor="@color/colorPrimaryDark"
-        android:padding="@dimen/_5sdp"
         android:background="@drawable/bottom_back_ground"
         app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
