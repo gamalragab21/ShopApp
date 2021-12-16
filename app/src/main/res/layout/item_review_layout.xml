@@ -10,6 +10,8 @@
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         android:src="@drawable/ic_restaurant"
+        app:civ_border_color="@color/colorPrimaryDark"
+        app:civ_border_width="@dimen/_2sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/textDescripition"

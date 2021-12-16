@@ -35,14 +35,15 @@ class ReviewsFragment:Fragment(), RateDialogListener {
 
 
    private val args:ReviewsFragmentArgs by navArgs()
-    private var currentProduct:Product=args.product
+    private lateinit var currentProduct:Product
+
     val categoryProductViewModel :CategoryProductViewModel by viewModels()
     @Inject
     lateinit var reviewAdapter: ReviewAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+          currentProduct=args.product
 
         setupRecyclerView()
 

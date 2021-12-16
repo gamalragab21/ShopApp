@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/search_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="item name"
+        android:maxLines="1"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toStartOf="@id/delete_item"
+        android:fontFamily="@font/rta_regular"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/view_line"
+        />
+
+    <ImageView
+        android:id="@+id/delete_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/search_name"
+        app:layout_constraintTop_toTopOf="@id/search_name"
+        app:layout_constraintBottom_toBottomOf="@id/search_name"
+        app:tint="@color/gray" />
+
+    <View
+        android:id="@+id/view_line"
+        app:layout_constraintTop_toBottomOf="@id/search_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

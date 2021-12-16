@@ -118,6 +118,7 @@
         android:fadeScrollbars="true"
         android:nestedScrollingEnabled="true"
         android:scrollbarStyle="insideInset"
+        tools:listitem="@layout/item_review_layout"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         android:scrollbarThumbVertical="@color/colorPrimaryDark"

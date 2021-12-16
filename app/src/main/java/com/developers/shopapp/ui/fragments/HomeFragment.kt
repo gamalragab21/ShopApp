@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
-    val categoryProductViewModel:CategoryProductViewModel by viewModels()
+    val categoryProductViewModel: CategoryProductViewModel by viewModels()
 
     @Inject
     lateinit var popularFoodAdapter: PopularFoodAdapter
@@ -78,12 +78,21 @@ class HomeFragment : Fragment() {
         setTabs()
 
         binding.seeMorePopular.setOnClickListener {
-             val action=HomeFragmentDirections.actionNavigationHomeToPopularFragmentProduct()
-            findNavController().navigate(action)
+            val action = HomeFragmentDirections.actionNavigationHomeToPopularFragmentProduct()
+            navController.navigate(action)
         }
 
 
-        hideBottomSheetOrShowWhenScroll(scrollView = binding.scrollView, activity = requireActivity())
+        binding.inputEditTextSearch.setOnClickListener {
+            val action = HomeFragmentDirections.actionNavigationHomeToSearchRestaurantFragment()
+            navController.navigate(action)
+        }
+        hideBottomSheetOrShowWhenScroll(
+            scrollView = binding.scrollView,
+            activity = requireActivity()
+        )
+
+
 
 
     }
@@ -91,7 +100,7 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerViewPopularProducts() = binding.homeFragmentRecyclerPopular.apply {
         itemAnimator = null
         isNestedScrollingEnabled = true
-        layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,true)
+        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true)
         adapter = popularFoodAdapter
 
     }
@@ -101,26 +110,32 @@ class HomeFragment : Fragment() {
             categoryProductViewModel.popularProductStatus.collect(
                 EventObserver(
                     onLoading = {
-                        setupViewBeforeLoadData( spinKit = binding.spinKitFav,
-                            shimmerFrameLayout= binding.shimmer, onLoading = true)
+                        setupViewBeforeLoadData(
+                            spinKit = binding.spinKitFav,
+                            shimmerFrameLayout = binding.shimmer, onLoading = true
+                        )
                     },
                     onSuccess = { poplarRestaurant ->
-                        setupViewBeforeLoadData( spinKit = binding.spinKitFav,
-                            shimmerFrameLayout= binding.shimmer, onLoading = false)
+                        setupViewBeforeLoadData(
+                            spinKit = binding.spinKitFav,
+                            shimmerFrameLayout = binding.shimmer, onLoading = false
+                        )
                         poplarRestaurant.data?.let {
-                            if(it.isEmpty())setupViewBeforeLoadData(
-                                onLoading = false, onError = true
-                                , emptyView = binding.leanerFav)
-                            binding.leanerFav.isVisible=it.isNotEmpty()
+                            if (it.isEmpty()) setupViewBeforeLoadData(
+                                onLoading = false, onError = true, emptyView = binding.leanerFav
+                            )
+                            binding.leanerFav.isVisible = it.isNotEmpty()
                             binding.seeMorePopular.isVisible = it.size > 10
                             popularFoodAdapter.products = it
                         }
                     },
                     onError = {
-                        Log.e(TAG, "subscribeToObservers: ${it} ", )
-                        setupViewBeforeLoadData( spinKit = binding.spinKitFav,
-                            shimmerFrameLayout= binding.shimmer, onLoading = false,
-                        onError = true, errorMessage = it)
+                        Log.e(TAG, "subscribeToObservers: ${it} ")
+                        setupViewBeforeLoadData(
+                            spinKit = binding.spinKitFav,
+                            shimmerFrameLayout = binding.shimmer, onLoading = false,
+                            onError = true, errorMessage = it
+                        )
                         snackbar(it)
                     }
                 )
@@ -137,8 +152,8 @@ class HomeFragment : Fragment() {
 
 //            val bundle = bundleOf(Constants.CURRENT_PRODUCT to it)
 //            findNavController().navigate(R.id.foodDetailsFragment,bundle)
-            val action=HomeFragmentDirections.actionNavigationHomeToFoodDetailsFragment(it)
-            navController .navigate(action)
+            val action = HomeFragmentDirections.actionNavigationHomeToFoodDetailsFragment(it)
+            navController.navigate(action)
         }
 
 

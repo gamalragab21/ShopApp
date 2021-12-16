@@ -13,9 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -24,13 +22,10 @@ import com.developers.shopapp.databinding.FragmentDetailsFoodBinding
 import com.developers.shopapp.entities.Product
 import com.developers.shopapp.entities.ProductImage
 import com.developers.shopapp.entities.RateProduct
-import com.developers.shopapp.entities.RateRestaurant
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.ImageSliderAdapter
 import com.developers.shopapp.ui.dialog.RateDialogListener
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
-import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
-import com.developers.shopapp.utils.Constants
 import com.developers.shopapp.utils.Constants.TAG
 import com.developers.shopapp.utils.Utils
 import com.developers.shopapp.utils.Utils.getTimeAgo
@@ -66,19 +61,19 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
         Log.i(TAG, "onViewCreated: ")
         currentFood = args.product
 
-        loadingImageSlider(currentFood.images)
+
 
         bindFoodData(currentFood)
 
 
-        quickAction(currentFood)
+        quickAction()
 
         subscribeToObservers()
 
     }
 
 
-    private fun quickAction(currentFood: Product) {
+    private fun quickAction() {
         binding.btnMark.setOnClickListener {
             if (currentFood.inFav!!) {
                 categoryProductViewModel.deleteFavProduct(currentFood)
@@ -119,7 +114,6 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
             val action =
                 FoodDetailsFragmentDirections.actionFoodDetailsFragmentToReviewsFragment(currentFood)
-
             findNavController().navigate(action)
         }
 
@@ -150,83 +144,82 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
     private fun subscribeToObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
 
-                // product
-                launch {
-                    categoryProductViewModel.findProductStatus.collect(
-                        EventObserver(
-                            onLoading = {
-                            },
-                            onSuccess = { category ->
+            // product
+            launch {
+                categoryProductViewModel.findProductStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = { category ->
 
-                                category.data?.let {
+                            category.data?.let {
 
-
-                                    Log.i(
-                                        TAG,
-                                        "findProductStatus: ${currentFood.rating.toString()}"
-                                    )
-                                    bindFoodData(it)
-                                }
-                            },
-                            onError = {
-                                snackbar(it)
+                               currentFood=it.copy()
+                                Log.i(
+                                    TAG,
+                                    "findProductStatus: ${currentFood.rating.toString()}"
+                                )
+                                bindFoodData(currentFood)
                             }
-                        )
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
                     )
-                }
-                launch {
-                    categoryProductViewModel.deleteFavProductStatus.collect(
-                        EventObserver(
-                            onLoading = {
-                            },
-                            onSuccess = {
-                                snackbar(it.message)
-                            },
-                            onError = {
-                                snackbar(it)
-                            }
-                        )
-                    )
-                }
-
-                launch {
-                    categoryProductViewModel.setFavProductStatus.collect(
-                        EventObserver(
-                            onLoading = {
-                            },
-                            onSuccess = {
-                                snackbar(it.message)
-                            },
-                            onError = {
-                                snackbar(it)
-                            }
-                        )
-                    )
-                }
-
-                launch {
-                    categoryProductViewModel.myRatingProductStatus.collect(
-                        EventObserver(
-                            onLoading = {
-                            },
-                            onSuccess = {
-                                snackbar(it.message)
-                                categoryProductViewModel.findProductById(it.data!!.productId)
-                            },
-                            onError = {
-                                snackbar(it)
-                            }
-                        )
-                    )
-                }
-
+                )
             }
-        
+            launch {
+                categoryProductViewModel.deleteFavProductStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = {
+                            snackbar(it.message)
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
+
+            launch {
+                categoryProductViewModel.setFavProductStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = {
+                            snackbar(it.message)
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
+
+            launch {
+                categoryProductViewModel.myRatingProductStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = {
+                            snackbar(it.message)
+                            categoryProductViewModel.findProductById(it.data!!.productId)
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
+
+        }
+
 
     }
 
     private fun bindFoodData(it: Product) {
-        currentFood = it
         Log.i(TAG, "bindFoodData: ${currentFood.rating.toString()}")
         binding.foodName.text = it.productName
         binding.rating.text = "${it.rateCount}"
@@ -245,9 +238,12 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
         } else {
             binding.btnMark.setImageResource(R.drawable.not_save)
         }
+        loadingImageSlider(it.images)
+
     }
 
     private fun loadingImageSlider(pictures: List<ProductImage>) {
+        Log.i(TAG, "loadingImageSlider: ${pictures.size}")
         imageSliderAdapter.images = pictures
         binding.sliderViewPager.offscreenPageLimit = 1
         binding.sliderViewPager.adapter = imageSliderAdapter
@@ -264,20 +260,22 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
     }
 
     private fun setUpSliderUpIndicators(count: Int) {
-        val indictors = arrayOfNulls<ImageView>(count)
-        val layoutParms = LinearLayout.LayoutParams(
+        binding.layoutSliderIndicators.removeAllViews()
+        Log.i(TAG, "setUpSliderUpIndicators: $count")
+        val indicators = arrayOfNulls<ImageView>(count)
+        val layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        layoutParms.setMargins(8, 0, 8, 0)
-        for (i in indictors.indices) {
-            indictors[i] = ImageView(requireContext())
-            indictors[i]?.setImageDrawable(
+        layoutParams.setMargins(8, 0, 8, 0)
+        for (i in indicators.indices) {
+            indicators[i] = ImageView(requireContext())
+            indicators[i]?.setImageDrawable(
                 ContextCompat.getDrawable(
                     requireContext(), R.drawable.background_slider_indicator_inactive
                 )
             )
-            indictors[i]?.layoutParams = layoutParms
-            binding.layoutSliderIndicators.addView(indictors[i])
+            indicators[i]?.layoutParams = layoutParams
+            binding.layoutSliderIndicators.addView(indicators[i])
         }
         binding.layoutSliderIndicators.isVisible = true
         setCurrentSliderIndicators(0)

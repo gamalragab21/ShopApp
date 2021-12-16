@@ -20,9 +20,10 @@
         <action
             android:id="@+id/action_navigation_home_to_foodDetailsFragment"
             app:destination="@id/foodDetailsFragment" />
+
         <action
-            android:id="@+id/action_navigation_home_to_foodDetailsFragment2"
-            app:destination="@id/foodDetailsFragment" />
+            android:id="@+id/action_navigation_home_to_searchRestaurantFragment"
+            app:destination="@id/searchRestaurantFragment" />
     </fragment>
 
     <fragment
@@ -132,6 +133,12 @@
             android:name="product"
             app:argType="com.developers.shopapp.entities.Product" />
     </fragment>
+    <fragment
+        android:id="@+id/searchRestaurantFragment"
+        android:name="com.developers.shopapp.ui.fragments.SearchRestaurantFragment"
+        android:label="SearchRestaurantFragment"
+        tools:layout="@layout/fragment_restaurant_search"
+        />
 
 
 </navigation>
