@@ -2,6 +2,8 @@ package com.developers.shopapp.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
@@ -11,6 +13,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.developers.shopapp.ui.activities.MainActivity
@@ -23,23 +26,38 @@ import okhttp3.Call
 import okhttp3.ResponseBody
 import retrofit2.HttpException;
 import java.io.IOException
-import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.fragment.app.FragmentManager
 import com.developers.shopapp.ui.dialog.MyCustomRateDialog
 import com.developers.shopapp.ui.dialog.RateDialogListener
+import java.lang.Exception
+import java.net.*
 
 
 fun isNetworkConnected(@ApplicationContext context: Context): Flow<Boolean> = flow {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        cm?.let {
+        cm.let {
             val activeNetwork = cm.activeNetworkInfo
             emit(activeNetwork != null && activeNetwork.isConnectedOrConnecting)
         }
 
         emit(false)
     }
+
+
+fun isOnline(): Flow<Boolean> = flow {
+     try {
+        val timeoutMs = 1500
+        val sock = Socket()
+        val sockaddr: SocketAddress = InetSocketAddress("8.8.8.8", 53)
+        sock.connect(sockaddr, timeoutMs)
+        sock.close()
+        emit(true)
+    } catch (e: IOException) {
+        emit(false)
+    }
+}
 
 fun setupTheme(isDarkMode: Boolean) {
     if (isDarkMode) {
@@ -84,6 +102,7 @@ fun dateFormatter(Date: String?): Long {
 }
 
 fun Activity.setFullScreen(){
+
 
     window!!.setFlags(
         WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -171,6 +190,18 @@ fun showRatingDialog(
         .setListenerWith(listener)
         .setTitle("Rate Our $itemName ")
         .show(childFragmentManager)
+}
+
+ fun setTextViewDrawableColor(textView: TextView, color: Int) {
+    for (drawable in textView.compoundDrawables) {
+        if (drawable != null) {
+            drawable.colorFilter =
+                PorterDuffColorFilter(
+                    ContextCompat.getColor(textView.context, color),
+                    PorterDuff.Mode.SRC_IN
+                )
+        }
+    }
 }
 
 

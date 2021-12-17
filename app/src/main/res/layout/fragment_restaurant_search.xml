@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/_8sdp">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -25,6 +25,7 @@
         app:endIconDrawable="@drawable/filter"
         app:endIconMode="custom"
         app:endIconTint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintEnd_toStartOf="@id/existTv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,9 +35,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeActionLabel="@string/clear_search_button_content_description"
+            android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
-            android:imeActionLabel="@string/clear_search_button_content_description"
             android:padding="@dimen/_8sdp"
 
             />
@@ -55,61 +57,161 @@
         app:layout_constraintStart_toEndOf="@id/inputTextLayoutSearch"
         app:layout_constraintTop_toTopOf="@+id/inputTextLayoutSearch" />
 
-    <TextView
-        android:id="@+id/historyTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="History"
-        android:padding="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@id/inputTextLayoutSearch"
-        android:layout_marginTop="@dimen/_12sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/clearAll"
-        android:textColor="@color/black"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="@dimen/_12ssp"
-        />
-
-    <TextView
-        android:id="@+id/clearAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear All"
-        android:padding="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/historyTv"
-        app:layout_constraintBottom_toBottomOf="@id/historyTv"
-        app:layout_constraintStart_toEndOf="@id/historyTv"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="@dimen/_12ssp"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewHistorySearch"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/historyTv"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:itemCount="3"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_search_recent"
-        />
-    <TextView
-        android:id="@+id/viewMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View More"
-        android:layout_marginTop="@dimen/_8sdp"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewHistorySearch"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorPrimary"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="@dimen/_12ssp"
-        android:gravity="center_vertical"
-        app:drawableTint="@color/colorPrimary"
-        app:drawableEndCompat="@drawable/view_more" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputTextLayoutSearch">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/historyTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="@dimen/_5sdp"
+                    android:text="History"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toTopOf="@+id/recyclerViewHistorySearch"
+                    app:layout_constraintEnd_toStartOf="@id/clearAll"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/clearAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Clear All"
+                    android:visibility="gone"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@id/historyTv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/historyTv"
+                    app:layout_constraintTop_toTopOf="@id/historyTv" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewHistorySearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:nestedScrollingEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/historyTv"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_search_recent" />
+
+                <TextView
+                    android:id="@+id/emptySearchTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:gravity="center_horizontal"
+                    android:text="No Data Found"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/viewMore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/historyTv"
+                     android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/rta_regular"
+                    android:textSize="@dimen/_25sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/viewMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center_vertical"
+                    android:text="View More"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableEndCompat="@drawable/view_more"
+                    app:drawableTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toTopOf="@id/popularTagsTv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewHistorySearch" />
+
+                <TextView
+                    android:id="@+id/popularTagsTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Popular Tags"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toStartOf="@id/viewAllPopularTags"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewMore" />
+
+                <TextView
+                    android:id="@+id/viewAllPopularTags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="@dimen/_5sdp"
+                    android:text="View All"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@id/popularTagsTv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/popularTagsTv"
+                    app:layout_constraintTop_toTopOf="@id/popularTagsTv" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewPopularTags"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:nestedScrollingEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/popularTagsTv"
+                    tools:itemCount="3"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:listitem="@layout/item_popular_tags" />
+
+                <TextView
+                    android:id="@+id/emptyPopularTagsTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:gravity="center_horizontal"
+                    android:text="No Data Found"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/popularTagsTv"
+                    tools:itemCount="3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/rta_regular"
+                    android:textSize="@dimen/_25sdp"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

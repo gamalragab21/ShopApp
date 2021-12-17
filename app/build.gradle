@@ -145,6 +145,7 @@ dependencies {
     implementation 'com.stepstone.apprating:app-rating:2.3.1'
     implementation 'com.github.piasy:GlideImageLoader:1.8.1'
     implementation("com.android.support:palette-v7:28.0.0")
+    implementation "com.airbnb.android:lottie:4.2.2"
 
 
     // For developers using AndroidX in their applications

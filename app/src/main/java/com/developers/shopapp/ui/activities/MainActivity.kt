@@ -3,17 +3,18 @@ package com.developers.shopapp.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
-import androidx.navigation.findNavController
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.developers.shopapp.R
 import com.developers.shopapp.databinding.ActivityMainBinding
-import com.developers.shopapp.utils.deleteFullScreen
-import com.developers.shopapp.utils.setFullScreen
+import com.developers.shopapp.utils.isNetworkConnected
+import com.developers.shopapp.utils.isOnline
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.prefs.Preferences
 
 @AndroidEntryPoint
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
+        // check internet
+
+        lifecycleScope.launch {
+            
+        }
 // her bottomNavigation is visible in all time ( means in all fragments )
 
         val navHostFragment =
@@ -44,12 +51,16 @@ class MainActivity : AppCompatActivity() {
        navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
             when(destination.id){
-                R.id.restaurantDetailsFragment,R.id.foodDetailsFragment,R.id.mapsFragment,R.id.imageViewerFragment->{
-                   setFullScreen()
+                R.id.restaurantDetailsFragment,
+                R.id.foodDetailsFragment,
+                R.id.mapsFragment,
+                R.id.imageViewerFragment,
+                R.id.searchRestaurantFragment->{
+                    // setFullScreen()
                     hide()
                 }
                 else->{
-                    deleteFullScreen()
+                  //  deleteFullScreen()
                     show()
                 }
 
@@ -62,10 +73,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     //(activity as MainActivity?)!!.hide()
-    public open fun show() {
+    fun show() {
         binding.navView.visibility= View.VISIBLE
     }
-    open fun hide() {
+    fun hide() {
         binding.navView.visibility= View.GONE
     }
 }

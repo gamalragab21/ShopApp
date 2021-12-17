@@ -17,4 +17,7 @@
     <string name="rate_app">Rate App</string>
     <string name="read_more">Read More</string>
     <string name="read_less">Read Less</string>
+    <string name="view_more">View More</string>
+    <string name="view_all">View All</string>
+    <string name="view_less">View Less</string>
 </resources>

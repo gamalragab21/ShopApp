@@ -4,8 +4,56 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_internet"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <com.airbnb.lottie.LottieAnimationView
+
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:layout_constraintVertical_bias="0.2"
+            app:lottie_rawRes="@raw/no_internet" />
+        <TextView
+            android:id="@+id/no_internet_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No InterNet Connection"
+            app:layout_constraintTop_toBottomOf="@id/animation_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/retry"
+          android:layout_width="@dimen/_120sdp"
+          android:layout_height="wrap_content"
+          style="@style/button_style"
+          android:text="Retry"
+          android:textSize="@dimen/_15ssp"
+          android:fontFamily="@font/rta_regular"
+
+          android:layout_marginTop="@dimen/_10sdp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/no_internet_tv"
+          />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -13,19 +61,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        app:itemIconTint="@color/selector"
-        app:itemTextColor="@color/selector"
+        android:background="@drawable/bottom_back_ground"
         android:elevation="@dimen/_5sdp"
-        app:elevation="@dimen/_5sdp"
         android:outlineAmbientShadowColor="@color/colorPrimaryDark"
         android:outlineSpotShadowColor="@color/colorPrimaryDark"
-        android:background="@drawable/bottom_back_ground"
-        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
+        app:elevation="@dimen/_5sdp"
+        app:itemIconTint="@color/selector"
+        app:itemTextColor="@color/selector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 
     <androidx.fragment.app.FragmentContainerView

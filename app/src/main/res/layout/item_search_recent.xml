@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="item name"
         android:maxLines="1"
-        android:padding="@dimen/_5sdp"
+        android:padding="@dimen/_3sdp"
         android:layout_marginTop="@dimen/_12sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,14 +20,20 @@
         android:fontFamily="@font/rta_regular"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@id/view_line"
         />
 
     <ImageView
         android:id="@+id/delete_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:src="@drawable/close"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+
+        android:padding="@dimen/_3sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/search_name"
         app:layout_constraintTop_toTopOf="@id/search_name"

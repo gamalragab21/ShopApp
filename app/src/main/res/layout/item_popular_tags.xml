@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_3sdp"
+    android:background="@drawable/round_back_with_sroke_100"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="item name"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/rta_regular"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

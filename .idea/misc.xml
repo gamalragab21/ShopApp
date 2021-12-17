@@ -8,6 +8,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/drawable-anydpi/location_profile.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable-anydpi/search.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable-anydpi/tabs_arrow.xml" value="0.2671875" />
+        <entry key="..\:/Shopapp/app/src/main/res/drawable-anydpi/view_less.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable-anydpi/view_more.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable-v24/bottom_back_ground.xml" value="0.2713541666666667" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable-v24/thumb_swithc.xml" value="0.2671875" />
@@ -33,12 +34,14 @@
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_image.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_rate_feedback.xml" value="0.265625" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_rate_star.xml" value="0.265625" />
+        <entry key="..\:/Shopapp/app/src/main/res/drawable/item_popular_tags.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/item_search_recent.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/money.xml" value="1.2642857142857142" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/money_yellow.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/offer_profile.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/profile_mange_account.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/profile_payment.xml" value="0.2671875" />
+        <entry key="..\:/Shopapp/app/src/main/res/drawable/radius_all_side.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/raduis_top_background.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/rate_background.xml" value="0.265625" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/rate_button_blue.xml" value="0.265625" />
@@ -94,6 +97,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_food_layout.xml" value="0.33" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_popular_food.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_popular_food_placholder.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/item_popular_tags.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_recent_layout.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_restaurant_food_placholder.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_review_layout.xml" value="0.25104166666666666" />

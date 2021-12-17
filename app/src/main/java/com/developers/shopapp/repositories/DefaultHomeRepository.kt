@@ -1,6 +1,6 @@
 package com.developers.shopapp.repositories
 
-import android.provider.Telephony
+import com.developers.shopapp.data.local.SearchHistoryDao
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.entities.*
 import com.developers.shopapp.helpers.Resource
@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 class DefaultHomeRepository @Inject constructor(
     private val apiShopService: ApiShopService,
+    private val searchHistoryDao: SearchHistoryDao,
     @IOThread
     private val dispatcher: CoroutineDispatcher
 ) {
@@ -195,6 +196,35 @@ class DefaultHomeRepository @Inject constructor(
     suspend fun updateRateProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> = withContext(dispatcher) {
         safeCall {
             val result=apiShopService.updateRateProduct(rateProduct)
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun getAllSearchHistory(countItem:Int): Resource<List<SearchHistory>> = withContext(dispatcher){
+           safeCall {
+               val result=searchHistoryDao.getAllSearchHistory(countItem)
+               Resource.Success(result)
+           }
+    }
+
+    suspend fun insertNewSearchKeyWord(searchHistory: SearchHistory): Resource<Long> = withContext(dispatcher){
+        safeCall {
+
+            val result=searchHistoryDao.insertSearchHistory(searchHistory)
+            Resource.Success(result)
+        }
+    }
+
+   suspend fun deleteSearchHistory(id: Int): Resource<Int> = withContext(dispatcher){
+       safeCall {
+           val result=searchHistoryDao.deleteSearchHistory(id)
+           Resource.Success(result)
+       }
+   }
+
+    suspend fun clearAllSearchHistory(): Resource<Int> = withContext(dispatcher){
+        safeCall {
+            val result=searchHistoryDao.clearAllSearchHistory()
             Resource.Success(result)
         }
     }

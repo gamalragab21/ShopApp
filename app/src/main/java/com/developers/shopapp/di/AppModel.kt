@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -11,6 +13,7 @@ import com.developers.shopapp.qualifiers.IOThread
 import com.developers.shopapp.qualifiers.MainThread
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
+import com.developers.shopapp.data.local.SearchHistoryDataBase
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.qualifiers.Token
 import com.developers.shopapp.ui.fragments.ReviewsFragment
@@ -83,16 +86,16 @@ object AppModel {
 
     // TODO: 11/8/2021  For implementation AppDatabase
 
-//    @Provides
-//    @Singleton
-//    fun provideAppDatabase(@ApplicationContext appContext: Context): JobDataBase {
-//        return Room.databaseBuilder(
-//            appContext,
-//            JobDataBase::class.java,
-//            "job_DB"
-//        ).setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
-//            .build()
-//    }
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext appContext: Context): SearchHistoryDataBase {
+        return Room.databaseBuilder(
+            appContext,
+            SearchHistoryDataBase::class.java,
+            "shop_db"
+        ).setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
+            .build()
+    }
 
 
 
