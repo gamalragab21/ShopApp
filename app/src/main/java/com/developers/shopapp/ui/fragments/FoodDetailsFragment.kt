@@ -84,6 +84,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                 currentFood.inFav = true
                 binding.btnMark.setImageResource(R.drawable.saved)
             }
+
         }
 
         binding.textReadMore.setOnClickListener {
@@ -136,8 +137,8 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             )
         }
         binding.search.setOnClickListener {
-            Log.i(TAG, "currentFood is: ${currentFood.rating.toString()}")
-
+           val action=FoodDetailsFragmentDirections.actionFoodDetailsFragmentToFilterFragment()
+            findNavController().navigate(action)
         }
     }
 

@@ -23,6 +23,7 @@ import com.developers.shopapp.entities.Product
 import com.developers.shopapp.entities.ProductImage
 import com.developers.shopapp.entities.RateProduct
 import com.developers.shopapp.entities.User
+import com.developers.shopapp.helpers.ConnectionLiveData
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.PopularFoodAdapter
 import com.developers.shopapp.ui.adapters.ViewPagerFragmentAdapter
@@ -55,6 +56,7 @@ class HomeFragment : Fragment() {
 
 
     private val authenticationViewModel: AuthenticationViewModel by viewModels()
+    private lateinit var connectionLiveData: ConnectionLiveData
 
     private val navController by lazy {
         findNavController()
@@ -64,6 +66,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        connectionLiveData= ConnectionLiveData(requireContext())
+
+        connectionLiveData.observe(viewLifecycleOwner,{networkAvailable->
+
+            binding.noConnection.root.isVisible=!networkAvailable
+        })
 
         val myHomeLocation = dataStoreManager.glucoseFlow.value
 
@@ -94,7 +103,31 @@ class HomeFragment : Fragment() {
 
 
 
+        setupActionToolBar()
 
+    }
+
+    private fun setupActionToolBar() {
+        binding.breakFast.setOnClickListener {
+            startToFilterFragment()
+        }
+        binding.burger.setOnClickListener {
+            startToFilterFragment()
+        }
+        binding.pizza.setOnClickListener {
+            startToFilterFragment()
+        }
+        binding.cafe.setOnClickListener {
+            startToFilterFragment()
+        }
+        binding.drinks.setOnClickListener {
+            startToFilterFragment()
+        }
+    }
+
+  private fun startToFilterFragment(){
+        val action=HomeFragmentDirections.actionNavigationHomeToFilterFragment()
+        navController.navigate(action)
     }
 
     private fun setupRecyclerViewPopularProducts() = binding.homeFragmentRecyclerPopular.apply {

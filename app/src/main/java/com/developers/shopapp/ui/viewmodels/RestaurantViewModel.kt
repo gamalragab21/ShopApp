@@ -116,7 +116,7 @@ class RestaurantViewModel @Inject constructor(
             _popularRestaurantStatus.emit(Event(result))
         }
     }
-    fun filterRestaurant(it: Editable) {
+    fun filterRestaurant(it: String) {
         viewModelScope.launch(dispatcher) {
             _filterRestaurantStatus.emit(Event(Resource.Loading()))
             val result = repository.filterRestaurant(it.toString())

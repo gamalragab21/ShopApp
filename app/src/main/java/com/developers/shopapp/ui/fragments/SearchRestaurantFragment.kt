@@ -1,5 +1,7 @@
 package com.developers.shopapp.ui.fragments
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +15,6 @@ import com.developers.shopapp.databinding.FragmentRestaurantSearchBinding
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.SearchHistoryAdapter
 import com.developers.shopapp.ui.viewmodels.SearchViewModel
-import com.developers.shopapp.utils.snackbar
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,21 +26,28 @@ import com.developers.shopapp.utils.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import com.developers.shopapp.R
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.ui.adapters.PopularTagsAdapter
-import com.developers.shopapp.utils.setTextViewDrawableColor
-import com.developers.shopapp.utils.setupViewBeforeLoadData
+import com.developers.shopapp.ui.adapters.RestaurantAdapter
+import com.developers.shopapp.ui.viewmodels.RestaurantViewModel
+import com.developers.shopapp.utils.*
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
 
 @InternalCoroutinesApi
 @AndroidEntryPoint
-class SearchRestaurantFragment : Fragment() {
+class SearchRestaurantFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private var _binding: FragmentRestaurantSearchBinding? = null
     private val binding get() = _binding!!
 
     private val searchViewModel: SearchViewModel by viewModels()
+    private val restaurantViewModel: RestaurantViewModel by viewModels()
 
     @Inject
     lateinit var searchHistoryAdapter: SearchHistoryAdapter
@@ -47,13 +55,20 @@ class SearchRestaurantFragment : Fragment() {
     @Inject
     lateinit var popularTagsAdapter: PopularTagsAdapter
 
+    @Inject
+    lateinit var restaurantAdapter: RestaurantAdapter
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val dataUserInfo = dataStoreManager.glucoseFlow.value
 
+        restaurantAdapter.laLng = dataUserInfo?.latLng
         setupRecyclerViewPopularTags()
         setupRecyclerViewSearchHistory()
+        setupRecyclerViewRecent()
 
         subscribeToObservers()
 
@@ -64,6 +79,20 @@ class SearchRestaurantFragment : Fragment() {
             }
             false
         })
+
+        binding.inputTextLayoutSearch.editText!!.doOnTextChanged { text, start, before, count ->
+            if(text!!.isEmpty()){
+                binding.rootContent.visibility=View.VISIBLE
+                binding.rootItems.visibility=View.GONE
+
+            }else{
+                binding.rootItems.visibility=View.VISIBLE
+                binding.rootContent.visibility=View.GONE
+
+            }
+            binding.emptyView.isVisible=false
+
+        }
 
 
         binding.viewMore.setOnClickListener {
@@ -98,13 +127,47 @@ class SearchRestaurantFragment : Fragment() {
 
             }
         }
-        adapterActions()
+        adapterSearchHistoryActions()
+        adapterRestaurantActions()
+        adapterPopularTagsActions()
 
     }
 
-    private fun adapterActions() {
+    private fun adapterPopularTagsActions() {
+        popularTagsAdapter.setOnItemClickListener {
+            binding.inputTextLayoutSearch.editText!!.setText(it.restaurantName)
+            performSearch(it.restaurantName)
+        }
+    }
+
+    private fun adapterRestaurantActions() {
+        restaurantAdapter.setOnSavedClickListener { restaurant, imageView, position->
+            if (restaurant.inFav!!) {
+                restaurantViewModel.deleteFavRestaurant(restaurant)
+                imageView.setImageResource(R.drawable.not_save)
+                restaurant.inFav = false
+            } else {
+                restaurantViewModel.setFavRestaurant(restaurant)
+                restaurant.inFav = true
+                imageView.setImageResource(R.drawable.saved)
+            }
+        }
+
+        restaurantAdapter.setOnItemClickListener {
+            val bundle = bundleOf(Constants.CURRENT_RESTAURANT to it)
+            findNavController().navigate(R.id.restaurantDetailsFragment,bundle)
+        }
+
+        restaurantAdapter.setOnContactClickListener {
+            restaurantViewModel.callPhone.postValue(it.contact)
+            requestPermissions()
+        }
+    }
+
+    private fun adapterSearchHistoryActions() {
         searchHistoryAdapter.setOnItemClickListener {
             binding.inputTextLayoutSearch.editText!!.setText(it.searchName)
+            performSearch(it.searchName)
         }
 
         searchHistoryAdapter.setonCloseImageClickListener {
@@ -113,8 +176,10 @@ class SearchRestaurantFragment : Fragment() {
     }
 
     private fun performSearch(searchText: String) {
-        if (searchText.isNotEmpty())
+        if (searchText.isNotEmpty()){
+            restaurantViewModel.filterRestaurant(searchText)
             searchViewModel.insertNewSearchKeyWord(searchText)
+        }
     }
 
     private fun subscribeToObservers() {
@@ -127,6 +192,9 @@ class SearchRestaurantFragment : Fragment() {
                         onLoading = {
                         },
                         onSuccess = {
+                            searchHistoryAdapter.viewMore = it.size<=3
+                            setTextForViewMoreOrLess(it.size<=3)
+
                             binding.emptySearchTv.isVisible = it.isEmpty()
                             binding.viewMore.isVisible = it.isNotEmpty()
                             binding.clearAll.isVisible = it.isNotEmpty()
@@ -200,7 +268,7 @@ class SearchRestaurantFragment : Fragment() {
             }
 
             launch {
-                searchViewModel.popularRestaurantStatus.collect(
+                restaurantViewModel.popularRestaurantStatus.collect(
                     EventObserver(
                         onLoading = {},
                         onSuccess = { poplarRestaurant ->
@@ -216,6 +284,22 @@ class SearchRestaurantFragment : Fragment() {
                         }
                     )
                 )
+            }
+
+            launch {
+                restaurantViewModel.filterRestaurantStatus.collect(EventObserver(
+                    onError = {
+                        snackbar(it)
+                    },
+                    onLoading = null,
+                    onSuccess = {
+                        it.data?.let {
+                            binding.emptyView.isVisible=it.isEmpty()
+                            Log.i(TAG, "subscribeToObservers: ${it.toString()}")
+                            restaurantAdapter.restaurantes=it
+                        }
+                    }
+                ))
             }
 
         }
@@ -250,7 +334,13 @@ class SearchRestaurantFragment : Fragment() {
         layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         adapter = popularTagsAdapter
     }
+    private fun setupRecyclerViewRecent() = binding.recyclerViewRestaurant.apply {
+        itemAnimator = null
+        isNestedScrollingEnabled = true
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = restaurantAdapter
 
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -270,6 +360,57 @@ class SearchRestaurantFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         searchViewModel.getAllSearchHistory(3)
-        searchViewModel.getPopularRestaurant()
+        restaurantViewModel.getPopularRestaurant()
+    }
+    private fun requestPermissions() {
+
+        if (PermissionsUtility.hasCallPhonePermissions(requireContext())) {
+            callPhone()
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept Call Phone permissions to use this Option.",
+                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.CALL_PHONE
+            )
+        } else {
+            EasyPermissions.requestPermissions(
+                this,
+                "you need to accept Call Phone permissions to use this Option.",
+                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+                Manifest.permission.CALL_PHONE
+            )
+        }
+    }
+
+    private fun callPhone() {
+        try {
+            Utils.startCallIntent(requireContext(),restaurantViewModel.callPhone.value.toString())
+        }catch (e:Exception){
+            snackbar("Phone Not Found")
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        callPhone()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        } else {
+            requestPermissions()
+        }
     }
 }

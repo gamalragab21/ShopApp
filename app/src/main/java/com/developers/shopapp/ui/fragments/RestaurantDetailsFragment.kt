@@ -196,6 +196,11 @@ class RestaurantDetailsFragment : Fragment(), EasyPermissions.PermissionCallback
             findNavController().navigate(action)
         }
 
+        binding.search.setOnClickListener {
+            val action=RestaurantDetailsFragmentDirections.actionRestaurantDetailsFragmentToSearchRestaurantFragment()
+            navController.navigate(action)
+        }
+
     }
 
     private fun setupActionTabsCategory(categories: List<Category>) {

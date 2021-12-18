@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_8sdp"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/image_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_icon"
+        app:layout_constraintTop_toTopOf="@+id/editFilter"
+        android:padding="@dimen/_3sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/editFilter"
+        />
+    <ImageView
+        android:id="@+id/editFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/_3sdp"
+        app:layout_constraintBottom_toTopOf="@id/filterTv"
+
+        app:tint="@color/colorPrimary" />
+
+
+    <TextView
+        android:id="@+id/filterTv"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter :"
+        android:fontFamily="@font/rta_regular"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_15ssp"
+        app:layout_constraintTop_toBottomOf="@id/image_back"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@id/filterName"
+        />
+    <TextView
+        android:id="@+id/filterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter Name"
+        android:maxEms="20"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:fontFamily="@font/rta_regular"
+        android:padding="@dimen/_5sdp"
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toEndOf="@id/filterTv"
+        app:layout_constraintTop_toBottomOf="@id/image_back"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/item_filter_background"
+        app:layout_constraintEnd_toStartOf="@id/filterPrice"
+        android:drawablePadding="@dimen/_3sdp"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/close"
+        app:drawableTint="@color/black"
+        />
+    <TextView
+        android:id="@+id/filterPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hight Price"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:fontFamily="@font/rta_regular"
+        android:padding="@dimen/_5sdp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/filterRating"
+        android:maxLines="1"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toEndOf="@id/filterName"
+        app:layout_constraintTop_toBottomOf="@id/image_back"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/item_filter_background"
+        android:drawablePadding="@dimen/_3sdp"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/close"
+        app:drawableTint="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/filterRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 Rating"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:fontFamily="@font/rta_regular"
+        android:padding="@dimen/_5sdp"
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toEndOf="@id/filterPrice"
+        app:layout_constraintTop_toBottomOf="@id/image_back"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/item_filter_background"
+        android:drawablePadding="@dimen/_3sdp"
+        android:gravity="center_vertical"
+        app:drawableEndCompat="@drawable/close"
+        app:drawableTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

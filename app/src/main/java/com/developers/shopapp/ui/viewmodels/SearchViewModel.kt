@@ -41,10 +41,6 @@ class SearchViewModel @Inject constructor(
     private val _clearAllSearchHistoryStatus = MutableStateFlow<Event<Resource<Int>>>(Event(Resource.Init()))
     val clearAllSearchHistoryStatus: MutableStateFlow<Event<Resource<Int>>> = _clearAllSearchHistoryStatus
 
-    private val _popularRestaurantStatus =
-        MutableStateFlow<Event<Resource<MyResponse<List<Restaurant>>>>>(Event(Resource.Init()))
-    val popularRestaurantStatus: MutableStateFlow<Event<Resource<MyResponse<List<Restaurant>>>>> = _popularRestaurantStatus
-
 
     fun getAllSearchHistory(countItem: Int) {
         viewModelScope.launch(dispatcher) {
@@ -80,12 +76,5 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun getPopularRestaurant(){
-        viewModelScope.launch(dispatcher) {
-            _popularRestaurantStatus.emit(Event(Resource.Loading()))
-            val result = repository.getPopularRestaurant()
-            _popularRestaurantStatus.emit(Event(result))
-        }
-    }
 
 }

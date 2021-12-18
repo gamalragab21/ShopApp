@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_navigation_home_to_searchRestaurantFragment"
             app:destination="@id/searchRestaurantFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
 
     <fragment
@@ -74,6 +77,9 @@
         <action
             android:id="@+id/action_restaurantDetailsFragment_to_foodDetailsFragment"
             app:destination="@id/foodDetailsFragment" />
+        <action
+            android:id="@+id/action_restaurantDetailsFragment_to_searchRestaurantFragment"
+            app:destination="@id/searchRestaurantFragment" />
     </fragment>
 
     <fragment
@@ -121,6 +127,9 @@
         <argument
             android:name="product"
             app:argType="com.developers.shopapp.entities.Product" />
+        <action
+            android:id="@+id/action_foodDetailsFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
 
     <fragment
@@ -139,6 +148,11 @@
         android:label="SearchRestaurantFragment"
         tools:layout="@layout/fragment_restaurant_search"
         />
+    <fragment
+        android:id="@+id/filterFragment"
+        tools:layout="@layout/fragment_filter"
+        android:name="com.developers.shopapp.ui.fragments.FilterFragment"
+        android:label="FilterFragment" />
 
 
 </navigation>

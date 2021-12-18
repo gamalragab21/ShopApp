@@ -34,6 +34,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_image.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_rate_feedback.xml" value="0.265625" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/ic_rate_star.xml" value="0.265625" />
+        <entry key="..\:/Shopapp/app/src/main/res/drawable/item_filter_background.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/item_popular_tags.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/item_search_recent.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/money.xml" value="1.2642857142857142" />
@@ -71,6 +72,8 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_details_food.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_details_restaurant.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_favourite.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_filiter.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_filter.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_forget_password.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_image_viewer.xml" value="0.25104166666666666" />
@@ -103,6 +106,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_review_layout.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_search_recent.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_splas_screen_view_pager.xml" value="0.2552083333333333" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/no_internet_connection.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/progress_dialoge.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/raduis_top_background.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/register_phone.xml" value="0.25104166666666666" />

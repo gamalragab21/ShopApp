@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.developers.shopapp.R
 import com.developers.shopapp.databinding.ActivityMainBinding
+import com.developers.shopapp.helpers.ConnectionLiveData
 import com.developers.shopapp.utils.isNetworkConnected
 import com.developers.shopapp.utils.isOnline
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,12 +29,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
         // check internet
 
-        lifecycleScope.launch {
-            
-        }
+
 // her bottomNavigation is visible in all time ( means in all fragments )
 
         val navHostFragment =

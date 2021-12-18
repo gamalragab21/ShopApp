@@ -78,7 +78,7 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                         val latLng=dataStoreManager.glucoseFlow.value!!.latLng
                         restaurantViewModel.getNearlyRestaurant(latLng.latitude,latLng.longitude)
                     } else {
-                        restaurantViewModel.filterRestaurant(it)
+                        restaurantViewModel.filterRestaurant(it.toString())
                     }
                 }
             }

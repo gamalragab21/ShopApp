@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/no_internet"
+    android:visibility="gone"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.airbnb.lottie.LottieAnimationView
+
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_250sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintVertical_bias="0.2"
+        app:lottie_rawRes="@raw/no_internet" />
+    <TextView
+        android:id="@+id/no_internet_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Internet Connection"
+        android:textSize="@dimen/_20ssp"
+        android:textColor="@color/Red"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/brandon_medium"
+        app:layout_constraintTop_toBottomOf="@id/animation_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retry"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="wrap_content"
+        style="@style/button_style"
+        android:text="Retry"
+        android:textSize="@dimen/_15ssp"
+        android:fontFamily="@font/rta_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_internet_tv"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
