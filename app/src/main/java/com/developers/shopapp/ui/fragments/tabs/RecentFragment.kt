@@ -107,7 +107,7 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                         onSuccess = { restaurant ->
 
                             setupViewBeforeLoadData( spinKit = binding.spinKit,
-                                shimmerFrameLayout= binding.shimmer, onLoading = false
+                                shimmerFrameLayout= binding.shimmer, onLoading = false, emptyView = binding.emptyView
                             )
                             restaurant.data?.let {
                                 if(it.isEmpty())setupViewBeforeLoadData(

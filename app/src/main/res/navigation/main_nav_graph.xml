@@ -153,6 +153,11 @@
         tools:layout="@layout/fragment_filter"
         android:name="com.developers.shopapp.ui.fragments.FilterFragment"
         android:label="FilterFragment" />
+    <dialog
+        android:id="@+id/noInternetConnectionDialog"
+        tools:layout="@layout/no_internet_layout"
+        android:name="com.developers.shopapp.ui.dialog.NoInternetConnectionDialog"
+        android:label="NoInternetConnectionDialog" />
 
 
 </navigation>

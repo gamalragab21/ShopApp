@@ -1,25 +1,8 @@
 package com.developers.shopapp.utils
 
-import android.app.AlertDialog
-import android.content.Context
-import android.util.Log
+
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import java.util.*
-import kotlin.math.acos
-import kotlin.math.cos
-import kotlin.math.sin
-import com.google.android.gms.maps.model.LatLng
-import java.text.DecimalFormat
-import android.content.DialogInterface
-
-import android.content.Intent
-import android.provider.Settings
-import androidx.core.content.ContextCompat
-
-import androidx.core.content.ContextCompat.startActivity
-
-
 
 
 
@@ -34,7 +17,7 @@ object Constants {
 const val REQUEST_CODE_LOCATION_PERMISSIONS=717
     const val USERS_INFO_FILE: String = "USER_INFO"
    // const val BASE_URL = "https://student.valuxapps.com/api/"
-    const val BASE_URL = "https://murmuring-everglades-09810.herokuapp.com/"
+    const val BASE_URL = "http://229a-197-38-23-225.ngrok.io/v1/"
     val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
     val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
     val USER_PASSWORD = stringPreferencesKey("USER_PASSWORD")

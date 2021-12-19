@@ -56,7 +56,6 @@ class HomeFragment : Fragment() {
 
 
     private val authenticationViewModel: AuthenticationViewModel by viewModels()
-    private lateinit var connectionLiveData: ConnectionLiveData
 
     private val navController by lazy {
         findNavController()
@@ -67,12 +66,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        connectionLiveData= ConnectionLiveData(requireContext())
 
-        connectionLiveData.observe(viewLifecycleOwner,{networkAvailable->
-
-            binding.noConnection.root.isVisible=!networkAvailable
-        })
 
         val myHomeLocation = dataStoreManager.glucoseFlow.value
 
