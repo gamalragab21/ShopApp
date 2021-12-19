@@ -1,5 +1,6 @@
 package com.developers.shopapp.repositories
 
+import com.developers.shopapp.data.local.CartDao
 import com.developers.shopapp.data.local.SearchHistoryDao
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.entities.*
@@ -13,6 +14,7 @@ import javax.inject.Inject
 class DefaultHomeRepository @Inject constructor(
     private val apiShopService: ApiShopService,
     private val searchHistoryDao: SearchHistoryDao,
+    private val cartDao: CartDao,
     @IOThread
     private val dispatcher: CoroutineDispatcher
 ) {
@@ -152,81 +154,96 @@ class DefaultHomeRepository @Inject constructor(
     suspend fun getProfile(): Resource<MyResponse<User>> = withContext(dispatcher) {
 
         safeCall {
-            val result=apiShopService.getMyProfile()
+            val result = apiShopService.getMyProfile()
             Resource.Success(result)
         }
 
     }
 
-    suspend fun setupRatingMyRestaurant(rateRestaurant: RateRestaurant): Resource<MyResponse<RateRestaurant>> = withContext(dispatcher) {
+    suspend fun setupRatingMyRestaurant(rateRestaurant: RateRestaurant): Resource<MyResponse<RateRestaurant>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.setupRatingMyRestaurant(rateRestaurant)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun updateRateRestaurant(rateRestaurant: RateRestaurant): Resource<MyResponse<RateRestaurant>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.updateRateRestaurant(rateRestaurant)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun findMyRestaurant(restaurantId: Int): Resource<MyResponse<Restaurant>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.findMyRestaurant(restaurantId)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun findProductById(productId: Int): Resource<MyResponse<Product>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.findProductById(productId)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun setupRatingMyProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.setupRatingMyProduct(rateProduct)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun updateRateProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.updateRateProduct(rateProduct)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun getAllSearchHistory(countItem: Int): Resource<List<SearchHistory>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = searchHistoryDao.getAllSearchHistory(countItem)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun insertNewSearchKeyWord(searchHistory: SearchHistory): Resource<Long> =
+        withContext(dispatcher) {
+            safeCall {
+
+                val result = searchHistoryDao.insertSearchHistory(searchHistory)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun deleteSearchHistory(id: Int): Resource<Int> = withContext(dispatcher) {
         safeCall {
-            val result=apiShopService.setupRatingMyRestaurant(rateRestaurant)
+            val result = searchHistoryDao.deleteSearchHistory(id)
             Resource.Success(result)
         }
     }
 
-    suspend fun updateRateRestaurant (rateRestaurant: RateRestaurant): Resource<MyResponse<RateRestaurant>> = withContext(dispatcher) {
+    suspend fun clearAllSearchHistory(): Resource<Int> = withContext(dispatcher) {
         safeCall {
-            val result=apiShopService.updateRateRestaurant(rateRestaurant)
+            val result = searchHistoryDao.clearAllSearchHistory()
             Resource.Success(result)
         }
     }
 
-    suspend fun findMyRestaurant(restaurantId: Int): Resource<MyResponse<Restaurant>> = withContext(dispatcher) {
-        safeCall {
-            val result=apiShopService.findMyRestaurant(restaurantId)
-            Resource.Success(result)
-        }
-    }
-
-   suspend fun findProductById(productId: Int): Resource<MyResponse<Product>> = withContext(dispatcher){
-        safeCall {
-            val result=apiShopService.findProductById(productId)
-            Resource.Success(result)
-        }
-    }
-
-    suspend fun setupRatingMyProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> = withContext(dispatcher) {
-        safeCall {
-            val result=apiShopService.setupRatingMyProduct(rateProduct)
-            Resource.Success(result)
-        }
-    }
-
-    suspend fun updateRateProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> = withContext(dispatcher) {
-        safeCall {
-            val result=apiShopService.updateRateProduct(rateProduct)
-            Resource.Success(result)
-        }
-    }
-
-    suspend fun getAllSearchHistory(countItem:Int): Resource<List<SearchHistory>> = withContext(dispatcher){
-           safeCall {
-               val result=searchHistoryDao.getAllSearchHistory(countItem)
-               Resource.Success(result)
-           }
-    }
-
-    suspend fun insertNewSearchKeyWord(searchHistory: SearchHistory): Resource<Long> = withContext(dispatcher){
-        safeCall {
-
-            val result=searchHistoryDao.insertSearchHistory(searchHistory)
-            Resource.Success(result)
-        }
-    }
-
-   suspend fun deleteSearchHistory(id: Int): Resource<Int> = withContext(dispatcher){
+   suspend fun addProductToCart(productCart: ProductCart): Resource<Long> = withContext(dispatcher) {
        safeCall {
-           val result=searchHistoryDao.deleteSearchHistory(id)
+           val result = cartDao.insertNewCart(productCart)
            Resource.Success(result)
        }
-   }
-
-    suspend fun clearAllSearchHistory(): Resource<Int> = withContext(dispatcher){
-        safeCall {
-            val result=searchHistoryDao.clearAllSearchHistory()
-            Resource.Success(result)
-        }
     }
 
 

@@ -3,7 +3,7 @@ package com.developers.shopapp.di
 import android.content.Context
 import android.util.Log
 import com.developers.shopapp.data.local.DataStoreManager
-import com.developers.shopapp.data.local.SearchHistoryDataBase
+import com.developers.shopapp.data.local.RoomDataBase
 import com.developers.shopapp.data.newtwork.ApiShopService
 import com.developers.shopapp.qualifiers.Token
 import com.developers.shopapp.utils.Constants
@@ -31,8 +31,11 @@ object ViewModelHilt {
 
     @Provides
     @ViewModelScoped
-    fun provideSearchHistoryDao(searchHistoryDataBase: SearchHistoryDataBase)= searchHistoryDataBase.searchHistoryDao()
+    fun provideSearchHistoryDao(roomDataBase: RoomDataBase)= roomDataBase.searchHistoryDao()
 
+    @Provides
+    @ViewModelScoped
+    fun provideCartDaoDao(roomDataBase: RoomDataBase)= roomDataBase.cartDao()
 
 
     @Provides

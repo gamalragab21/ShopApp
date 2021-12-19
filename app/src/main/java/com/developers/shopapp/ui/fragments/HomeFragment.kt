@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
+    
 
         val myHomeLocation = dataStoreManager.glucoseFlow.value
 

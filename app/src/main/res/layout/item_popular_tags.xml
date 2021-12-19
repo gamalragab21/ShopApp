@@ -17,6 +17,7 @@
             android:paddingEnd="@dimen/_8sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
+            android:maxEms="15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/gray"

@@ -20,6 +20,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.developers.shopapp.R
 import com.developers.shopapp.databinding.FragmentDetailsFoodBinding
 import com.developers.shopapp.entities.Product
+import com.developers.shopapp.entities.ProductCart
 import com.developers.shopapp.entities.ProductImage
 import com.developers.shopapp.entities.RateProduct
 import com.developers.shopapp.helpers.EventObserver
@@ -29,6 +30,7 @@ import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
 import com.developers.shopapp.utils.Constants.TAG
 import com.developers.shopapp.utils.Utils
 import com.developers.shopapp.utils.Utils.getTimeAgo
+import com.developers.shopapp.utils.Utils.getTimeStamp
 import com.developers.shopapp.utils.showRatingDialog
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -137,13 +139,72 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             )
         }
         binding.search.setOnClickListener {
-           val action=FoodDetailsFragmentDirections.actionFoodDetailsFragmentToFilterFragment()
+            val action = FoodDetailsFragmentDirections.actionFoodDetailsFragmentToFilterFragment()
             findNavController().navigate(action)
         }
+
+        binding.add.setOnClickListener {
+            setAddToCart(false)
+        }
+
+        binding.minTotCart.setOnClickListener {
+            setAddToCart(true)
+        }
+
+        binding.addToCart.setOnClickListener {
+            val productCart=ProductCart(
+                currentFood.productName,
+                currentFood.productPrice,
+                binding.itemCartMount.text.toString().toInt(),
+                currentFood.user.mobile,
+                currentFood.user.id!!,
+                getTimeStamp()
+            )
+            categoryProductViewModel.addProductToCart(productCart)
+        }
+
+    }
+
+    private fun setAddToCart(minis: Boolean) {
+        var countCarts = binding.itemCartMount.text.toString().toInt()
+        var itemPrice = currentFood.productPrice
+
+        if (minis) {
+            if (countCarts <= 0) {
+                return
+            } else {
+                countCarts -= 1
+            }
+        } else {
+            countCarts += 1
+        }
+        itemPrice *= countCarts
+
+        binding.itemCartMount.text = countCarts.toString()
+        binding.countPrice.text = "$itemPrice $"
+
     }
 
     private fun subscribeToObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
+
+            // add to cart
+            launch {
+                categoryProductViewModel.addProductToCartStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = { success ->
+
+                            if (success>0)
+                                snackbar("\uD83D\uDE0D Success Add To Cart")
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
 
             // product
             launch {
@@ -155,7 +216,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
                             category.data?.let {
 
-                               currentFood=it.copy()
+                                currentFood = it.copy()
                                 Log.i(
                                     TAG,
                                     "findProductStatus: ${currentFood.rating.toString()}"

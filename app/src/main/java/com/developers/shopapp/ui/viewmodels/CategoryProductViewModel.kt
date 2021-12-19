@@ -58,6 +58,10 @@ class CategoryProductViewModel @Inject constructor(
         MutableStateFlow<Event<Resource<MyResponse<RateProduct>>>>(Event(Resource.Init()))
     val myRatingProductStatus: MutableStateFlow<Event<Resource<MyResponse<RateProduct>>>> = _myRatingProductStatus
 
+    private val _addProductToCartStatus =
+        MutableStateFlow<Event<Resource<Long>>>(Event(Resource.Init()))
+    val addProductToCartStatus: MutableStateFlow<Event<Resource<Long>>> = _addProductToCartStatus
+
 
     fun getCategoriesOfRestaurant(restaurantId: Int) {
         viewModelScope.launch(dispatcher) {
@@ -134,6 +138,15 @@ class CategoryProductViewModel @Inject constructor(
             val result = repository.updateRateProduct(rateProduct)
             _myRatingProductStatus.emit(Event(result))
         }
+    }
+
+    fun addProductToCart(productCart: ProductCart) {
+        viewModelScope.launch(dispatcher) {
+            _addProductToCartStatus.emit(Event(Resource.Loading()))
+            val result = repository.addProductToCart(productCart)
+            _addProductToCartStatus.emit(Event(result))
+        }
+
     }
 
 }

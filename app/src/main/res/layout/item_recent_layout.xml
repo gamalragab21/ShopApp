@@ -102,6 +102,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="mmmm"
+                android:maxEms="20"
+
                 android:textColor="@color/gray"
                 android:id="@+id/item_recent_type"
                 android:fontFamily="@font/poppins"

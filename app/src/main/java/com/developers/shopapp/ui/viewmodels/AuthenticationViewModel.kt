@@ -60,12 +60,15 @@ class AuthenticationViewModel @Inject constructor(
     fun loginUser(
         inputTextLayoutEmail: TextInputLayout,
         inputTextLayoutPassword: TextInputLayout,
+        latLong: LatLng?,
     ) {
         viewModelScope.launch(dispatcher) {
             val email = inputTextLayoutEmail.editText!!.text.toString()
             val password = inputTextLayoutPassword.editText!!.text.toString()
             when {
-
+                latLong==null ->{
+                    _loginUserStatus.emit(Event(Resource.Error("PLZ,Open Your Location")))
+                }
                 email.isEmpty() -> {
                     _loginUserStatus.emit(Event(Resource.Error("E-mail is require")))
                     inputTextLayoutEmail.isHelperTextEnabled = true
