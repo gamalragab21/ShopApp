@@ -16,9 +16,10 @@ data class Product(
     var inFav:Boolean?=false,
     val inCart:Boolean?=false,
     var rateCount:Double?=0.0,
+    var coinType:String,
     val images:List<ProductImage>,
     val rating:List<RateProduct>?=null,
-    var user:User
+    var user:User?
 
 
 ):Parcelable {

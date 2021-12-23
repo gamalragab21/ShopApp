@@ -27,6 +27,7 @@ import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.ImageSliderAdapter
 import com.developers.shopapp.ui.dialog.RateDialogListener
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
+import com.developers.shopapp.ui.viewmodels.OrdersViewModel
 import com.developers.shopapp.utils.Constants.TAG
 import com.developers.shopapp.utils.Utils
 import com.developers.shopapp.utils.Utils.getTimeAgo
@@ -52,6 +53,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
 
     private val categoryProductViewModel: CategoryProductViewModel by viewModels()
+    private val ordersViewModel: OrdersViewModel by viewModels()
 
 
     @Inject
@@ -124,7 +126,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             Log.i(TAG, "quickAction: ${currentFood.rating.toString()}")
 
             val rateProduct: RateProduct? = currentFood.rating?.firstOrNull {
-                it.userId == currentFood.user.id
+                it.userId == currentFood.user!!.id
             }
             Log.i(TAG, "rateProduct: ${rateProduct.toString()}")
 
@@ -154,10 +156,14 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
         binding.addToCart.setOnClickListener {
             val productCart=ProductCart(
                 currentFood.productName,
+                currentFood.images[0].imageProduct,
                 currentFood.productPrice,
+                0.0,
+                currentFood.coinType,
                 binding.itemCartMount.text.toString().toInt(),
-                currentFood.user.mobile,
-                currentFood.user.id!!,
+                currentFood.freeDelivery,
+                currentFood.user!!.mobile,
+                currentFood.user!!.id!!,
                 getTimeStamp()
             )
             categoryProductViewModel.addProductToCart(productCart)
@@ -222,7 +228,22 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                                     "findProductStatus: ${currentFood.rating.toString()}"
                                 )
                                 bindFoodData(currentFood)
+                                    ordersViewModel.findItemCart(currentFood.productId!!)
                             }
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
+            launch {
+                ordersViewModel.findCartStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = {
+                           updateLayoutCart(it)
                         },
                         onError = {
                             snackbar(it)
@@ -281,11 +302,16 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
     }
 
+    private fun updateLayoutCart(it: ProductCart) {
+        binding.itemCartMount.text=it.foodQuality.toString()
+        binding.countPrice.text="${it.coinType }${it.foodQuality*it.foodPrice}"
+    }
+
     private fun bindFoodData(it: Product) {
-        Log.i(TAG, "bindFoodData: ${currentFood.rating.toString()}")
+        Log.i(TAG, "bindFoodData: ${currentFood.toString()}")
         binding.foodName.text = it.productName
         binding.rating.text = "${it.rateCount}"
-        binding.foodPrice.text = "${it.productPrice}"
+        binding.foodPrice.text = "${it.coinType}${it.productPrice}"
         binding.foodTime.text = "${getTimeAgo(it.createAt, requireContext())}"
 
         binding.textDescripition.text = it.productDescription

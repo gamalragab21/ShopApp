@@ -56,7 +56,7 @@ class ReviewsFragment:Fragment(), RateDialogListener {
 
         binding.addRating.setOnClickListener {
             val rateProduct: RateProduct?= currentProduct.rating?.firstOrNull {
-                it.userId == currentProduct.user.id
+                it.userId == currentProduct.user!!.id
             }
             showRatingDialog(requireContext(),
                 rateProduct?.rateId,

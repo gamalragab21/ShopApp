@@ -246,5 +246,26 @@ class DefaultHomeRepository @Inject constructor(
        }
     }
 
+    suspend fun getAllCarts(): Resource<List<ProductCart>> = withContext(dispatcher) {
+        safeCall {
+            val result = cartDao.getAllCarts()
+            Resource.Success(result)
+        }
+    }
+
+  suspend  fun findItemCart(productId: Int): Resource<ProductCart> = withContext(dispatcher) {
+      safeCall {
+          val result = cartDao.findItemProductById(productId)
+          Resource.Success(result)
+      }
+    }
+
+   suspend fun updateItemQuality(itemProduct: ProductCart): Resource<Int> = withContext(dispatcher){
+        safeCall {
+            val result = cartDao.updateCart(itemProduct)
+            Resource.Success(result)
+        }
+    }
+
 
 }

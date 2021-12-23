@@ -81,7 +81,7 @@ class ProductAdapter @Inject constructor(
             }).into(itemBinding.itemFoodImageview)
             itemBinding.itemProductDesc.text=item.productDescription
             itemBinding.itemProductName.text=item.productName
-            itemBinding.itemProductPrice.text="${item.productPrice}"
+            itemBinding.itemProductPrice.text="${item.coinType}${item.productPrice}"
 
             if (item.inFav==true){
                 itemBinding.itemProductSave.setImageResource(R.drawable.saved)

@@ -10,6 +10,9 @@ interface CartDao {
     @Query("select * from Cart order by createAt desc ")
     suspend fun getAllCarts(): List<ProductCart>
 
+    @Query("select * from Cart WHERE foodId = :foodId ")
+    suspend fun findItemProductById(foodId:Int): ProductCart
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewCart(productCart: ProductCart): Long
 

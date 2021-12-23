@@ -64,6 +64,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/activity_setup.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/activity_splach.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/change_password_fragment.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/check_out_order.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/custam_drop_down_layout.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/dialog_feedback.xml" value="0.9" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/dialog_rate.xml" value="0.24947916666666667" />
@@ -94,6 +95,8 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_splash.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_trends.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_verify_code_email.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/item_cart.xml" value="0.25" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/item_cart_placholder.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_container_slider_image.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_fav_product.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_fav_restaurant.xml" value="0.25104166666666666" />

@@ -33,7 +33,14 @@
         android:id="@+id/navigation_cart"
         tools:layout="@layout/fragment_cart"
         android:name="com.developers.shopapp.ui.fragments.CartFragment"
-        android:label="CartFragment" />
+        android:label="CartFragment" >
+        <action
+            android:id="@+id/action_navigation_cart_to_foodDetailsFragment"
+            app:destination="@id/foodDetailsFragment" />
+        <action
+            android:id="@+id/action_navigation_cart_to_checkOutBottomSheetDialog"
+            app:destination="@id/checkOutBottomSheetDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_nearly_places"
@@ -158,6 +165,15 @@
         tools:layout="@layout/no_internet_layout"
         android:name="com.developers.shopapp.ui.dialog.NoInternetConnectionDialog"
         android:label="NoInternetConnectionDialog" />
+    <dialog
+        android:id="@+id/checkOutBottomSheetDialog"
+        tools:layout="@layout/check_out_order"
+        android:name="com.developers.shopapp.ui.fragments.CheckOutBottomSheetDialog"
+        android:label="CheckOutBottomSheetDialog" >
+        <argument
+            android:name="productItem"
+            app:argType="com.developers.shopapp.entities.ProductCart" />
+    </dialog>
 
 
 </navigation>

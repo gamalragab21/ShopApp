@@ -194,10 +194,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center_vertical"
-                        android:text="12.00"
+                        android:text="$12.00"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_18ssp"
-                        app:drawableStartCompat="@drawable/money_yellow"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
