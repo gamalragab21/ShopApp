@@ -17,6 +17,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/drawable/add_cart.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/add_to_cart_layout.xml" value="0.265625" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/add_to_cart_layout2.xml" value="0.265625" />
+        <entry key="..\:/Shopapp/app/src/main/res/drawable/anmiate_marker.xml" value="0.2713541666666667" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/back_gray.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/back_tab_layout.xml" value="0.2671875" />
         <entry key="..\:/Shopapp/app/src/main/res/drawable/background_fading_edge.xml" value="0.2671875" />
@@ -110,6 +111,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_search_recent.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_splas_screen_view_pager.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/no_internet_connection.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/no_internet_layout.xml" value="0.18" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/progress_dialoge.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/raduis_top_background.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/register_phone.xml" value="0.25104166666666666" />

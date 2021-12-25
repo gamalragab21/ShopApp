@@ -28,6 +28,7 @@ data class ProductCart(
     val userPhone: String,
 
     val userId: Int,
+    val restaurantId: Int,
 
     val createAt: Long,
 

@@ -1,30 +1,40 @@
 package com.developers.shopapp.ui.fragments.maps
 
-import androidx.fragment.app.Fragment
-
+import android.content.res.Resources
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.developers.shopapp.databinding.FragmentMapsBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import dagger.hilt.android.AndroidEntryPoint
-import android.content.res.Resources
-import android.graphics.Color
-import android.util.Log
+import android.view.animation.Animation
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
+import com.developers.shopapp.databinding.FragmentMapsBinding
 import com.developers.shopapp.entities.Restaurant
 import com.developers.shopapp.entities.UserInfoDB
 import com.developers.shopapp.utils.Constants.TAG
+import com.developers.shopapp.utils.RadiusAnimation
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_maps.*
+import kotlinx.android.synthetic.main.item_splas_screen_view_pager.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import android.graphics.drawable.BitmapDrawable
+
+import android.graphics.Bitmap
+import android.graphics.Canvas
 
 
 @AndroidEntryPoint
@@ -51,6 +61,9 @@ class MapsFragment : Fragment() {
 
      // setupStyleForMap(googleMap)
      setupMarkerRestaurantAndUserLocation(googleMap,dataUserInfo,currentRestaurant)
+
+
+
     }
 
     private fun setupMarkerRestaurantAndUserLocation(
@@ -63,20 +76,36 @@ class MapsFragment : Fragment() {
         val restaurantLocation = LatLng(currentRestaurant.latitude, currentRestaurant.longitude)
         val userLocation=dataUserInfo!!.latLng
 
+        val drawable: Drawable? = ResourcesCompat.getDrawable(resources, R.drawable.anmiate_marker, null)
 
+        val bitmap = drawableToBitmap(drawable!!)
 
-        val userCameraPosition=buildCameraPosition(userLocation)
-        val restaurantCameraPosition=buildCameraPosition(userLocation)
+        val groundOverlayRestaurant = googleMap.addGroundOverlay(
+            GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromBitmap(bitmap!!))
+                .position(restaurantLocation, 200f)
+        )
+
+        val groundAnimationRestaurant = RadiusAnimation(groundOverlayRestaurant!!).apply {
+            repeatCount = Animation.INFINITE
+            repeatMode = Animation.RESTART
+            duration = 2000
+        }
+        val  mapView = binding.root
+        mapView.startAnimation(groundAnimationRestaurant) // MapView where i show my map
+
         googleMap.addMarker(MarkerOptions().position(dataUserInfo.latLng).title("You")
             .icon(BitmapDescriptorFactory.fromResource(R.drawable.userlocation)))
 
-             addCircle(googleMap,dataUserInfo.latLng)
+           //  addCircle(googleMap,dataUserInfo.latLng)
         googleMap.addMarker(MarkerOptions().position(restaurantLocation).title("${currentRestaurant.restaurantName}")
             .snippet(currentRestaurant.restaurantType)
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurantlocation)))
-        addCircle(googleMap,restaurantLocation)
-        addPolyLine(googleMap,userLocation,restaurantLocation)
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(userCameraPosition))
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant_marker_map)))
+      //  addCircle(googleMap,restaurantLocation)
+        val restaurantCameraPosition=buildCameraPosition(restaurantLocation)
+
+//        addPolyLine(googleMap,userLocation,restaurantLocation)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(restaurantLocation, 17f))
     }
 
     private fun addPolyLine(googleMap: GoogleMap, userLocation: LatLng, restaurantLocation: LatLng) {
@@ -85,6 +114,20 @@ class MapsFragment : Fragment() {
            .color(R.color.colorPrimaryDark).width(5f))
     }
 
+    fun drawableToBitmap(drawable: Drawable): Bitmap? {
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+        var width = drawable.intrinsicWidth
+        width = if (width > 0) width else 1
+        var height = drawable.intrinsicHeight
+        height = if (height > 0) height else 1
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
+        drawable.draw(canvas)
+        return bitmap
+    }
     private fun addCircle(map: GoogleMap, latLng: LatLng) {
         val circle: Circle = map.addCircle(
             CircleOptions()

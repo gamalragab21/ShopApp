@@ -163,7 +163,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                 binding.itemCartMount.text.toString().toInt(),
                 currentFood.freeDelivery,
                 currentFood.user!!.mobile,
-                currentFood.user!!.id!!,
+                currentFood.user!!.id!!,currentFood.restaurantId!!,
                 getTimeStamp()
             )
             categoryProductViewModel.addProductToCart(productCart)
