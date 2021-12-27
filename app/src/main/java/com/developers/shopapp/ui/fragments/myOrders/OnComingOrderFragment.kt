@@ -43,6 +43,8 @@ class OnComingOrderFragment  : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        orderAdapter.showReorder = 1
+
         setupRecyclerViewRecent()
         subscribeToObservers()
 

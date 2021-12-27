@@ -21,7 +21,7 @@ object Constants {
     const val HISTORY_ORDER=-1
 
     // const val BASE_URL = "https://student.valuxapps.com/api/"
-    const val BASE_URL = "http://ce3a-197-38-41-128.ngrok.io/v1/"
+    const val BASE_URL = "http://75cc-197-38-41-128.ngrok.io/v1/"
     val USER_TOKEN = stringPreferencesKey("USER_TOKEN")
     val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
     val USER_PASSWORD = stringPreferencesKey("USER_PASSWORD")

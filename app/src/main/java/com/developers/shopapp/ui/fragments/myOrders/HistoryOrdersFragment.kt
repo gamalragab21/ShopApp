@@ -42,7 +42,11 @@ class HistoryOrdersFragment  : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupRecyclerViewRecent()
+        orderAdapter.showReorder = 0
+
+
         subscribeToObservers()
 
         adapterActions()
