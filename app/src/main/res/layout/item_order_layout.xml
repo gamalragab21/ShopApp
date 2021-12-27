@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/header_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/brandon_medium"
+        android:text="12 may 2020"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toTopOf="@id/item_image_order"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/item_image_order"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:src="@drawable/ic_restaurant"
+        app:layout_constraintEnd_toStartOf="@id/food_order_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_date"
+        />
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        app:shimmer_auto_start="true"
+        android:visibility="gone"
+        app:shimmer_duration="800"
+        app:layout_constraintEnd_toStartOf="@id/food_order_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_date"
+        android:id="@+id/progressShimmer"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@android:color/darker_gray"
+            />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <TextView
+        android:id="@+id/food_order_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:fontFamily="@font/rta_regular"
+        android:text="Burger Beal"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/item_date_time"
+        app:layout_constraintStart_toEndOf="@id/item_image_order"
+        app:layout_constraintTop_toTopOf="@id/item_image_order" />
+
+    <TextView
+        android:id="@+id/item_date_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/brandon_medium"
+        android:text="12 may 2020"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="@id/item_image_order"
+        app:layout_constraintStart_toStartOf="@id/food_order_name"
+        app:layout_constraintTop_toBottomOf="@id/food_order_name" />
+
+    <TextView
+        android:id="@+id/order_food_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="$10"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_15ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/food_order_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/food_order_name"
+        app:layout_constraintTop_toTopOf="@id/food_order_name" />
+
+    <LinearLayout
+        android:id="@+id/reorder_ln"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_weight="1"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:background="@drawable/add_to_cart_layout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/get_help_ln"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_image_order"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reorder"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/get_help_ln"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_weight="1"
+        android:padding="@dimen/_5sdp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/add_to_cart_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/reorder_ln"
+        app:layout_constraintTop_toBottomOf="@id/item_image_order"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Help"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins"
+            />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
