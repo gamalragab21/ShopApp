@@ -56,7 +56,11 @@
         android:id="@+id/navigation_profile"
         tools:layout="@layout/fragment_profile"
         android:name="com.developers.shopapp.ui.fragments.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_navigation_profile_to_myOrdersFragment"
+            app:destination="@id/myOrdersFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_saves"
@@ -173,7 +177,37 @@
         <argument
             android:name="productItem"
             app:argType="com.developers.shopapp.entities.ProductCart" />
+        <action
+            android:id="@+id/action_checkOutBottomSheetDialog_to_successDialogFragment"
+            app:destination="@id/successDialogFragment" />
     </dialog>
+
+    <dialog
+        tools:layout="@layout/success_dialog_food"
+        android:id="@+id/successDialogFragment"
+        android:name="com.developers.shopapp.ui.dialog.SuccessDialogFragment"
+        android:label="SuccessDialogFragment"
+        />
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        tools:layout="@layout/fragment_my_orders"
+        android:name="com.developers.shopapp.ui.fragments.myOrders.MyOrdersFragment"
+        android:label="MyOrdersFragment" />
+    <fragment
+        android:id="@+id/preOrdersFragment"
+        tools:layout="@layout/fragment_pre_order"
+        android:name="com.developers.shopapp.ui.fragments.myOrders.PreOrdersFragment"
+        android:label="PreOrdersFragment" />
+    <fragment
+        android:id="@+id/onComingOrderFragment"
+        tools:layout="@layout/fragment_oncoming"
+        android:name="com.developers.shopapp.ui.fragments.myOrders.OnComingOrderFragment"
+        android:label="OnComingOrderFragment" />
+    <fragment
+        android:id="@+id/historyOrdersFragment"
+        tools:layout="@layout/fragment_history"
+        android:name="com.developers.shopapp.ui.fragments.myOrders.HistoryOrdersFragment"
+        android:label="HistoryOrdersFragment" />
 
 
 </navigation>

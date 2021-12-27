@@ -7,36 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.developers.shopapp.R
 import com.developers.shopapp.data.local.DataStoreManager
 import com.developers.shopapp.databinding.FragmentHomeBinding
-import com.developers.shopapp.entities.Product
-import com.developers.shopapp.entities.ProductImage
-import com.developers.shopapp.entities.RateProduct
-import com.developers.shopapp.entities.User
-import com.developers.shopapp.helpers.ConnectionLiveData
+import com.developers.shopapp.entities.*
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.PopularFoodAdapter
-import com.developers.shopapp.ui.adapters.ViewPagerFragmentAdapter
+import com.developers.shopapp.ui.adapters.ViewPagerFragmentTabsAdapter
 import com.developers.shopapp.ui.viewmodels.AuthenticationViewModel
 import com.developers.shopapp.ui.viewmodels.CategoryProductViewModel
-import com.developers.shopapp.utils.Constants
+import com.developers.shopapp.ui.viewmodels.OrdersViewModel
+import com.developers.shopapp.utils.*
 import com.developers.shopapp.utils.Constants.TAG
-import com.developers.shopapp.utils.hideBottomSheetOrShowWhenScroll
-import com.developers.shopapp.utils.setupViewBeforeLoadData
-import com.developers.shopapp.utils.snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -50,6 +42,8 @@ class HomeFragment : Fragment() {
     lateinit var dataStoreManager: DataStoreManager
 
     val categoryProductViewModel: CategoryProductViewModel by viewModels()
+
+    val ordersViewModel: OrdersViewModel by viewModels()
 
     @Inject
     lateinit var popularFoodAdapter: PopularFoodAdapter
@@ -134,6 +128,7 @@ class HomeFragment : Fragment() {
 
     private fun subscribeToObservers() {
         lifecycleScope.launchWhenStarted {
+            launch {
             categoryProductViewModel.popularProductStatus.collect(
                 EventObserver(
                     onLoading = {
@@ -169,6 +164,24 @@ class HomeFragment : Fragment() {
             )
 
         }
+            // add to cart
+            launch {
+                ordersViewModel.addProductToCartStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = { success ->
+
+                            if (success>0)
+                                snackbar("\uD83D\uDE0D Success Add To Cart")
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
+        }
 
     }
 
@@ -181,6 +194,23 @@ class HomeFragment : Fragment() {
 //            findNavController().navigate(R.id.foodDetailsFragment,bundle)
             val action = HomeFragmentDirections.actionNavigationHomeToFoodDetailsFragment(it)
             navController.navigate(action)
+        }
+
+        popularFoodAdapter.setOnItemAddCartClickListener {currentFood->
+
+            val productCart= ProductCart(
+                currentFood.productName,
+                currentFood.images[0].imageProduct,
+                currentFood.productPrice,
+                0.0,
+                currentFood.coinType,
+               1,
+                currentFood.freeDelivery,
+                currentFood.user!!.mobile,
+                currentFood.user!!.id!!,currentFood.restaurantId!!,
+                Utils.getTimeStamp()
+            )
+            ordersViewModel.addProductToCart(productCart)
         }
 
 
@@ -217,7 +247,7 @@ class HomeFragment : Fragment() {
 
     private fun setupViewPager(viewPager2: ViewPager2) {
 
-        val adapter = ViewPagerFragmentAdapter(childFragmentManager, lifecycle)
+        val adapter = ViewPagerFragmentTabsAdapter(childFragmentManager, lifecycle)
         viewPager2.adapter = adapter
 
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

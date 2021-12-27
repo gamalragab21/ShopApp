@@ -3,6 +3,7 @@ package com.developers.shopapp.data.newtwork
 
 
 import com.developers.shopapp.entities.*
+import com.developers.shopapp.entities.Order
 import retrofit2.http.*
 import kotlin.collections.HashMap
 
@@ -97,5 +98,23 @@ interface ApiShopService {
     @GET("users/findUserById")
     suspend fun findUserById(@Query("userId") userId: Int): User
 
+    @POST("orders/createOrder")
+    suspend fun createOrder(@Body order: Order): MyResponse<Int>
+
+    @GET("orders/comingOrders")
+    suspend fun comingOrders(): MyResponse<List<Order>>
+
+    @GET("orders/preOrders")
+    suspend fun preOrders(): MyResponse<List<Order>>
+
+    @GET("orders/historyOrders")
+    suspend fun historyOrders(): MyResponse<List<Order>>
+
+    @DELETE("orders/deleteOrder")
+    suspend fun deleteOrder(@Query("orderId") orderId:Int): MyResponse<Int>
+
+    @DELETE("orders/updateOrder")
+    suspend fun updateOrder(@Query("orderId") orderId:Int,
+                            @Query("orderType") orderType:Int): MyResponse<Int>
 
 }

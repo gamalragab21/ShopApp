@@ -4,16 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardBackgroundColor="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp"
-        android:background="@drawable/bottom_back_ground"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:id="@+id/spin_kit"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+           android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            app:cardCornerRadius="@dimen/_10sdp"
+            >
+            <com.github.ybq.android.spinkit.SpinKitView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/SpinKitView.FoldingCube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_20sdp"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorPrimaryDark"
+                />
+        </com.google.android.material.card.MaterialCardView>
 
 
     <FrameLayout
@@ -23,6 +49,9 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_strip_round"
         android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
 
     <LinearLayout
@@ -33,6 +62,9 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_below="@id/fram"
         android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fram"
         android:orientation="horizontal">
 
         <TextView
@@ -65,6 +97,9 @@
         android:layout_below="@id/lean1_info"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lean1_info"
         android:layout_marginTop="@dimen/_8sdp"
         android:orientation="horizontal">
 
@@ -94,6 +129,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
         android:layout_below="@id/lean2_info"
+        app:layout_constraintTop_toBottomOf="@+id/lean2_info"
         android:layout_marginTop="@dimen/_8sdp"
         android:background="@color/gray" />
 
@@ -104,6 +140,9 @@
         android:layout_below="@id/view1_info"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view1_info"
         android:layout_marginTop="@dimen/_8sdp"
         android:orientation="horizontal"
         android:paddingTop="@dimen/_5sdp"
@@ -135,6 +174,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
         android:layout_below="@id/lean3_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lean3_info"
         android:layout_marginTop="@dimen/_8sdp"
         android:background="@color/gray" />
 
@@ -145,6 +187,9 @@
         android:layout_below="@id/view2_info"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2_info"
         android:layout_marginTop="@dimen/_8sdp"
         android:orientation="vertical"
         android:paddingTop="@dimen/_5sdp"
@@ -159,7 +204,7 @@
                 android:id="@+id/ic_location"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
-                android:src="@drawable/ic_restaurant"
+                android:src="@drawable/location_address_map"
                 app:layout_constraintEnd_toStartOf="@id/delvery_home"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -210,6 +255,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/checkOutLiner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center_vertical"
@@ -253,5 +299,5 @@
         </LinearLayout>
 
     </LinearLayout>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

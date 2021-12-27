@@ -2,6 +2,7 @@ package com.developers.shopapp.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.developers.shopapp.entities.ProductImage
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.CartAdapter
 import com.developers.shopapp.ui.viewmodels.OrdersViewModel
+import com.developers.shopapp.utils.Constants.TAG
 import com.developers.shopapp.utils.hideBottomSheetOrShowWhenScroll
 import com.developers.shopapp.utils.setupViewBeforeLoadData
 import com.developers.shopapp.utils.snackbar
@@ -185,9 +187,18 @@ class CartFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
+        Log.i(TAG, "onResume: Returned To Resume")
         ordersViewModels.getAllCarts(true)
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.i(TAG, "onPause: ")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i(TAG, "onCreate: ")
+    }
 
 }

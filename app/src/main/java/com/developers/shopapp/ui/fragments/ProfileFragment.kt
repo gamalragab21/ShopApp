@@ -32,17 +32,21 @@ import javax.inject.Inject
 
 @InternalCoroutinesApi
 @AndroidEntryPoint
-class ProfileFragment:Fragment() {
+class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    val userViewModel:UserViewModel by viewModels()
+    val userViewModel: UserViewModel by viewModels()
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
     @Inject
-     lateinit var glide: RequestManager
+    lateinit var glide: RequestManager
+
+    private val navController by lazy {
+        findNavController()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +54,10 @@ class ProfileFragment:Fragment() {
 
         subscribeToObservers()
 
+        setupActions()
+    }
+
+    private fun setupActions() {
         binding.logoutProfile.setOnClickListener {
             lifecycleScope.launchWhenStarted {
                 logOut()
@@ -58,13 +66,20 @@ class ProfileFragment:Fragment() {
         binding.backIcon.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.myAllOrder.setOnClickListener {
+            val action=ProfileFragmentDirections.actionNavigationProfileToMyOrdersFragment()
+           navController.navigate(action)
+        }
     }
 
     private suspend fun logOut() {
-         dataStoreManager.setUserInfo(token = "")
-            startActivity(Intent(requireContext(), SetupActivity::class.java)
-                .setAction(Constants.ACTION_LOGIN_FRAGMENT_AFTER_LOGOUT))
-            requireActivity().finish()
+        dataStoreManager.setUserInfo(token = "")
+        startActivity(
+            Intent(requireContext(), SetupActivity::class.java)
+                .setAction(Constants.ACTION_LOGIN_FRAGMENT_AFTER_LOGOUT)
+        )
+        requireActivity().finish()
     }
 
 
@@ -83,7 +98,7 @@ class ProfileFragment:Fragment() {
                                 binding.spinKit.isVisible = false
 
                                 restaurant.data?.let {
-                                  setUserData(it)
+                                    setUserData(it)
                                 }
 
 
@@ -105,8 +120,8 @@ class ProfileFragment:Fragment() {
 
     private fun setUserData(it: User) {
         glide.load(it.image).into(binding.imageProfile)
-        binding.username.text=it.username
-        binding.email.text=it.email
+        binding.username.text = it.username
+        binding.email.text = it.email
     }
 
 
@@ -115,7 +130,7 @@ class ProfileFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       _binding= FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -123,7 +138,7 @@ class ProfileFragment:Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding=null
+        _binding = null
     }
 
     override fun onResume() {

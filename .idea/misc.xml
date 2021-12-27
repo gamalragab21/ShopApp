@@ -77,14 +77,18 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_filiter.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_filter.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_forget_password.xml" value="0.25" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_history.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_image_viewer.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_maps.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_my_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_nearly_places.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_notification.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_oncoming.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_popular.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_popular_product.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_pre_order.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_rate_dialog.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/fragment_rating.xml" value="0.25104166666666666" />
@@ -102,6 +106,7 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_fav_product.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_fav_restaurant.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_food_layout.xml" value="0.33" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/item_order_layout.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_popular_food.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_popular_food_placholder.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_popular_tags.xml" value="0.25104166666666666" />
@@ -110,12 +115,14 @@
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_review_layout.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_search_recent.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/item_splas_screen_view_pager.xml" value="0.2552083333333333" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/my_orders_fragment.xml" value="0.2552083333333333" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/no_internet_connection.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/no_internet_layout.xml" value="0.18" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/progress_dialoge.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/raduis_top_background.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/register_phone.xml" value="0.25104166666666666" />
         <entry key="..\:/Shopapp/app/src/main/res/layout/spinner_item.xml" value="0.25104166666666666" />
+        <entry key="..\:/Shopapp/app/src/main/res/layout/success_dialog_food.xml" value="0.25" />
         <entry key="..\:/Shopapp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2552083333333333" />
       </map>
     </option>

@@ -7,6 +7,7 @@ import com.developers.shopapp.entities.*
 import com.developers.shopapp.helpers.Resource
 import com.developers.shopapp.helpers.safeCall
 import com.developers.shopapp.qualifiers.IOThread
+import com.developers.shopapp.entities.Order
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -267,5 +268,54 @@ class DefaultHomeRepository @Inject constructor(
         }
     }
 
+    suspend fun createOrder(order: Order): Resource<MyResponse<Int>> = withContext(dispatcher){
+        safeCall {
+            val result = apiShopService.createOrder(order)
+            Resource.Success(result)
+        }
+    }
 
+    suspend fun comingOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher){
+        safeCall {
+            val result = apiShopService.comingOrders()
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun preOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher){
+        safeCall {
+            val result = apiShopService.preOrders()
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun historyOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher){
+        safeCall {
+            val result = apiShopService.historyOrders()
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun deleteOrder(orderId:Int): Resource<MyResponse<Int>> = withContext(dispatcher){
+        safeCall {
+            val result = apiShopService.deleteOrder(orderId)
+            Resource.Success(result)
+        }
+    }
+
+
+    suspend fun updateOrder(orderId:Int,orderType:Int): Resource<MyResponse<Int>> = withContext(dispatcher){
+        safeCall {
+            val result = apiShopService.updateOrder(orderId,orderType)
+            Resource.Success(result)
+        }
+    }
+
+    suspend fun deleteIteFromCart(itemId: Int): Resource<Int> = withContext(dispatcher) {
+        safeCall {
+            val result=cartDao.deleteCart(itemId)
+            Resource.Success(result)
+        }
+
+    }
 }

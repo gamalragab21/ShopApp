@@ -88,6 +88,12 @@ class PopularFoodAdapter @Inject constructor(
                 }
             }
 
+           itemBinding.addToCart.setOnClickListener {
+               onItemAddCartClickListener?.let { click->
+                   click(item)
+               }
+           }
+
         }
 
 
@@ -122,7 +128,11 @@ class PopularFoodAdapter @Inject constructor(
         onItemClickListener = listener
     }
 
+    private var onItemAddCartClickListener: ((Product) -> Unit)? = null
 
+    fun setOnItemAddCartClickListener(listener: (Product) -> Unit) {
+        onItemAddCartClickListener = listener
+    }
 
 
 }

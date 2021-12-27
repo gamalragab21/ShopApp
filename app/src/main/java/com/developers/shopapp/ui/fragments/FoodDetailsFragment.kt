@@ -166,7 +166,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                 currentFood.user!!.id!!,currentFood.restaurantId!!,
                 getTimeStamp()
             )
-            categoryProductViewModel.addProductToCart(productCart)
+            ordersViewModel.addProductToCart(productCart)
         }
 
     }
@@ -196,7 +196,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
             // add to cart
             launch {
-                categoryProductViewModel.addProductToCartStatus.collect(
+                ordersViewModel.addProductToCartStatus.collect(
                     EventObserver(
                         onLoading = {
                         },
