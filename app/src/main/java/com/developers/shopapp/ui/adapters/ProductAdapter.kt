@@ -31,6 +31,7 @@ class ProductAdapter @Inject constructor(
 
 
 
+
     //
     var products: List<Product>
         get() = differ.currentList

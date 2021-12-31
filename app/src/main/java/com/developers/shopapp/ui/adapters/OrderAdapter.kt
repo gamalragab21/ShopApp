@@ -3,6 +3,7 @@ package com.developers.shopapp.ui.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,11 @@ import com.developers.shopapp.databinding.ItemOrderLayoutBinding
 import com.developers.shopapp.entities.Order
 import javax.inject.Inject
 import com.developers.shopapp.entities.ProductCart
+import com.developers.shopapp.entities.Restaurant
+import com.developers.shopapp.utils.Utils.getDate
+import com.developers.shopapp.utils.Utils.getTimeAgo
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class OrderAdapter @Inject constructor(
@@ -58,21 +64,24 @@ class OrderAdapter @Inject constructor(
         fun bindData(item: Order) {
             when(showReorder){
                 -1 ->{
-                   itemBinding.reorderLn.background=ContextCompat.getDrawable(context,R.drawable.delete_cart_layout)
-                    itemBinding.tvReorder.text="Delete"
-                    itemBinding.imageReorder.setImageResource(R.drawable.close)
+//                   itemBinding.reorderLn.background=ContextCompat.getDrawable(context,R.drawable.delete_cart_layout)
+//                    itemBinding.tvReorder.text="Delete"
+//                    itemBinding.imageReorder.setImageResource(R.drawable.close)
                 }
 
                 0->{
-                    itemBinding.tvReorder.text="Tracing"
-                    itemBinding.imageReorder.setImageResource(R.drawable.tracking)
 
+
+                    itemBinding.reorderLn.background=ContextCompat.getDrawable(context,R.drawable.delete_cart_layout)
+                    itemBinding.tvReorder.text="Delete"
+                    itemBinding.imageReorder.setImageResource(R.drawable.close)
 //                    itemBinding.reorderLn.background=ContextCompat.getDrawable(context,R.drawable.add_to_cart_layout2)
 //                    itemBinding.imageReorder.setImageResource(R.drawable.close)
                 }
 
                 1->{
-
+                    itemBinding.tvReorder.text="Tracing"
+                    itemBinding.imageReorder.setImageResource(R.drawable.tracking)
                 }
             }
             glide.load(item.foodImage).listener(object : RequestListener<Drawable?> {
@@ -102,9 +111,11 @@ class OrderAdapter @Inject constructor(
             }).into(itemBinding.itemImageOrder)
             itemBinding.foodOrderName.text = item.productName
             itemBinding.orderFoodPrice.text = "${item.coinType}${(item.productPrice-item.productDistCount)}"
-
+            itemBinding.itemDateTime.text=getTimeAgo(item.createAt,context)
 
             setupActions(item)
+
+            itemBinding.headerDate.text= getDate(context,item.createAt)
         }
 
         private fun setupActions(item: Order) {
@@ -116,9 +127,9 @@ class OrderAdapter @Inject constructor(
 
 
 
-            itemBinding.itemImageOrder.setOnClickListener {
-                onImageClickListener?.let {click->
-                    click(item)
+            itemBinding.reorderLn.setOnClickListener {
+                onReOrderClickListener?.let {click->
+                    click(item,adapterPosition)
                 }
             }
 
@@ -157,12 +168,21 @@ class OrderAdapter @Inject constructor(
     fun setOnItemClickListener(listener: (Order) -> Unit) {
         onItemClickListener = listener
     }
-private var onImageClickListener: ((Order) -> Unit)? = null
+private var onReOrderClickListener: ((Order,Int) -> Unit)? = null
 
-    fun setOnImageClickListener(listener: (Order) -> Unit) {
-        onImageClickListener = listener
+    fun setOnReOrderClickListener(listener: (Order,Int) -> Unit) {
+        onReOrderClickListener = listener
     }
 
+    fun clearItemAndIfLast(order: Order, position:Int):Boolean{
+        val ordersList=orders.toMutableList()
+        ordersList.remove(order)
+        notifyItemRemoved(position)
+        orders=ordersList.toList()
 
+        return ordersList.isEmpty()
+//        notifyItemChanged(position)
+//        notifyDataSetChanged()
+    }
 
 }

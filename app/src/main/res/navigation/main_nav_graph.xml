@@ -8,9 +8,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        tools:layout="@layout/fragment_home"
         android:name="com.developers.shopapp.ui.fragments.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
@@ -31,9 +31,9 @@
 
     <fragment
         android:id="@+id/navigation_cart"
-        tools:layout="@layout/fragment_cart"
         android:name="com.developers.shopapp.ui.fragments.CartFragment"
-        android:label="CartFragment" >
+        android:label="CartFragment"
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_navigation_cart_to_foodDetailsFragment"
             app:destination="@id/foodDetailsFragment" />
@@ -44,9 +44,9 @@
 
     <fragment
         android:id="@+id/navigation_nearly_places"
-        tools:layout="@layout/fragment_nearly_places"
         android:name="com.developers.shopapp.ui.fragments.NearlyPlacesFragment"
-        android:label="NearlyPlacesFragment" >
+        android:label="NearlyPlacesFragment"
+        tools:layout="@layout/fragment_nearly_places">
         <action
             android:id="@+id/action_navigation_nearly_places_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
@@ -54,9 +54,9 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        tools:layout="@layout/fragment_profile"
         android:name="com.developers.shopapp.ui.fragments.ProfileFragment"
-        android:label="ProfileFragment" >
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_myOrdersFragment"
             app:destination="@id/myOrdersFragment" />
@@ -64,9 +64,9 @@
 
     <fragment
         android:id="@+id/navigation_saves"
-        tools:layout="@layout/fragment_saves"
         android:name="com.developers.shopapp.ui.fragments.SavesFragment"
-        android:label="SavesFragment" >
+        android:label="SavesFragment"
+        tools:layout="@layout/fragment_saves">
         <action
             android:id="@+id/action_navigation_saves_to_restaurantDetailsFragment"
             app:destination="@id/restaurantDetailsFragment" />
@@ -78,9 +78,9 @@
 
     <fragment
         android:id="@+id/restaurantDetailsFragment"
-        tools:layout="@layout/fragment_details_restaurant"
         android:name="com.developers.shopapp.ui.fragments.RestaurantDetailsFragment"
-        android:label="RestaurantDetailsFragment" >
+        android:label="RestaurantDetailsFragment"
+        tools:layout="@layout/fragment_details_restaurant">
 
         <action
             android:id="@+id/action_restaurantDetailsFragment_to_mapsFragment"
@@ -97,7 +97,7 @@
         android:id="@+id/mapsFragment"
         android:name="com.developers.shopapp.ui.fragments.maps.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" >
+        tools:layout="@layout/fragment_maps">
         <argument
             android:name="restaurant"
             app:argType="com.developers.shopapp.entities.Restaurant" />
@@ -105,9 +105,9 @@
 
     <fragment
         android:id="@+id/popularFragmentProduct"
-        tools:layout="@layout/fragment_popular_product"
         android:name="com.developers.shopapp.ui.fragments.PopularFragmentProduct"
-        android:label="PopularFragmentProduct" >
+        android:label="PopularFragmentProduct"
+        tools:layout="@layout/fragment_popular_product">
         <action
             android:id="@+id/action_popularFragmentProduct_to_foodDetailsFragment"
             app:destination="@id/foodDetailsFragment" />
@@ -115,23 +115,23 @@
 
     <fragment
         android:id="@+id/imageViewerFragment"
-        tools:layout="@layout/fragment_image_viewer"
         android:name="com.developers.shopapp.ui.fragments.ImageViewerFragment"
-        android:label="ImageViewerFragment" >
+        android:label="ImageViewerFragment"
+        tools:layout="@layout/fragment_image_viewer">
         <argument
             android:name="images"
             app:argType="string[]" />
     </fragment>
 
-    <action android:id="@+id/globalActionToImageViewFragment"
-        app:destination="@+id/imageViewerFragment"
-        />
+    <action
+        android:id="@+id/globalActionToImageViewFragment"
+        app:destination="@+id/imageViewerFragment" />
 
     <fragment
         android:id="@+id/foodDetailsFragment"
-        tools:layout="@layout/fragment_details_food"
         android:name="com.developers.shopapp.ui.fragments.FoodDetailsFragment"
-        android:label="FoodDetailsFragment" >
+        android:label="FoodDetailsFragment"
+        tools:layout="@layout/fragment_details_food">
         <action
             android:id="@+id/action_foodDetailsFragment_to_reviewsFragment"
             app:destination="@id/reviewsFragment" />
@@ -142,12 +142,20 @@
             android:id="@+id/action_foodDetailsFragment_to_filterFragment"
             app:destination="@id/filterFragment" />
     </fragment>
+    <action
+        android:id="@+id/globalAction_ordersFragments_to_foodDetailsFragment"
+        app:destination="@id/foodDetailsFragment">
+        <argument
+            android:name="product"
+            app:argType="com.developers.shopapp.entities.Product" />
+    </action>
+
 
     <fragment
         android:id="@+id/reviewsFragment"
-        tools:layout="@layout/fragment_reviews"
         android:name="com.developers.shopapp.ui.fragments.ReviewsFragment"
-        android:label="ReviewsFragment" >
+        android:label="ReviewsFragment"
+        tools:layout="@layout/fragment_reviews">
 
         <argument
             android:name="product"
@@ -157,23 +165,22 @@
         android:id="@+id/searchRestaurantFragment"
         android:name="com.developers.shopapp.ui.fragments.SearchRestaurantFragment"
         android:label="SearchRestaurantFragment"
-        tools:layout="@layout/fragment_restaurant_search"
-        />
+        tools:layout="@layout/fragment_restaurant_search" />
     <fragment
         android:id="@+id/filterFragment"
-        tools:layout="@layout/fragment_filter"
         android:name="com.developers.shopapp.ui.fragments.FilterFragment"
-        android:label="FilterFragment" />
+        android:label="FilterFragment"
+        tools:layout="@layout/fragment_filter" />
     <dialog
         android:id="@+id/noInternetConnectionDialog"
-        tools:layout="@layout/no_internet_layout"
         android:name="com.developers.shopapp.ui.dialog.NoInternetConnectionDialog"
-        android:label="NoInternetConnectionDialog" />
+        android:label="NoInternetConnectionDialog"
+        tools:layout="@layout/no_internet_layout" />
     <dialog
         android:id="@+id/checkOutBottomSheetDialog"
-        tools:layout="@layout/check_out_order"
         android:name="com.developers.shopapp.ui.fragments.CheckOutBottomSheetDialog"
-        android:label="CheckOutBottomSheetDialog" >
+        android:label="CheckOutBottomSheetDialog"
+        tools:layout="@layout/check_out_order">
         <argument
             android:name="productItem"
             app:argType="com.developers.shopapp.entities.ProductCart" />
@@ -183,31 +190,53 @@
     </dialog>
 
     <dialog
-        tools:layout="@layout/success_dialog_food"
         android:id="@+id/successDialogFragment"
         android:name="com.developers.shopapp.ui.dialog.SuccessDialogFragment"
         android:label="SuccessDialogFragment"
-        />
+        tools:layout="@layout/success_dialog_food" />
     <fragment
         android:id="@+id/myOrdersFragment"
-        tools:layout="@layout/fragment_my_orders"
         android:name="com.developers.shopapp.ui.fragments.myOrders.MyOrdersFragment"
-        android:label="MyOrdersFragment" />
+        android:label="MyOrdersFragment"
+        tools:layout="@layout/fragment_my_orders" />
     <fragment
         android:id="@+id/preOrdersFragment"
-        tools:layout="@layout/fragment_pre_order"
         android:name="com.developers.shopapp.ui.fragments.myOrders.PreOrdersFragment"
-        android:label="PreOrdersFragment" />
+        android:label="PreOrdersFragment"
+        tools:layout="@layout/fragment_pre_order">
+
+    </fragment>
     <fragment
         android:id="@+id/onComingOrderFragment"
-        tools:layout="@layout/fragment_oncoming"
         android:name="com.developers.shopapp.ui.fragments.myOrders.OnComingOrderFragment"
-        android:label="OnComingOrderFragment" />
+        android:label="OnComingOrderFragment"
+        tools:layout="@layout/fragment_oncoming">
+
+
+    </fragment>
     <fragment
         android:id="@+id/historyOrdersFragment"
-        tools:layout="@layout/fragment_history"
         android:name="com.developers.shopapp.ui.fragments.myOrders.HistoryOrdersFragment"
-        android:label="HistoryOrdersFragment" />
+        android:label="HistoryOrdersFragment"
+        tools:layout="@layout/fragment_history">
 
+    </fragment>
+    <fragment
+        android:id="@+id/orderTrackingFragment"
+        tools:layout="@layout/fragment_tracking"
+        android:name="com.developers.shopapp.ui.fragments.OrderTrackingFragment"
+        android:label="OrderTrackingFragment" >
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+    </fragment>
+    <action
+        android:id="@+id/globalAction_onComingOrderFragment_to_orderTrackingFragment"
+        app:destination="@id/orderTrackingFragment" >
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+
+    </action>
 
 </navigation>

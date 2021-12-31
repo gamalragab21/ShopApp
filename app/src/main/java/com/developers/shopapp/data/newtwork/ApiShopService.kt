@@ -113,8 +113,18 @@ interface ApiShopService {
     @DELETE("orders/deleteOrder")
     suspend fun deleteOrder(@Query("orderId") orderId:Int): MyResponse<Int>
 
-    @DELETE("orders/updateOrder")
+    @PUT("orders/updateOrder")
     suspend fun updateOrder(@Query("orderId") orderId:Int,
                             @Query("orderType") orderType:Int): MyResponse<Int>
+
+
+
+    @POST("orders/updateTracking")
+    suspend fun updateTracking(@Body tracking: Tracking): MyResponse<Int>
+
+    @GET("orders/orderTracking")
+    suspend fun getOrderTracking(
+        @Query("orderId") orderId:Int
+    ): MyResponse<List<Tracking>>
 
 }

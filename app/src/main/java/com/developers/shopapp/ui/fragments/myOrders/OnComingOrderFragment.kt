@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developers.shopapp.databinding.FragmentOncomingBinding
+import com.developers.shopapp.entities.Product
+import com.developers.shopapp.entities.ProductImage
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.OrderAdapter
 import com.developers.shopapp.ui.viewmodels.OrdersViewModel
@@ -19,13 +21,14 @@ import com.developers.shopapp.utils.hideBottomSheetOrShowWhenScroll
 import com.developers.shopapp.utils.setupViewBeforeLoadData
 import com.developers.shopapp.utils.snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_tracking.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @InternalCoroutinesApi
 @AndroidEntryPoint
-class OnComingOrderFragment  : Fragment() {
+class OnComingOrderFragment : Fragment() {
     private var _binding: FragmentOncomingBinding? = null
     private val binding get() = _binding!!
 
@@ -55,13 +58,35 @@ class OnComingOrderFragment  : Fragment() {
         )
 
 
-
-
-
     }
 
 
     private fun adapterActions() {
+        orderAdapter.setOnReOrderClickListener { order, position ->
+            val action =
+                OnComingOrderFragmentDirections.globalActionOnComingOrderFragmentToOrderTrackingFragment(order.orderId!!)
+            navController.navigate(action)
+        }
+
+        orderAdapter.setOnItemClickListener {
+            val productFack = Product(
+                it.foodId,
+                0, 0, it.productName,
+                it.productPrice, 0, true, "",
+                inFav = false,
+                inCart = true,
+                rateCount = null,
+                coinType = it.coinType,
+                images = listOf(),
+                rating = null,
+                user = null
+            )
+            val action =
+                OnComingOrderFragmentDirections.globalActionOrdersFragmentsToFoodDetailsFragment(
+                    productFack
+                )
+            navController.navigate(action)
+        }
     }
 
     private fun subscribeToObservers() {

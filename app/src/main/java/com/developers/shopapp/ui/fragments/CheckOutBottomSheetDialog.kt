@@ -1,6 +1,7 @@
 package com.developers.shopapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,9 @@ import com.developers.shopapp.databinding.CheckOutOrderBinding
 import com.developers.shopapp.entities.Order
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.helpers.MyLocation
+import com.developers.shopapp.helpers.TAG
 import com.developers.shopapp.ui.viewmodels.OrdersViewModel
-import com.developers.shopapp.utils.Constants.PER_ORDER
+import com.developers.shopapp.utils.Constants.HISTORY_ORDER
 import com.developers.shopapp.utils.Utils.getTimeStamp
 import com.developers.shopapp.utils.snackbar
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -110,6 +112,7 @@ class CheckOutBottomSheetDialog : BottomSheetDialogFragment() {
     private fun setupAction() {
 
         binding.checkOutLiner.setOnClickListener {
+            Log.i(TAG, "setupAction: ${args.productItem.foodQuality}")
             val order = Order(
                 restaurantId = args.productItem.restaurantId,
                 userId = args.productItem.userId,
@@ -117,11 +120,12 @@ class CheckOutBottomSheetDialog : BottomSheetDialogFragment() {
                 productName = args.productItem.foodName,
                 productPrice = args.productItem.foodPrice,
                 productDistCount = args.productItem.foodDiscount,
+                productQuantity=args.productItem.foodQuality,
                 freeDelivery = args.productItem.foodDelivery,
                 createAt = getTimeStamp(),
                 coinType = args.productItem.coinType,
                 foodImage = args.productItem.foodImage,
-                orderType = PER_ORDER
+                orderType = HISTORY_ORDER
 
             )
             ordersViewModel.createOrder(order)

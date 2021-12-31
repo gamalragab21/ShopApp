@@ -240,12 +240,13 @@ class DefaultHomeRepository @Inject constructor(
         }
     }
 
-   suspend fun addProductToCart(productCart: ProductCart): Resource<Long> = withContext(dispatcher) {
-       safeCall {
-           val result = cartDao.insertNewCart(productCart)
-           Resource.Success(result)
-       }
-    }
+    suspend fun addProductToCart(productCart: ProductCart): Resource<Long> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = cartDao.insertNewCart(productCart)
+                Resource.Success(result)
+            }
+        }
 
     suspend fun getAllCarts(): Resource<List<ProductCart>> = withContext(dispatcher) {
         safeCall {
@@ -254,49 +255,50 @@ class DefaultHomeRepository @Inject constructor(
         }
     }
 
-  suspend  fun findItemCart(productId: Int): Resource<ProductCart> = withContext(dispatcher) {
-      safeCall {
-          val result = cartDao.findItemProductById(productId)
-          Resource.Success(result)
-      }
-    }
-
-   suspend fun updateItemQuality(itemProduct: ProductCart): Resource<Int> = withContext(dispatcher){
+    suspend fun findItemCart(productId: Int): Resource<ProductCart> = withContext(dispatcher) {
         safeCall {
-            val result = cartDao.updateCart(itemProduct)
+            val result = cartDao.findItemProductById(productId)
             Resource.Success(result)
         }
     }
 
-    suspend fun createOrder(order: Order): Resource<MyResponse<Int>> = withContext(dispatcher){
+    suspend fun updateItemQuality(itemProduct: ProductCart): Resource<Int> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = cartDao.updateCart(itemProduct)
+                Resource.Success(result)
+            }
+        }
+
+    suspend fun createOrder(order: Order): Resource<MyResponse<Int>> = withContext(dispatcher) {
         safeCall {
             val result = apiShopService.createOrder(order)
             Resource.Success(result)
         }
     }
 
-    suspend fun comingOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher){
+    suspend fun comingOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher) {
         safeCall {
             val result = apiShopService.comingOrders()
             Resource.Success(result)
         }
     }
 
-    suspend fun preOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher){
+    suspend fun preOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher) {
         safeCall {
             val result = apiShopService.preOrders()
             Resource.Success(result)
         }
     }
 
-    suspend fun historyOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher){
+    suspend fun historyOrders(): Resource<MyResponse<List<Order>>> = withContext(dispatcher) {
         safeCall {
             val result = apiShopService.historyOrders()
             Resource.Success(result)
         }
     }
 
-    suspend fun deleteOrder(orderId:Int): Resource<MyResponse<Int>> = withContext(dispatcher){
+    suspend fun deleteOrder(orderId: Int): Resource<MyResponse<Int>> = withContext(dispatcher) {
         safeCall {
             val result = apiShopService.deleteOrder(orderId)
             Resource.Success(result)
@@ -304,18 +306,25 @@ class DefaultHomeRepository @Inject constructor(
     }
 
 
-    suspend fun updateOrder(orderId:Int,orderType:Int): Resource<MyResponse<Int>> = withContext(dispatcher){
-        safeCall {
-            val result = apiShopService.updateOrder(orderId,orderType)
-            Resource.Success(result)
+    suspend fun updateOrder(orderId: Int, orderType: Int): Resource<MyResponse<Int>> =
+        withContext(dispatcher) {
+            safeCall {
+                val result = apiShopService.updateOrder(orderId, orderType)
+                Resource.Success(result)
+            }
         }
-    }
 
     suspend fun deleteIteFromCart(itemId: Int): Resource<Int> = withContext(dispatcher) {
         safeCall {
-            val result=cartDao.deleteCart(itemId)
+            val result = cartDao.deleteCart(itemId)
             Resource.Success(result)
         }
-
     }
-}
+    suspend fun getOrderTracking(orderId: Int): Resource<MyResponse<List<Tracking>>> = withContext(dispatcher) {
+                safeCall {
+                    val result = apiShopService.getOrderTracking(orderId)
+                    Resource.Success(result)
+                }
+
+            }
+    }

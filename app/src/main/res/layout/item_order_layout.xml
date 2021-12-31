@@ -23,10 +23,12 @@
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
         android:layout_marginTop="@dimen/_8sdp"
+        app:riv_corner_radius="@dimen/_10sdp"
         android:src="@drawable/ic_restaurant"
         app:layout_constraintEnd_toStartOf="@id/food_order_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_date"
+        app:layout_constraintBottom_toTopOf="@id/reorder_ln"
         />
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="@dimen/_80sdp"
@@ -109,6 +111,7 @@
             android:layout_width="@dimen/_16sdp"
             android:layout_height="@dimen/_16sdp"
             android:src="@drawable/refresh"
+            android:tint="@color/white"
             android:layout_marginEnd="@dimen/_3sdp"
             />
         <TextView

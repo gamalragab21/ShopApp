@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.developers.shopapp.databinding.FragmentMyOrdersBinding
 import com.developers.shopapp.databinding.FragmentPreOrderBinding
+import com.developers.shopapp.entities.Product
 import com.developers.shopapp.helpers.EventObserver
 import com.developers.shopapp.ui.adapters.OrderAdapter
 import com.developers.shopapp.ui.viewmodels.OrdersViewModel
@@ -58,6 +61,27 @@ class PreOrdersFragment : Fragment() {
     }
 
     private fun adapterActions() {
+        orderAdapter.setOnReOrderClickListener { order , position->
+            ordersViewModels.updateOrder(order.orderId!!, 0)
+            binding.emptyView.isVisible = orderAdapter.clearItemAndIfLast(order,position)
+        }
+
+        orderAdapter.setOnItemClickListener {
+            val productFack= Product(
+                it.foodId,
+                0,0,it.productName,
+                it.productPrice,0,true,"",
+                inFav = false,
+                inCart = true,
+                rateCount = null,
+                coinType = it.coinType,
+                images = listOf(),
+                rating = null,
+                user = null
+            )
+            val action = OnComingOrderFragmentDirections.globalActionOrdersFragmentsToFoodDetailsFragment(productFack)
+            navController.navigate(action)
+        }
     }
 
     private fun subscribeToObservers() {
@@ -96,6 +120,20 @@ class PreOrdersFragment : Fragment() {
                         setupViewBeforeLoadData(
                             shimmerFrameLayout = binding.shimmer, onLoading = true
                         )
+                    }
+                ))
+            }
+
+            launch {
+                ordersViewModels.updateOrderStatus.collect(EventObserver(
+                    onSuccess = {
+                        if (it.success)
+                        snackbar("Reorder Successfully")
+                    },
+                    onError = {
+                        snackbar(it)
+                    },
+                    onLoading = {
                     }
                 ))
             }

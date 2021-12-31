@@ -74,6 +74,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
         subscribeToObservers()
 
+
     }
 
 
@@ -192,7 +193,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
     }
 
     private fun subscribeToObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
 
             // add to cart
             launch {
@@ -228,7 +229,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                                     "findProductStatus: ${currentFood.rating.toString()}"
                                 )
                                 bindFoodData(currentFood)
-                                    ordersViewModel.findItemCart(currentFood.productId!!)
+
                             }
                         },
                         onError = {
@@ -292,6 +293,22 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                         },
                         onError = {
                             snackbar(it)
+                            Log.e(TAG, "subscribeToObservers: ${it}" )
+                        }
+                    )
+                )
+            }
+
+            launch {
+                ordersViewModel.findCartStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = {
+                       binding.itemCartMount.text=it.foodQuality.toString()
+                        },
+                        onError = {
+                            snackbar(it)
                         }
                     )
                 )
@@ -301,6 +318,8 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
 
     }
+
+
 
     private fun updateLayoutCart(it: ProductCart) {
         binding.itemCartMount.text=it.foodQuality.toString()
@@ -327,6 +346,9 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             binding.btnMark.setImageResource(R.drawable.not_save)
         }
         loadingImageSlider(it.images)
+
+        ordersViewModel.findItemCart(it.productId!!)
+
 
     }
 

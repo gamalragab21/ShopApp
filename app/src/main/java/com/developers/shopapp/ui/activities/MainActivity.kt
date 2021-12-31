@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.foodDetailsFragment,
                 R.id.mapsFragment,
                 R.id.imageViewerFragment,
+                R.id.orderTrackingFragment,
                 R.id.searchRestaurantFragment->{
                     // setFullScreen()
                     hide()

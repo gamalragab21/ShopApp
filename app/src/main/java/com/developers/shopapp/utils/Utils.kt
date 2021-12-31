@@ -1,19 +1,24 @@
 package com.developers.shopapp.utils
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.icu.text.DateFormat.MEDIUM
+import android.icu.text.DateFormat.getDateInstance
 import android.net.Uri
 import android.provider.Settings
+import android.text.format.DateFormat
 import android.util.Log
-import androidx.core.content.ContextCompat
+import com.developers.shopapp.utils.Constants.TAG
 import com.google.android.gms.maps.model.LatLng
+import java.text.DateFormat.LONG
+import java.text.DateFormat.MEDIUM
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
-import androidx.core.content.ContextCompat.startActivity
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+
+
+
 
 
 object Utils {
@@ -41,20 +46,20 @@ object Utils {
                 "an min"
             }
             diff < 50 * Constants.MINUTE_MILLIS -> {
-                " ${diff / Constants.MINUTE_MILLIS}  min"
+                "${diff / Constants.MINUTE_MILLIS}min"
             }
             diff < 90 * Constants.MINUTE_MILLIS -> {
                 "an hour"
 
             }
             diff < 24 * Constants.HOUR_MILLIS -> {
-                " ${diff / Constants.HOUR_MILLIS} hours"
+                "${diff / Constants.HOUR_MILLIS}hours"
             }
             diff < 48 * Constants.HOUR_MILLIS -> {
                 "yesterday"
             }
             else -> {
-                "${diff / Constants.DAY_MILLIS} days"
+                "${diff / Constants.DAY_MILLIS}days"
             }
         }
     }
@@ -113,5 +118,57 @@ object Utils {
     }
 
 
+     fun getDate(context: Context,milliSeconds: Long): String? {
 
+         var time = milliSeconds
+         if (time < 1000000000000L) {
+             // if timestamp given in seconds, convert to millis
+             time *= 1000
+         }
+         val date=Date(time)
+         val  formatter = DateFormat.getLongDateFormat(context)
+         val  dateString = formatter.format( date)
+        return dateString
+    }
+
+    fun getDateAndTimeForTracking(context: Context,milliSeconds: Long): String? {
+
+        var time = milliSeconds
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000
+        }
+        val now: Long = Date().time
+        if (time > now || time <= 0) {
+            return null
+        }
+
+        // TODO: localize
+        val diff = now - time
+        return when {
+            diff < Constants.MINUTE_MILLIS -> {
+                "just now"
+            }
+            diff < 2 * Constants.MINUTE_MILLIS -> {
+                "an min"
+            }
+            diff < 50 * Constants.MINUTE_MILLIS -> {
+                "${diff / Constants.MINUTE_MILLIS}min"
+            }
+            diff < 90 * Constants.MINUTE_MILLIS -> {
+                "an hour"
+
+            }
+            diff < 24 * Constants.HOUR_MILLIS -> {
+                "${diff / Constants.HOUR_MILLIS}hours"
+            }
+            diff < 48 * Constants.HOUR_MILLIS -> {
+                "yesterday"
+            }
+            else -> {
+                "${diff / Constants.DAY_MILLIS}days"
+            }
+        }
+    }
 }
+//

@@ -12,6 +12,9 @@
     <color name="colorPrimaryDark">#0A8791</color>
     <color name="colorPrimaryLight">#C7F5F8</color>
     <color name="colorPrimary">#FBA83c</color>
+    <color name="colorPrimaryLight2">#F44336</color>
+    <color name="active_point_color">#B16B04</color>
+
     <color name="gray">#A6A6A8</color>
     <color name="Black">#0E122B</color>
     <color name="colorAccent">#EDEDF1</color>
@@ -28,5 +31,8 @@
     <color name="rate_active_color">#FFFEBA39</color>
     <color name="rate_normal_color">#FFA5A5A5</color>
     <color name="rate_button_color">#006cbc</color>
+
+    // order tracking
+
 
 </resources>

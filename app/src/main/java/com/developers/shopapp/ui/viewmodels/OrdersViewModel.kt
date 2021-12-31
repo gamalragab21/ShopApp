@@ -10,6 +10,7 @@ import com.developers.shopapp.helpers.Resource
 import com.developers.shopapp.qualifiers.MainThread
 import com.developers.shopapp.repositories.DefaultHomeRepository
 import com.developers.shopapp.entities.Order
+import com.developers.shopapp.entities.Tracking
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -69,6 +70,10 @@ class OrdersViewModel @Inject constructor(
     private val _updateOrderStatus =
         MutableStateFlow<Event<Resource<MyResponse<Int>>>>(Event(Resource.Init()))
     val updateOrderStatus: MutableStateFlow<Event<Resource<MyResponse<Int>>>> = _updateOrderStatus
+
+    private val _orderTrackingStatus =
+        MutableStateFlow<Event<Resource<MyResponse<List<Tracking>>>>> (Event(Resource.Init()))
+    val orderTrackingStatus: MutableStateFlow<Event<Resource<MyResponse<List<Tracking>>>>> = _orderTrackingStatus
 
 
 
@@ -165,6 +170,13 @@ class OrdersViewModel @Inject constructor(
             _deleteCartStatus.emit(Event(Resource.Loading()))
             val result = repository.deleteIteFromCart(foodId)
             _deleteCartStatus.emit(Event(result))
+        }
+    }
+    fun getOrderTracking(orderId: Int) {
+        viewModelScope.launch(dispatcher) {
+            _orderTrackingStatus.emit(Event(Resource.Loading()))
+            val result = repository.getOrderTracking(orderId)
+            _orderTrackingStatus.emit(Event(result))
         }
     }
 

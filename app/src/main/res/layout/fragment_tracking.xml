@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_margin="@dimen/_8sdp">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:id="@+id/spin_kit"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardCornerRadius="@dimen/_10sdp"
+        >
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            style="@style/SpinKitView.FadingCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_20sdp"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorPrimaryDark" />
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <LinearLayout
+        android:id="@+id/lean1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView_content_tracking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/back_icon" />
+
+        <TextView
+            android:id="@+id/review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="Order Tracking"
+            android:textColor="@color/Black"
+            android:textSize="@dimen/_15ssp" />
+    </LinearLayout>
+
+     <ScrollView
+        android:id="@+id/scrollView_content_tracking"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+         android:nestedScrollingEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lean1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rta_regular"
+                    android:text="Order ID: "
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/tv_order_id"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--        delivery Status-->
+
+                <TextView
+                    android:id="@+id/date_delivery"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="-"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_order_id" />
+
+                <View
+                    android:id="@+id/view_point_delivery"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/status_order_tracking_active"
+                    app:layout_constraintStart_toEndOf="@id/date_delivery"
+                    app:layout_constraintTop_toTopOf="@id/date_delivery" />
+
+                <LinearLayout
+                    android:id="@+id/ln_deliver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/deliver_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp"
+                    app:layout_constraintStart_toEndOf="@id/view_point_delivery"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_delivery">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:src="@drawable/deliver"
+                        app:riv_corner_radius="@dimen/_3sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/status_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Status: "
+                    android:textColor="@color/purple_500"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintStart_toStartOf="@id/ln_deliver"
+                    app:layout_constraintTop_toBottomOf="@id/ln_deliver" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Deliverred"
+                    android:textColor="#DD8708"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/status_delivery"
+                    app:layout_constraintTop_toBottomOf="@id/ln_deliver" />
+
+                <!--        On The Way Status-->
+
+                <TextView
+                    android:id="@+id/onWay_date"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="-"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/date_delivery" />
+
+                <View
+                    android:id="@+id/view_point_onWay"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/status_order_tracking_un_active"
+                    app:layout_constraintStart_toEndOf="@id/onWay_date"
+                    app:layout_constraintTop_toTopOf="@id/onWay_date" />
+
+                <LinearLayout
+                    android:id="@+id/ln_onWay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/on_way_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp"
+                    app:layout_constraintStart_toEndOf="@id/view_point_onWay"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_onWay">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:src="@drawable/delivery"
+                        app:riv_corner_radius="@dimen/_3sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/status_onWay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Status: "
+                    android:textColor="@color/purple_500"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintStart_toStartOf="@id/ln_onWay"
+                    app:layout_constraintTop_toBottomOf="@id/ln_onWay" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="On The Way"
+                    android:textColor="@color/purple_700"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/status_onWay"
+                    app:layout_constraintTop_toBottomOf="@id/ln_onWay" />
+
+                <View
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="0dp"
+                    android:background="#F8D5A1"
+                    app:layout_constraintBottom_toTopOf="@id/view_point_onWay"
+                    app:layout_constraintEnd_toEndOf="@id/view_point_onWay"
+                    app:layout_constraintStart_toStartOf="@id/view_point_onWay"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_delivery" />
+
+                <!--        Processing  Status-->
+
+                <TextView
+                    android:id="@+id/processing_date"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="-"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/onWay_date" />
+
+                <View
+                    android:id="@+id/view_point_processing"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/status_order_tracking_un_active"
+                    app:layout_constraintStart_toEndOf="@id/processing_date"
+                    app:layout_constraintTop_toTopOf="@id/processing_date" />
+
+                <LinearLayout
+                    android:id="@+id/ln_processing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/processing_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp"
+                    app:layout_constraintStart_toEndOf="@id/view_point_processing"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_processing">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:src="@drawable/processing"
+                        app:riv_corner_radius="@dimen/_3sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/status_processing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Status: "
+                    android:textColor="@color/purple_500"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintStart_toStartOf="@id/ln_processing"
+                    app:layout_constraintTop_toBottomOf="@id/ln_processing" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Order Processing"
+                    android:textColor="@color/Redgrade2"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/status_processing"
+                    app:layout_constraintTop_toBottomOf="@id/ln_processing" />
+
+                <View
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="0dp"
+                    android:background="#F8D5A1"
+                    app:layout_constraintBottom_toTopOf="@id/view_point_processing"
+                    app:layout_constraintEnd_toEndOf="@id/view_point_processing"
+                    app:layout_constraintStart_toStartOf="@id/view_point_processing"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_onWay" />
+
+                <!--        Confirm  Status-->
+
+                <TextView
+                    android:id="@+id/confirm_date"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="-"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/processing_date" />
+
+                <View
+                    android:id="@+id/view_point_confirm"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/status_order_tracking_un_active"
+                    app:layout_constraintStart_toEndOf="@id/confirm_date"
+                    app:layout_constraintTop_toTopOf="@id/confirm_date" />
+
+                <LinearLayout
+                    android:id="@+id/ln_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/confirm_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp"
+                    app:layout_constraintStart_toEndOf="@id/view_point_confirm"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_confirm">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:src="@drawable/confirmation"
+                        app:riv_corner_radius="@dimen/_3sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/status_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Status: "
+                    android:textColor="@color/purple_500"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintStart_toStartOf="@id/ln_confirm"
+                    app:layout_constraintTop_toBottomOf="@id/ln_confirm" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Confirm"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/status_confirm"
+                    app:layout_constraintTop_toBottomOf="@id/ln_confirm" />
+
+                <View
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="0dp"
+                    android:background="#F8D5A1"
+                    app:layout_constraintBottom_toTopOf="@id/view_point_confirm"
+                    app:layout_constraintEnd_toEndOf="@id/view_point_confirm"
+                    app:layout_constraintStart_toStartOf="@id/view_point_confirm"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_processing" />
+
+                <!--        Placed  Status-->
+
+                <TextView
+                    android:id="@+id/placed_date"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="-"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/confirm_date" />
+
+                <View
+                    android:id="@+id/view_point_placed"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/status_order_tracking_un_active"
+                    app:layout_constraintStart_toEndOf="@id/placed_date"
+                    app:layout_constraintTop_toTopOf="@id/placed_date" />
+
+                <LinearLayout
+                    android:id="@+id/ln_placed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:background="@drawable/deliver_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp"
+                    app:layout_constraintStart_toEndOf="@id/view_point_placed"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_placed">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:src="@drawable/placed"
+                        app:riv_corner_radius="@dimen/_3sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/status_placed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Status: "
+                    android:textColor="@color/purple_500"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintStart_toStartOf="@id/ln_placed"
+                    app:layout_constraintTop_toBottomOf="@id/ln_placed" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Order Placed"
+                    android:textColor="#DD8708"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/status_placed"
+                    app:layout_constraintTop_toBottomOf="@id/ln_placed" />
+
+                <View
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="0dp"
+                    android:background="#F8D5A1"
+                    app:layout_constraintBottom_toTopOf="@id/view_point_placed"
+                    app:layout_constraintEnd_toEndOf="@id/view_point_confirm"
+                    app:layout_constraintStart_toStartOf="@id/view_point_confirm"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_confirm" />
+
+                <View
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="0dp"
+                    android:background="#F8D5A1"
+                    app:layout_constraintBottom_toBottomOf="@id/status_placed"
+                    app:layout_constraintEnd_toEndOf="@id/view_point_placed"
+                    app:layout_constraintStart_toStartOf="@id/view_point_placed"
+                    app:layout_constraintTop_toBottomOf="@id/view_point_placed" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    app:layout_constraintTop_toBottomOf="@id/status_placed"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@color/gray" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:padding="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@id/status_placed"
+
+                        android:layout_height="wrap_content">
+
+                         <LinearLayout
+                            android:id="@+id/lean_order_form"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_alignParentEnd="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="Order From: "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/restaurantName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:text="Mcdonalod's"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold"
+                                />
+                        </LinearLayout>
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/item_image_order"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="@dimen/_60sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            app:riv_corner_radius="@dimen/_10sdp"
+                            android:src="@drawable/ic_restaurant"
+                            app:layout_constraintEnd_toStartOf="@id/food_order_name"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lean_order_form"
+                            app:layout_constraintBottom_toTopOf="@id/lean1_info"
+                            />
+                        <TextView
+                            android:id="@+id/food_order_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:fontFamily="@font/rta_regular"
+                            android:text="Burger Beal"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/price_item"
+                            app:layout_constraintStart_toEndOf="@id/item_image_order"
+                            app:layout_constraintTop_toTopOf="@id/item_image_order" />
+
+                        <TextView
+                            android:id="@+id/price_item"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/brandon_medium"
+                            android:text="$12"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_12ssp"
+                            app:layout_constraintBottom_toBottomOf="@id/item_image_order"
+                            app:layout_constraintStart_toStartOf="@id/food_order_name"
+                            app:layout_constraintTop_toBottomOf="@id/food_order_name" />
+
+                        <TextView
+                            android:id="@+id/item_order_quantity"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/_15ssp"
+                            android:background="@drawable/add_to_cart_layout"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/item_image_order"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/food_order_name"
+                            app:layout_constraintTop_toTopOf="@id/item_image_order" />
+
+                         <LinearLayout
+                            android:id="@+id/lean1_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_alignParentEnd="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/item_image_order"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="Item Total"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/totalPriceItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="$122"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold"
+                                />
+                        </LinearLayout>
+
+                         <LinearLayout
+                            android:id="@+id/lean2_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_alignParentEnd="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lean1_info"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="Item Discount"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/discountPriceItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:text="$12"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold"
+                                />
+                        </LinearLayout>
+
+
+                         <LinearLayout
+                            android:id="@+id/lean3_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lean2_info"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lean2_info"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="Delivery Free"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/delvery_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins"
+                                android:text="Free"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view1_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_below="@id/lean2_info"
+                            app:layout_constraintTop_toBottomOf="@+id/lean3_info"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/gray" />
+
+                        <LinearLayout
+                            android:id="@+id/lean4_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/view1_info"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/view1_info"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingBottom="@dimen/_5sdp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/uber_move_bold"
+                                android:text="Total"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/totalPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/uber_move_bold"
+                                android:text="$15"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20ssp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view2_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_below="@id/lean3_info"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lean4_info"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/gray" />
+
+                        <LinearLayout
+                            android:id="@+id/lean5_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/view1_info"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/view2_info"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/_5sdp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins"
+                                android:text="Payment Method"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/paymentMethod"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/uber_move_bold"
+                                android:text="Cash"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -147,8 +147,6 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
 
                             snackbar(it.message)
 
-
-
                         },
                         onError = {
                             snackbar(it)

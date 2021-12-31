@@ -10,12 +10,15 @@ data class Order(
     val productName: String,
     val productPrice: Double,
     val productDistCount: Double,
+    val productQuantity: Int,
     val freeDelivery: Boolean,
     val createAt: Long,
     val coinType: String,
     val foodImage: String,
     var orderType:Int=0,
-    val user: User? = null
+    val user: User? = null,
+    val restaurant: Restaurant? = null
+
 )
 /* order type  equal 0 , 1,-1
 * 0 pre-order

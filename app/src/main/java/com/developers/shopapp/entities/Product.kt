@@ -2,6 +2,7 @@ package com.developers.shopapp.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.Expose
 
 
 data class Product(
@@ -20,8 +21,6 @@ data class Product(
     val images:List<ProductImage>,
     val rating:List<RateProduct>?=null,
     var user:User?
-
-
 ):Parcelable {
     override fun describeContents(): Int =0
 
