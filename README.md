@@ -16,7 +16,7 @@ Food App used to show all restaurants , nearly restaurant , rate food or restaur
 <img src="https://user-images.githubusercontent.com/67482991/147862616-c233c37f-5326-457c-9487-a91574ea7b98.jpeg" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/147862617-7182cf7b-48bb-4dcf-9b5c-306cbc7d4c3c.jpeg" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/147862618-a7b4b31c-107d-4b4f-a800-2d0db85a2a88.jpeg" width="200">&nbsp;
-<img src="(https://user-images.githubusercontent.com/67482991/147862619-25bf3114-fa3c-40a7-97cf-0ca9866dafce.jpeg" width="200">&nbsp;
+<img src="https://user-images.githubusercontent.com/67482991/147862619-25bf3114-fa3c-40a7-97cf-0ca9866dafce.jpeg" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/147862620-bc12bbed-5017-47f2-8433-8479788a8e26.jpeg" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/147862621-089edd1a-3f75-4beb-8521-fcede29cdd57.jpeg" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/147862622-f6248a9b-ff70-4b3e-a878-ceac20ca2995.jpeg" width="200">&nbsp;
@@ -35,6 +35,7 @@ Food App used to show all restaurants , nearly restaurant , rate food or restaur
 * [Coroutines](https://developer.android.com/kotlin/coroutines) - For multithreading while handling requests to the server and local database.
 * [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started) - To handle app navigation.
 * [Multidex](https://developer.android.com/studio/build/multidex) - To enable creating multi dex files because of using set of libraries that reached the maximum size of single dex file.
+* [Room DB](https://developer.android.com/training/data-storage/room) - To manage SQLite database easily and avoid a lot boilerplate code.
 * [Model-View-ViewModel(MVVM)](https://developer.android.com/topic/architecture) - Offers an implementation of observer design pattern.
 * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - notifies views of any database changes in an observer way.
 * [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java
