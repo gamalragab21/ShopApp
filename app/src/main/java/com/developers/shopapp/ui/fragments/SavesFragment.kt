@@ -152,11 +152,11 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.favouritesRestaurantStatus.collect(
                         EventObserver(
                             onLoading = {
-                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                setupViewBeforeLoadData(
                                     shimmerFrameLayout= binding.shimmer, onLoading = true)
                             },
                             onSuccess = { favRestaurant ->
-                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                setupViewBeforeLoadData(
                                     shimmerFrameLayout= binding.shimmer, onLoading = false
                                 )
 
@@ -172,7 +172,7 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                             onError = {
                                 Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                                 snackbar(it)
-                                setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                setupViewBeforeLoadData(shimmerFrameLayout= binding.shimmer,
                                     onLoading =false, onError = true, errorMessage = it
                                     , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                             }
@@ -185,11 +185,11 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
                     categoryProductViewModel.favouritesProductStatus.collect(
                         EventObserver(
                             onLoading = {
-                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                setupViewBeforeLoadData(
                                     shimmerFrameLayout= binding.shimmer, onLoading = true)
                             },
                             onSuccess = { favProduct ->
-                                setupViewBeforeLoadData( spinKit = binding.spinKit,
+                                setupViewBeforeLoadData(
                                     shimmerFrameLayout= binding.shimmer, onLoading = false
                                 )
 
@@ -206,7 +206,7 @@ class SavesFragment:Fragment(),EasyPermissions.PermissionCallbacks {
 
                                 Log.i(Constants.TAG, "subscribeToObservers: ${it}")
                                 snackbar(it)
-                                setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                                setupViewBeforeLoadData(shimmerFrameLayout= binding.shimmer,
                                     onLoading =false, onError = true, errorMessage = it
                                     , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                             }

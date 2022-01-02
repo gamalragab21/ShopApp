@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/rta_regular"
             android:gravity="center"
-            android:text="Reviews"
+            android:text="Orders"
             android:textColor="@color/Black"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintEnd_toEndOf="parent"

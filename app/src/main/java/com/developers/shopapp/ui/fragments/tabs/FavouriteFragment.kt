@@ -109,11 +109,11 @@ class FavouriteFragment:Fragment(), EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.favouritesRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { favRestaurant ->
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = false
                                 , emptyView = binding.emptyView)
                             favRestaurant.data?.let {

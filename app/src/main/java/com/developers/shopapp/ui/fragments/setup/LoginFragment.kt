@@ -157,7 +157,7 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
             getMyLocation()
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
             EasyPermissions.requestPermissions(
                 this,
                 "you need to accept location permissions to use this app.",
@@ -165,16 +165,16 @@ class LoginFragment : Fragment(),EasyPermissions.PermissionCallbacks {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
-        }else{
-            EasyPermissions.requestPermissions(
-                this,
-                "you need to accept location permissions to use this app.",
-                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            )
-        }
+//        }else{
+//            EasyPermissions.requestPermissions(
+//                this,
+//                "you need to accept location permissions to use this app.",
+//                Constants.REQUEST_CODE_LOCATION_PERMISSIONS,
+//                Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.ACCESS_COARSE_LOCATION,
+//                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//            )
+//        }
     }
 
 

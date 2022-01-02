@@ -100,11 +100,11 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
                     restaurantViewModel.ratingRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { ratingRestaurant ->
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = false
                             )
 
@@ -118,7 +118,7 @@ class RatingFragment:Fragment(), EasyPermissions.PermissionCallbacks {
 
                         },
                         onError = {
-                            setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                            setupViewBeforeLoadData(shimmerFrameLayout= binding.shimmer,
                                 onLoading =false, onError = true, errorMessage = it
                                 , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
                             Log.i(Constants.TAG, "subscribeToObservers: ${it}")

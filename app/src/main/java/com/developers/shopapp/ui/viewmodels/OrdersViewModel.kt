@@ -1,6 +1,7 @@
 package com.developers.shopapp.ui.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.shopapp.entities.MyResponse
@@ -11,6 +12,7 @@ import com.developers.shopapp.qualifiers.MainThread
 import com.developers.shopapp.repositories.DefaultHomeRepository
 import com.developers.shopapp.entities.Order
 import com.developers.shopapp.entities.Tracking
+import com.developers.shopapp.helpers.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -99,6 +101,7 @@ class OrdersViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             _findCartStatus.emit(Event(Resource.Loading()))
             val result = repository.findItemCart(productId)
+            Log.i(TAG, "findItemCart:viewModelScope ")
             _findCartStatus.emit(Event(result))
         }
     }
@@ -178,6 +181,12 @@ class OrdersViewModel @Inject constructor(
             val result = repository.getOrderTracking(orderId)
             _orderTrackingStatus.emit(Event(result))
         }
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.i(TAG, "onCleared: ")
     }
 
 

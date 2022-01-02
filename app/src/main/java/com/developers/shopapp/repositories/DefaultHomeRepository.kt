@@ -193,7 +193,7 @@ class DefaultHomeRepository @Inject constructor(
             }
         }
 
-    suspend fun setupRatingMyProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> =
+    suspend fun setupRatingMyProduct(rateProduct: RateProduct): Resource<MyResponse<Int>> =
         withContext(dispatcher) {
             safeCall {
                 val result = apiShopService.setupRatingMyProduct(rateProduct)
@@ -201,7 +201,7 @@ class DefaultHomeRepository @Inject constructor(
             }
         }
 
-    suspend fun updateRateProduct(rateProduct: RateProduct): Resource<MyResponse<RateProduct>> =
+    suspend fun updateRateProduct(rateProduct: RateProduct): Resource<MyResponse<Int>> =
         withContext(dispatcher) {
             safeCall {
                 val result = apiShopService.updateRateProduct(rateProduct)
@@ -327,4 +327,12 @@ class DefaultHomeRepository @Inject constructor(
                 }
 
             }
+
+  suspend  fun filterProduct(filterName: String): Resource<MyResponse<List<Product>>> = withContext(dispatcher) {
+        safeCall {
+            val result = apiShopService.filterProduct(filterName)
+            Resource.Success(result)
+        }
+
     }
+}

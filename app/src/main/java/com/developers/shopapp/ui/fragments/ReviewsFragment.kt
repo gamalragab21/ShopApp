@@ -95,7 +95,7 @@ class ReviewsFragment:Fragment(), RateDialogListener {
                         },
                         onSuccess = {
                             snackbar(it.message)
-                            categoryProductViewModel.findProductById(it.data!!.productId)
+                            categoryProductViewModel.findProductById(args.product.productId!!)
                         },
                         onError = {
                             snackbar(it)

@@ -78,11 +78,11 @@ class PopularFragmentProduct: Fragment() {
             categoryProductViewModel.popularProductStatus.collect(
                 EventObserver(
                     onLoading = {
-                        setupViewBeforeLoadData( spinKit = binding.spinKit,
+                        setupViewBeforeLoadData(
                             shimmerFrameLayout= binding.shimmer, onLoading = true)
                     },
                     onSuccess = { poplarRestaurant ->
-                        setupViewBeforeLoadData( spinKit = binding.spinKit,
+                        setupViewBeforeLoadData(
                             shimmerFrameLayout= binding.shimmer, onLoading = false)
                         poplarRestaurant.data?.let {
                             if(it.isEmpty()) setupViewBeforeLoadData(
@@ -93,7 +93,7 @@ class PopularFragmentProduct: Fragment() {
                     },
                     onError = {
                         Log.e(Constants.TAG, "subscribeToObservers: ${it} ", )
-                        setupViewBeforeLoadData( spinKit = binding.spinKit,
+                        setupViewBeforeLoadData(
                             shimmerFrameLayout= binding.shimmer, onLoading = false,
                             onError = true, errorMessage = it)
                         snackbar(it)

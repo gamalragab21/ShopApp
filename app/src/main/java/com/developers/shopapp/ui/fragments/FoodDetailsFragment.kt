@@ -74,7 +74,6 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
 
         subscribeToObservers()
 
-
     }
 
 
@@ -142,7 +141,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             )
         }
         binding.search.setOnClickListener {
-            val action = FoodDetailsFragmentDirections.actionFoodDetailsFragmentToFilterFragment()
+            val action = FoodDetailsFragmentDirections.actionFoodDetailsFragmentToFilterFragment(currentFood.productName)
             findNavController().navigate(action)
         }
 
@@ -155,7 +154,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
         }
 
         binding.addToCart.setOnClickListener {
-            val productCart=ProductCart(
+            val productCart = ProductCart(
                 currentFood.productName,
                 currentFood.images[0].imageProduct,
                 currentFood.productPrice,
@@ -164,7 +163,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                 binding.itemCartMount.text.toString().toInt(),
                 currentFood.freeDelivery,
                 currentFood.user!!.mobile,
-                currentFood.user!!.id!!,currentFood.restaurantId!!,
+                currentFood.user!!.id!!, currentFood.restaurantId!!,
                 getTimeStamp()
             )
             ordersViewModel.addProductToCart(productCart)
@@ -193,7 +192,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
     }
 
     private fun subscribeToObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
 
             // add to cart
             launch {
@@ -202,9 +201,10 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                         onLoading = {
                         },
                         onSuccess = { success ->
-
-                            if (success>0)
+                            Log.i(TAG, "addProductToCartStatus: ")
+                            if (success > 0)
                                 snackbar("\uD83D\uDE0D Success Add To Cart")
+                            ordersViewModel.findItemCart(currentFood.productId!!)
                         },
                         onError = {
                             snackbar(it)
@@ -224,12 +224,8 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                             category.data?.let {
 
                                 currentFood = it.copy()
-                                Log.i(
-                                    TAG,
-                                    "findProductStatus: ${currentFood.rating.toString()}"
-                                )
                                 bindFoodData(currentFood)
-
+                                ordersViewModel.findItemCart(it.productId!!)
                             }
                         },
                         onError = {
@@ -238,27 +234,17 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                     )
                 )
             }
+
+            // find cart
             launch {
                 ordersViewModel.findCartStatus.collect(
                     EventObserver(
                         onLoading = {
                         },
                         onSuccess = {
-                           updateLayoutCart(it)
-                        },
-                        onError = {
-                            snackbar(it)
-                        }
-                    )
-                )
-            }
-            launch {
-                categoryProductViewModel.deleteFavProductStatus.collect(
-                    EventObserver(
-                        onLoading = {
-                        },
-                        onSuccess = {
-                            snackbar(it.message)
+                            updateLayoutCart(it)
+                            Log.i(TAG, "findCartStatus: ${it.toString()}")
+
                         },
                         onError = {
                             snackbar(it)
@@ -267,6 +253,25 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                 )
             }
 
+            // delete fav
+            launch {
+                categoryProductViewModel.deleteFavProductStatus.collect(
+                    EventObserver(
+                        onLoading = {
+                        },
+                        onSuccess = {
+                            snackbar(it.message)
+                            Log.i(TAG, "${it.message}: ")
+
+                        },
+                        onError = {
+                            snackbar(it)
+                        }
+                    )
+                )
+            }
+
+            // set fav
             launch {
                 categoryProductViewModel.setFavProductStatus.collect(
                     EventObserver(
@@ -282,6 +287,7 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                 )
             }
 
+            // rating my product
             launch {
                 categoryProductViewModel.myRatingProductStatus.collect(
                     EventObserver(
@@ -289,26 +295,13 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
                         },
                         onSuccess = {
                             snackbar(it.message)
-                            categoryProductViewModel.findProductById(it.data!!.productId)
-                        },
-                        onError = {
-                            snackbar(it)
-                            Log.e(TAG, "subscribeToObservers: ${it}" )
-                        }
-                    )
-                )
-            }
+                            Log.i(TAG, "${it.message}: ")
 
-            launch {
-                ordersViewModel.findCartStatus.collect(
-                    EventObserver(
-                        onLoading = {
-                        },
-                        onSuccess = {
-                       binding.itemCartMount.text=it.foodQuality.toString()
+                            categoryProductViewModel.findProductById(currentFood.productId!!)
                         },
                         onError = {
                             snackbar(it)
+                            Log.e(TAG, "subscribeToObservers: ${it}")
                         }
                     )
                 )
@@ -320,14 +313,14 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
     }
 
 
-
     private fun updateLayoutCart(it: ProductCart) {
-        binding.itemCartMount.text=it.foodQuality.toString()
-        binding.countPrice.text="${it.coinType }${it.foodQuality*it.foodPrice}"
+        Log.i(TAG, "updateLayoutCart: ")
+
+        binding.itemCartMount.text = it.foodQuality.toString()
+        binding.countPrice.text = "${it.coinType}${it.foodQuality * it.foodPrice}"
     }
 
     private fun bindFoodData(it: Product) {
-        Log.i(TAG, "bindFoodData: ${currentFood.toString()}")
         binding.foodName.text = it.productName
         binding.rating.text = "${it.rateCount}"
         binding.foodPrice.text = "${it.coinType}${it.productPrice}"
@@ -346,9 +339,6 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             binding.btnMark.setImageResource(R.drawable.not_save)
         }
         loadingImageSlider(it.images)
-
-        ordersViewModel.findItemCart(it.productId!!)
-
 
     }
 
@@ -459,5 +449,10 @@ class FoodDetailsFragment : Fragment(), RateDialogListener {
             )
             categoryProductViewModel.updateRateProduct(rateProduct)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy: ")
     }
 }

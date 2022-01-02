@@ -148,11 +148,11 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                     restaurantViewModel.nearlyRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { restaurant ->
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = false, emptyView = binding.emptyView
                                 )
 
@@ -167,7 +167,7 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
 
                         },
                         onError = {
-                            setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                            setupViewBeforeLoadData(shimmerFrameLayout= binding.shimmer,
                                 onLoading =false, onError = true, errorMessage = it
                                 , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
 
@@ -184,12 +184,12 @@ class NearlyPlacesFragment:Fragment() , AdapterView.OnItemSelectedListener, Easy
                     restaurantViewModel.filterRestaurantStatus.collect(
                         EventObserver(
                         onLoading = {
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { filterRestaurant ->
 
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = false
                                 , emptyView = binding.emptyView)
                              restaurantAdapter.restaurantes=ArrayList()

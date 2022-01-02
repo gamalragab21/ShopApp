@@ -60,33 +60,13 @@
         app:layout_constraintTop_toBottomOf="@id/image_back"
         android:layout_marginTop="@dimen/_8sdp"
         android:background="@drawable/item_filter_background"
-        app:layout_constraintEnd_toStartOf="@id/filterPrice"
-        android:drawablePadding="@dimen/_3sdp"
-        android:gravity="center_vertical"
-        app:drawableEndCompat="@drawable/close"
-        app:drawableTint="@color/black"
-        />
-    <TextView
-        android:id="@+id/filterPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hight Price"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:fontFamily="@font/rta_regular"
-        android:padding="@dimen/_5sdp"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/filterRating"
-        android:maxLines="1"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintStart_toEndOf="@id/filterName"
-        app:layout_constraintTop_toBottomOf="@id/image_back"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:background="@drawable/item_filter_background"
         android:drawablePadding="@dimen/_3sdp"
         android:gravity="center_vertical"
         app:drawableEndCompat="@drawable/close"
         app:drawableTint="@color/black"
         />
+
 
     <TextView
         android:id="@+id/filterRating"
@@ -99,7 +79,7 @@
         android:textColor="@color/black"
         android:maxLines="1"
         android:textSize="@dimen/_10ssp"
-        app:layout_constraintStart_toEndOf="@id/filterPrice"
+        app:layout_constraintStart_toEndOf="@id/filterName"
         app:layout_constraintTop_toBottomOf="@id/image_back"
         android:layout_marginTop="@dimen/_8sdp"
         android:background="@drawable/item_filter_background"
@@ -107,9 +87,90 @@
         android:gravity="center_vertical"
         app:drawableEndCompat="@drawable/close"
         app:drawableTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/product_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:nestedScrollingEnabled="true"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filterName" />
 
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/filterName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:shimmer_duration="800"
+        app:shimmer_auto_start="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+            <include layout="@layout/item_restaurant_food_placholder" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filterName">
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/ic_undraw_empty" />
+        <TextView
+            android:id="@+id/textEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:paddingEnd="16dp"
+            android:text="No Data Found"
+            android:fontFamily="@font/israr_syria"/>
+        <TextView
+            android:id="@+id/textEmptyErr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:paddingEnd="16dp"
+            android:fontFamily="@font/brandon_medium"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

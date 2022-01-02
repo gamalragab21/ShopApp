@@ -97,24 +97,24 @@ class HomeFragment : Fragment() {
 
     private fun setupActionToolBar() {
         binding.breakFast.setOnClickListener {
-            startToFilterFragment()
+            startToFilterFragment("Breakfast")
         }
         binding.burger.setOnClickListener {
-            startToFilterFragment()
+            startToFilterFragment("Burger")
         }
         binding.pizza.setOnClickListener {
-            startToFilterFragment()
+            startToFilterFragment("Pizza")
         }
         binding.cafe.setOnClickListener {
-            startToFilterFragment()
+            startToFilterFragment("Coffee")
         }
         binding.drinks.setOnClickListener {
-            startToFilterFragment()
+            startToFilterFragment("Drinks")
         }
     }
 
-  private fun startToFilterFragment(){
-        val action=HomeFragmentDirections.actionNavigationHomeToFilterFragment()
+  private fun startToFilterFragment(filterName: String) {
+        val action=HomeFragmentDirections.actionNavigationHomeToFilterFragment(filterName)
         navController.navigate(action)
     }
 
@@ -133,13 +133,13 @@ class HomeFragment : Fragment() {
                 EventObserver(
                     onLoading = {
                         setupViewBeforeLoadData(
-                            spinKit = binding.spinKitFav,
+
                             shimmerFrameLayout = binding.shimmer, onLoading = true
                         )
                     },
                     onSuccess = { poplarRestaurant ->
                         setupViewBeforeLoadData(
-                            spinKit = binding.spinKitFav,
+
                             shimmerFrameLayout = binding.shimmer, onLoading = false
                         )
                         poplarRestaurant.data?.let {
@@ -154,7 +154,7 @@ class HomeFragment : Fragment() {
                     onError = {
                         Log.e(TAG, "subscribeToObservers: ${it} ")
                         setupViewBeforeLoadData(
-                            spinKit = binding.spinKitFav,
+
                             shimmerFrameLayout = binding.shimmer, onLoading = false,
                             onError = true, errorMessage = it
                         )
@@ -223,7 +223,6 @@ class HomeFragment : Fragment() {
         binding.tabs.addTab(binding.tabs.newTab().setText("Favourite"))
         binding.tabs.addTab(binding.tabs.newTab().setText("Rating"))
         binding.tabs.addTab(binding.tabs.newTab().setText("Popular"))
-        binding.tabs.addTab(binding.tabs.newTab().setText("Trends"))
         binding.tabs.addTab(binding.tabs.newTab().setText("Notification"))
 
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

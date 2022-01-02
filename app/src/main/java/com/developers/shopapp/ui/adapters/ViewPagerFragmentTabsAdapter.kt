@@ -33,11 +33,9 @@ class ViewPagerFragmentTabsAdapter(
                 PopularFragmentRestaurant()
             }
             4 -> {
-                TrendsFragment()
-            }
-            5 -> {
                 NotificationFragment()
             }
+
             else -> {
                 RecentFragment()
             }

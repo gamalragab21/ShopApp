@@ -90,10 +90,10 @@ interface ApiShopService {
     suspend fun findProductById(@Query("productId") productId: Int): MyResponse<Product>
 
     @POST("product/rate")
-    suspend fun setupRatingMyProduct(@Body rateProduct: RateProduct): MyResponse<RateProduct>
+    suspend fun setupRatingMyProduct(@Body rateProduct: RateProduct): MyResponse<Int>
 
     @PUT("product/updateRate")
-    suspend fun updateRateProduct(@Body rateProduct: RateProduct): MyResponse<RateProduct>
+    suspend fun updateRateProduct(@Body rateProduct: RateProduct): MyResponse<Int>
 
     @GET("users/findUserById")
     suspend fun findUserById(@Query("userId") userId: Int): User
@@ -126,5 +126,9 @@ interface ApiShopService {
     suspend fun getOrderTracking(
         @Query("orderId") orderId:Int
     ): MyResponse<List<Tracking>>
+
+
+    @POST("product/filterProduct")
+    suspend fun filterProduct(@Query("filterName") filterName: String): MyResponse<List<Product>>
 
 }

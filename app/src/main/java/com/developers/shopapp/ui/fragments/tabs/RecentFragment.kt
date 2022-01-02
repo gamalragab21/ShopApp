@@ -101,12 +101,12 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                 launch {
                     restaurantViewModel.restaurantStatus.collect(EventObserver(
                         onLoading = {
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = true)
                         },
                         onSuccess = { restaurant ->
 
-                            setupViewBeforeLoadData( spinKit = binding.spinKit,
+                            setupViewBeforeLoadData(
                                 shimmerFrameLayout= binding.shimmer, onLoading = false, emptyView = binding.emptyView
                             )
                             restaurant.data?.let {
@@ -121,7 +121,7 @@ class RecentFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                         onError = {
                             Log.i(TAG, "subscribeToObservers: ${it}")
                             snackbar(it)
-                            setupViewBeforeLoadData(spinKit = binding.spinKit,shimmerFrameLayout= binding.shimmer,
+                            setupViewBeforeLoadData(shimmerFrameLayout= binding.shimmer,
                                 onLoading =false, onError = true, errorMessage = it
                                 , emptyView = binding.emptyView, tvError = binding.textEmptyErr)
 

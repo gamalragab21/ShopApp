@@ -55,8 +55,12 @@ class CategoryProductViewModel @Inject constructor(
     val findProductStatus: MutableStateFlow<Event<Resource<MyResponse<Product>>>> = _findProductStatus
 
     private val _myRatingProductStatus =
-        MutableStateFlow<Event<Resource<MyResponse<RateProduct>>>>(Event(Resource.Init()))
-    val myRatingProductStatus: MutableStateFlow<Event<Resource<MyResponse<RateProduct>>>> = _myRatingProductStatus
+        MutableStateFlow<Event<Resource<MyResponse<Int>>>>(Event(Resource.Init()))
+    val myRatingProductStatus: MutableStateFlow<Event<Resource<MyResponse<Int>>>> = _myRatingProductStatus
+
+    private val _filterProductStatus =
+        MutableStateFlow<Event<Resource<MyResponse<List<Product>>>>>(Event(Resource.Init()))
+    val filterProductStatus: MutableStateFlow<Event<Resource<MyResponse<List<Product>>>>> = _filterProductStatus
 
 
     fun getCategoriesOfRestaurant(restaurantId: Int) {
@@ -136,6 +140,13 @@ class CategoryProductViewModel @Inject constructor(
         }
     }
 
+    fun filterProduct(filterName: String) {
+        viewModelScope.launch(dispatcher) {
+            _filterProductStatus.emit(Event(Resource.Loading()))
+            val result = repository.filterProduct(filterName)
+            _filterProductStatus.emit(Event(result))
+        }
+    }
 
 
 }
